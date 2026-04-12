@@ -7,98 +7,63 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root { --blue: #004a99; --red: #cc0000; --green: #28a745; --gray: #343a40; }
-        body { font-family: 'Trebuchet MS', sans-serif; background: #e9ecef; margin: 0; color: #212529; }
-        
-        header { background: var(--gray); color: white; padding: 30px 15px; text-align: center; border-bottom: 6px solid var(--red); }
+        body { font-family: 'Segoe UI', sans-serif; background: #e9ecef; margin: 0; color: #212529; }
+        header { background: var(--gray); color: white; padding: 25px 15px; text-align: center; border-bottom: 6px solid var(--red); }
         .container { max-width: 700px; margin: auto; padding: 15px; }
-
         .section-card { background: white; border-radius: 15px; padding: 25px; margin-bottom: 25px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-        h2 { color: var(--blue); border-bottom: 2px solid #eee; padding-bottom: 10px; margin-top: 0; display: flex; align-items: center; gap: 10px; }
-
-        .pro-tip { background: #d4edda; border-left: 5px solid var(--green); padding: 15px; margin: 15px 0; font-size: 0.95rem; }
-        .danger-zone { background: #f8d7da; border-left: 5px solid var(--red); padding: 15px; margin: 15px 0; color: #721c24; }
-
-        .wire-box { background: #222; color: #55efc4; padding: 15px; border-radius: 10px; font-family: monospace; line-height: 1.5; }
-        .wire-item { display: flex; justify-content: space-between; margin: 5px 0; border-bottom: 1px solid #444; }
-
-        .image-placeholder { background: #eee; width: 100%; height: 180px; display: flex; align-items: center; justify-content: center; border-radius: 10px; margin: 10px 0; text-align: center; font-size: 0.8rem; color: #888; border: 2px dashed #ccc; }
-
-        .btn-action { background: var(--blue); color: white; border: none; width: 100%; padding: 20px; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; transition: 0.3s; }
-        .btn-action:hover { background: #003366; }
-        
-        ul { padding-left: 20px; }
-        li { margin-bottom: 10px; }
+        h2 { color: var(--blue); border-bottom: 2px solid #eee; padding-bottom: 10px; display: flex; align-items: center; gap: 10px; }
+        .instr-img { width: 100%; border-radius: 10px; margin: 15px 0; border: 1px solid #ddd; }
+        .wire-box { background: #222; color: #55efc4; padding: 15px; border-radius: 10px; font-family: monospace; }
+        .danger-zone { background: #f8d7da; border-left: 5px solid var(--red); padding: 15px; color: #721c24; margin: 15px 0; }
+        .btn-action { background: var(--blue); color: white; border: none; width: 100%; padding: 20px; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body>
 
 <header>
     <h1>ИНСТРУКЦИЯ ДЛЯ ПАПЫ 🛠️</h1>
-    <p>Ставим кондиционер правильно, по-мужски!</p>
+    <p>Ставим кондиционер правильно и надежно!</p>
 </header>
 
 <div class="container">
 
     <div class="section-card">
-        <h2><i class="fas fa-search"></i> 1. Золотые правила вальцовки</h2>
-        <p>Пап, это самое важное. Если тут накосячить — фреон убежит.</p>
-        <div class="image-placeholder">
-            [Здесь должна быть картинка: Трубка срезана ровно, фаска снята риммером вниз, чтобы стружка не попала внутрь]
-        </div>
+        <h2><i class="fas fa-tools"></i> 1. Правильная вальцовка</h2>
+        <p>Пап, посмотри на фото ниже. «Юбка» должна быть ровной, без трещин. Это залог того, что фреон не вытечет.</p>
+        <img src="https://it-climate.com.ua/images/valcovka_trub.jpg" alt="Пример вальцовки" class="instr-img">
         <ul>
-            <li><b>Никакой ножовки!</b> Режем только труборезом.</li>
-            <li><b>Риммер — твой друг.</b> Обязательно убери острые края внутри трубки.</li>
-            <li><b>Масло.</b> Капни капельку масла для компрессора на конус вальцовки перед затяжкой.</li>
+            <li>Снимай фаску (заусенцы) только <b>отверстием вниз</b>, чтобы стружка не упала в трубу.</li>
+            <li>Не зажимай слишком сильно, чтобы не раздавить медь.</li>
         </ul>
-        <div class="danger-zone">
-            <b>НЕ ПЕРЕТЯНИ!</b> Медь мягкая. Если давить со всей дури, «юбка» треснет. Тяни до упора и еще на 1/4 оборота.
-        </div>
     </div>
 
     <div class="section-card">
-        <h2><i class="fas fa-bolt"></i> 2. Электрика (Не перепутай!)</h2>
-        <p>Соединяем внутренний блок с наружным. Обычно жилы такие:</p>
+        <h2><i class="fas fa-bolt"></i> 2. Электрика (Межблочка)</h2>
+        <p>Схема подключения проводов. Обязательно соблюдай цвета на обоих блоках!</p>
+        <img src="https://conditioner-piter.ru/wp-content/uploads/5/2/e/52ef9b139df3193e25d2c0199d214197.png" alt="Схема проводов" class="instr-img">
         <div class="wire-box">
-            <div class="wire-item"><span>1 (L)</span> <span style="color: brown;">Коричневый (Фаза)</span></div>
-            <div class="wire-item"><span>2 (N)</span> <span style="color: #0984e3;">Синий (Ноль)</span></div>
-            <div class="wire-item"><span>3 (S)</span> <span style="color: white;">Черный (Сигнал)</span></div>
-            <div class="wire-item"><span>(PE)</span> <span style="color: #636e72;">Желто-зеленый (Земля)</span></div>
-        </div>
-        <div class="pro-tip">
-            <b>Совет:</b> Сфотографируй клеммник на внутреннем блоке, чтобы на наружном подключить в том же порядке!
+            1 - Фаза (L) <br> 2 - Ноль (N) <br> 3 - Сигнал <br> Земля (Желто-зеленый)
         </div>
     </div>
 
     <div class="section-card">
-        <h2><i class="fas fa-microscope"></i> 3. Вакуум (Главный этап)</h2>
-        <p>Убираем воздух и влагу. Без этого компрессор "задохнется".</p>
-        <div class="image-placeholder">
-            [Схема: Насос -> Манометр (синий) -> Сервисный порт толстой трубки]
+        <h2><i class="fas fa-microscope"></i> 3. Схема вакуумирования</h2>
+        <p>Как правильно подключить шланги и насос:</p>
+        <img src="https://split-sistema.by/upload/medialibrary/125/125d0be36c92d5045610815412499691.jpg" alt="Схема вакуумирования" class="instr-img">
+        <div class="danger-zone">
+            <b>Важно:</b> Сначала закрой кран на манометре, а только ПОТОМ выключай насос! Если сделать наоборот — масло из насоса может засосать в кондиционер.
         </div>
+    </div>
+
+    <div class="section-card">
+        <h2><i class="fas fa-play-circle"></i> 4. Открытие портов (Запуск)</h2>
+        <p>Когда всё проверил, открывай газ шестигранником в таком порядке:</p>
         <ol>
-            <li>Подключил шланги? <b>Включай насос.</b></li>
-            <li>Открой синий кран на манометре.</li>
-            <li>Стрелка должна упасть ниже нуля (в минус).</li>
-            <li>Жди 15-20 минут. Закрой кран. Выключи насос.</li>
-            <li><b>Жди еще 10 минут.</b> Если стрелка ползет вверх — значит где-то дырка в гайках!</li>
+            <li><b>Тонкая трубка:</b> Открой на 2-3 секунды и закрой. Проверь гайки мылом.</li>
+            <li><b>Всё чисто?</b> Открывай оба порта до упора.</li>
+            <li>Надевай заглушки и затягивай их ключом.</li>
         </ol>
-    </div>
-
-    <div class="section-card">
-        <h2><i class="fas fa-play-circle"></i> 4. Первый ПУСК</h2>
-        <p>Самый волнительный момент. Делаем так:</p>
-        <ul>
-            <li>Открути заглушки на кранах наружного блока.</li>
-            <li>Шестигранником <b>чуть-чуть</b> приоткрой тонкую трубку на 2 секунды и закрой.</li>
-            <li>Проверь мыльной пеной все свои гайки. Не пузырится? Идем дальше.</li>
-            <li>Открывай оба крана (тонкий и толстый) до конца.</li>
-            <li>Включай в розетку и ставь на +16°C.</li>
-        </ul>
-        <button class="btn-action" onclick="window.print()">Распечатать памятку для Бати</button>
-    </div>
-
-    <div style="text-align: center; color: #888; font-size: 0.8rem; padding-bottom: 20px;">
-        Сделано с любовью для лучшего отца в РБ 🇧🇾
+        <button class="btn-action" onclick="window.print()">Распечатать шпаргалку</button>
     </div>
 
 </div>
