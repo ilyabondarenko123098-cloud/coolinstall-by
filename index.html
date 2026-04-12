@@ -3,236 +3,279 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CoolInstall Elite v5.0 | Masterpiece</title>
+    <title>CoolInstall Apex v20.0 | Ultimate Master</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --neon: #00f2ff;
-            --neon-purple: #7000ff;
+            --accent: #00f2ff;
+            --accent-dim: rgba(0, 242, 255, 0.1);
             --danger: #ff0055;
-            --bg: #05070a;
+            --bg: #020408;
+            --glass: rgba(255, 255, 255, 0.02);
+            --glass-border: rgba(255, 255, 255, 0.08);
         }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: #fff; overflow-x: hidden; scroll-behavior: smooth; }
-        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.08); }
-        .neon-border { border: 1px solid var(--neon); box-shadow: 0 0 15px rgba(0, 242, 255, 0.2); }
-        .neon-text { color: var(--neon); text-shadow: 0 0 10px rgba(0, 242, 255, 0.5); }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: #fff; -webkit-tap-highlight-color: transparent; scroll-behavior: smooth; }
         
-        /* Progress Bar */
-        .progress-container { position: fixed; top: 0; left: 0; width: 100%; height: 6px; background: #111; z-index: 2000; }
-        .progress-fill { width: 0%; height: 100%; background: linear-gradient(90deg, var(--neon), var(--neon-purple)); transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 0 15px var(--neon); }
+        .glass-card { background: var(--glass); backdrop-filter: blur(20px); border: 1px solid var(--glass-border); border-radius: 32px; transition: 0.3s; }
+        .neon-border { border: 1px solid var(--accent); box-shadow: 0 0 20px var(--accent-dim); }
+        .neon-text { color: var(--accent); text-shadow: 0 0 10px rgba(0, 242, 255, 0.5); }
+        
+        /* Global Progress */
+        .mastery-line { position: fixed; top: 0; left: 0; width: 100%; height: 4px; background: #111; z-index: 2000; }
+        .mastery-fill { width: 0%; height: 100%; background: var(--accent); transition: 0.6s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 0 15px var(--accent); }
 
-        /* Navigation */
-        nav { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 400px; height: 70px; border-radius: 25px; z-index: 1000; display: flex; justify-content: space-around; align-items: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .nav-link { color: #555; font-size: 1.2rem; transition: 0.3s; }
-        .nav-link.active { color: var(--neon); transform: translateY(-5px); }
-
-        /* Bento Cards */
-        .bento-card { border-radius: 30px; transition: 0.3s; position: relative; overflow: hidden; }
+        /* Bento Grid Layout */
+        .bento-card { border-radius: 28px; padding: 25px; transition: 0.3s ease; border: 1px solid var(--glass-border); }
         .bento-card:active { transform: scale(0.97); }
+
+        /* Step Illustration */
+        .step-img { width: 100%; height: 180px; border-radius: 20px; object-fit: cover; margin: 15px 0; border: 1px solid var(--glass-border); filter: grayscale(0.5); transition: 0.5s; }
+        .step-card:hover .step-img { filter: grayscale(0); transform: scale(1.02); border-color: var(--accent); }
+
+        /* Form Elements */
+        input, select { background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); border-radius: 16px; padding: 16px; color: white; width: 100%; outline: none; }
+        input:focus { border-color: var(--accent); }
         
-        /* Media Box */
-        .media-box { width: 100%; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); background: #000; position: relative; }
-        .media-box img { width: 100%; height: auto; border-radius: 20px; opacity: 0.85; transition: 0.3s; }
-        .media-box:hover img { opacity: 1; }
+        /* Temp Knob */
+        .knob-container { background: rgba(0,0,0,0.4); padding: 25px; border-radius: 30px; text-align: center; border: 1px solid var(--glass-border); }
+        .knob-value { font-size: 3.5rem; font-weight: 800; color: var(--accent); letter-spacing: -2px; }
+        .knob-slider { width: 100%; -webkit-appearance: none; height: 4px; background: #222; border-radius: 10px; }
+        .knob-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 28px; height: 28px; background: #fff; border-radius: 50%; cursor: pointer; border: 6px solid var(--accent); box-shadow: 0 0 15px var(--accent); }
 
-        /* Custom UI */
-        .status-badge { padding: 4px 12px; border-radius: 100px; font-size: 0.6rem; font-weight: 800; text-transform: uppercase; background: rgba(0,242,255,0.1); color: var(--neon); border: 1px solid var(--neon); }
-        input, select { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 15px; padding: 15px; color: white; width: 100%; outline: none; transition: 0.3s; }
-        input:focus { border-color: var(--neon); box-shadow: 0 0 10px rgba(0,242,255,0.2); }
-        
-        .main-btn { background: var(--neon); color: #000; font-weight: 900; text-transform: uppercase; border-radius: 18px; padding: 20px; transition: 0.3s; width: 100%; box-shadow: 0 5px 15px rgba(0, 242, 255, 0.3); }
-        .main-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(0, 242, 255, 0.5); }
+        .btn-apex { background: var(--accent); color: #000; font-weight: 900; text-transform: uppercase; border-radius: 20px; padding: 20px; width: 100%; transition: 0.3s; box-shadow: 0 10px 30px var(--accent-dim); border: none; cursor: pointer; }
+        .btn-apex:hover { transform: translateY(-5px); box-shadow: 0 15px 40px var(--accent-dim); }
 
-        .sos-btn { position: fixed; top: 20px; right: 20px; width: 50px; height: 50px; border-radius: 15px; background: var(--danger); display: flex; align-items: center; justify-content: center; z-index: 1000; box-shadow: 0 0 15px rgba(255,0,85,0.4); }
+        nav { position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%); width: 85%; max-width: 400px; background: rgba(10, 15, 25, 0.8); backdrop-filter: blur(15px); border: 1px solid var(--glass-border); border-radius: 25px; height: 70px; display: flex; justify-content: space-around; align-items: center; z-index: 1000; box-shadow: 0 20px 40px rgba(0,0,0,0.6); }
+        .nav-item { color: #444; font-size: 1.3rem; transition: 0.3s; }
+        .nav-item.active { color: var(--accent); }
 
-        @media (max-width: 768px) { h1 { font-size: 2.2rem !important; } }
+        .sos-badge { position: fixed; top: 20px; right: 20px; background: var(--danger); color: white; padding: 10px 15px; border-radius: 15px; font-weight: 800; font-size: 0.7rem; z-index: 1000; box-shadow: 0 5px 15px rgba(255,0,85,0.3); text-decoration: none; }
+
+        @media (max-width: 768px) { h1 { font-size: 2.5rem !important; } }
     </style>
 </head>
-<body class="pb-32">
+<body class="pb-40">
 
-    <div class="progress-container"><div class="progress-fill" id="pBar"></div></div>
+    <div class="mastery-line"><div class="mastery-fill" id="mBar"></div></div>
 
-    <a href="https://t.me/your_handle" class="sos-btn"><i class="fab fa-telegram-plane text-xl"></i></a>
+    <a href="https://t.me/your_handle" class="sos-badge">SOS: ВЫЗВАТЬ МАСТЕРА</a>
 
-    <main class="max-w-4xl mx-auto px-6 pt-12 space-y-12">
+    <main class="max-w-4xl mx-auto px-6 pt-12 space-y-16">
         
         <!-- HERO -->
-        <section class="text-center space-y-4">
-            <div class="inline-flex items-center gap-2 bg-white/5 p-2 px-4 rounded-full border border-white/10">
-                <span class="w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></span>
-                <span class="text-[10px] font-bold uppercase tracking-widest text-gray-400">Expert System 5.0</span>
+        <section class="text-center space-y-6">
+            <div class="inline-block px-4 py-1 rounded-full bg-accent-dim border border-accent/20">
+                <span class="text-[10px] font-black uppercase tracking-[3px] text-accent">Professional DIY System</span>
             </div>
-            <h1 class="text-5xl font-black italic tracking-tighter leading-none">УСТАНОВИ AC <br><span class="neon-text uppercase">КАК ПРОФИ.</span></h1>
-            <p class="text-gray-400 text-sm max-w-md mx-auto">Интерактивная станция для тех, кто ценит качество и хочет сэкономить на монтаже без риска.</p>
+            <h1 class="text-6xl font-black italic tracking-tighter leading-none uppercase">Apex <span class="neon-text">Installation.</span></h1>
+            <p class="text-gray-500 text-sm max-w-sm mx-auto font-medium leading-relaxed italic">Ваша персональная цифровая станция для безупречного монтажа климатических систем.</p>
         </section>
 
-        <!-- 1. МАСТЕРСТВО (STATS) -->
-        <div class="glass p-6 bento-card flex justify-between items-center border-l-4 border-cyan-400">
+        <!-- PROGRESS STATS -->
+        <div class="glass-card p-8 flex justify-between items-center border-l-8 border-accent">
             <div>
-                <p class="text-[10px] font-bold text-gray-500 uppercase">Готовность к монтажу</p>
-                <h3 id="masteryText" class="text-2xl font-black">0%</h3>
+                <p class="text-[10px] font-black text-gray-500 uppercase tracking-widest">Твой уровень мастера</p>
+                <h3 id="masteryVal" class="text-4xl font-black">0%</h3>
             </div>
-            <i class="fa-solid fa-trophy text-3xl text-cyan-400/20"></i>
+            <div class="text-right">
+                <p class="text-[10px] font-black text-gray-500 uppercase tracking-widest">Статус</p>
+                <h3 id="statusVal" class="text-xs font-bold text-accent uppercase italic">Новичок</h3>
+            </div>
         </div>
 
-        <!-- 2. CALCULATOR -->
-        <section id="calc" class="space-y-6">
-            <div class="flex justify-between items-end">
-                <h2 class="text-2xl font-black italic uppercase tracking-tighter">1. Расчет <span class="text-cyan-400">BTU</span></h2>
-                <span class="status-badge">Smart Logic</span>
+        <!-- 1. CALCULATOR APEX -->
+        <section id="calc" class="space-y-8">
+            <div class="flex items-center gap-4">
+                <span class="w-10 h-10 rounded-full bg-accent text-black flex items-center justify-center font-black">1</span>
+                <h2 class="text-2xl font-black uppercase italic tracking-widest">Прецизионный Расчет</h2>
             </div>
-            <div class="glass p-8 bento-card space-y-6">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div><label class="text-[10px] font-bold uppercase opacity-40">Площадь (м2)</label><input type="number" id="area" oninput="updateMastery()" placeholder="20"></div>
-                    <div><label class="text-[10px] font-bold uppercase opacity-40">Высота (м)</label><input type="number" id="height" oninput="updateMastery()" placeholder="2.7"></div>
-                </div>
-                <button class="main-btn" onclick="runCalc()">Узнать результат</button>
-                <div id="resBox" class="hidden p-6 rounded-2xl bg-cyan-400/5 border border-cyan-400/20 text-center animate-pulse">
-                    <p class="text-[10px] font-bold uppercase text-cyan-400">Нужная мощность:</p>
-                    <h4 id="resVal" class="text-4xl font-black my-2">0 кВт</h4>
-                    <p id="resDesc" class="text-xs italic text-gray-400"></p>
-                </div>
-            </div>
-        </section>
-
-        <!-- 3. TOOLS CHECKLIST -->
-        <section id="tools" class="space-y-6">
-            <h2 class="text-2xl font-black italic uppercase tracking-tighter">2. Экипировка</h2>
-            <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
-                <div class="glass p-4 bento-card flex flex-col items-center gap-2 cursor-pointer border border-white/5" onclick="checkTool(this)">
-                    <i class="fa-solid fa-hammer text-lg text-gray-500"></i>
-                    <span class="text-[10px] font-bold uppercase">Перфоратор</span>
-                </div>
-                <div class="glass p-4 bento-card flex flex-col items-center gap-2 cursor-pointer" onclick="checkTool(this)">
-                    <i class="fa-solid fa-scissors text-lg text-gray-500"></i>
-                    <span class="text-[10px] font-bold uppercase">Труборез</span>
-                </div>
-                <div class="glass p-4 bento-card flex flex-col items-center gap-2 cursor-pointer" onclick="checkTool(this)">
-                    <i class="fa-solid fa-expand text-lg text-gray-500"></i>
-                    <span class="text-[10px] font-bold uppercase">Вальцовка</span>
-                </div>
-                <div class="glass p-4 bento-card flex flex-col items-center gap-2 cursor-pointer" onclick="checkTool(this)">
-                    <i class="fa-solid fa-wind text-lg text-gray-500"></i>
-                    <span class="text-[10px] font-bold uppercase">Вакуумник</span>
-                </div>
-                <div class="glass p-4 bento-card flex flex-col items-center gap-2 cursor-pointer" onclick="checkTool(this)">
-                    <i class="fa-solid fa-ruler-combined text-lg text-gray-500"></i>
-                    <span class="text-[10px] font-bold uppercase">Уровень</span>
-                </div>
-                <div class="glass p-4 bento-card flex flex-col items-center gap-2 cursor-pointer" onclick="checkTool(this)">
-                    <i class="fa-solid fa-wrench text-lg text-gray-500"></i>
-                    <span class="text-[10px] font-bold uppercase">Ключи</span>
-                </div>
-            </div>
-        </section>
-
-        <!-- 4. GUIDE WITH LOGICAL GIFS -->
-        <section id="guide" class="space-y-10">
-            <h2 class="text-2xl font-black italic uppercase tracking-tighter text-center">3. Процесс <span class="text-cyan-400">Монтажа</span></h2>
             
-            <div class="space-y-4">
-                <div class="flex gap-4 items-start">
-                    <div class="w-8 h-8 rounded-full bg-cyan-400 text-black flex items-center justify-center font-black shrink-0">1</div>
-                    <div class="space-y-3">
-                        <h3 class="font-bold text-lg">Сверление отверстия</h3>
-                        <p class="text-gray-400 text-xs leading-relaxed">Используйте бур 45-55мм. Бурите с наклоном 5 градусов на улицу, чтобы конденсат уходил самотеком.</p>
-                        <div class="media-box neon-border">
-                            <img src="https://media.giphy.com/media/l41lO6pCO9vUfIK0o/giphy.gif" alt="Сверление">
-                        </div>
+            <div class="glass-card p-8 space-y-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="text-[10px] font-black uppercase opacity-40 mb-2 block tracking-widest">Площадь помещения (м²)</label>
+                        <input type="number" id="area" placeholder="Напр: 25" oninput="updateMastery()">
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-black uppercase opacity-40 mb-2 block tracking-widest">Высота потолков (м)</label>
+                        <input type="number" id="height" value="2.7" oninput="updateMastery()">
                     </div>
                 </div>
 
-                <div class="flex gap-4 items-start">
-                    <div class="w-8 h-8 rounded-full bg-cyan-400 text-black flex items-center justify-center font-black shrink-0">2</div>
-                    <div class="space-y-3">
-                        <h3 class="font-bold text-lg">Вальцовка меди</h3>
-                        <p class="text-gray-400 text-xs leading-relaxed">Обрежьте трубу, снимите заусенцы. Сделайте "юбку" вальцовкой. Края должны быть ровными и без трещин.</p>
-                        <div class="media-box neon-border">
-                            <img src="https://media.giphy.com/media/3o7TKVUn7iM8FMEU24/giphy.gif" alt="Вальцовка">
-                        </div>
-                    </div>
+                <div class="knob-container">
+                    <label class="text-[10px] font-black uppercase opacity-60 mb-4 block tracking-widest">Желаемая температура</label>
+                    <div class="knob-value" id="tVal">22°C</div>
+                    <input type="range" min="16" max="28" value="22" id="tKnob" class="knob-slider" oninput="updateT()">
+                    <p class="text-[9px] text-gray-500 mt-4 uppercase font-bold italic">Чем ниже температура, тем выше нагрузка на компрессор</p>
                 </div>
 
-                <div class="flex gap-4 items-start">
-                    <div class="w-8 h-8 rounded-full bg-cyan-400 text-black flex items-center justify-center font-black shrink-0">3</div>
-                    <div class="space-y-3">
-                        <h3 class="font-bold text-lg">Вакуумирование</h3>
-                        <p class="text-gray-400 text-xs leading-relaxed">Подключите насос на 15-20 минут. Это удалит воздух и влагу, которые убивают компрессор.</p>
-                        <div class="media-box neon-border">
-                            <img src="https://media.giphy.com/media/l0HlS1l2kH7X6f584/giphy.gif" alt="Вакуум">
-                        </div>
-                    </div>
+                <button class="btn-apex" onclick="runApexCalc()">Произвести расчет мощности</button>
+
+                <div id="resBox" class="hidden p-8 rounded-[2rem] bg-accent/5 border border-accent/20 text-center space-y-2">
+                    <p class="text-[10px] font-black uppercase text-accent tracking-widest">Рекомендуемая мощность</p>
+                    <h4 id="resP" class="text-5xl font-black italic">0.0 кВт</h4>
+                    <p id="resB" class="text-sm font-bold text-gray-400"></p>
                 </div>
             </div>
         </section>
 
-        <!-- 5. RED ZONE -->
-        <section class="glass p-8 bento-card border-t-8 border-danger">
-            <h2 class="text-danger font-black text-2xl italic uppercase tracking-tighter mb-4">Критическая зона</h2>
-            <div class="space-y-4 text-xs italic text-gray-300">
-                <p>● <b>Залом трубы:</b> Если перегнуть медь, фреон не пройдет. Блок сгорит.</p>
-                <p>● <b>Уровень:</b> Без уклона вода потечет внутрь комнаты по стене.</p>
-                <p>● <b>Гайки:</b> Не перетягивайте их "со всей силы", медь может лопнуть.</p>
+        <!-- 2. EQUIPMENT -->
+        <section id="tools" class="space-y-8">
+            <div class="flex items-center gap-4">
+                <span class="w-10 h-10 rounded-full bg-accent text-black flex items-center justify-center font-black">2</span>
+                <h2 class="text-2xl font-black uppercase italic tracking-widest">Экипировка</h2>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                <div class="bento-card glass-card text-center space-y-3 cursor-pointer" onclick="toggleTool(this)">
+                    <i class="fa-solid fa-hammer text-2xl text-gray-600 transition"></i>
+                    <p class="text-[9px] font-black uppercase tracking-widest">Перфоратор</p>
+                </div>
+                <div class="bento-card glass-card text-center space-y-3 cursor-pointer" onclick="toggleTool(this)">
+                    <i class="fa-solid fa-expand text-2xl text-gray-600 transition"></i>
+                    <p class="text-[9px] font-black uppercase tracking-widest">Вальцовка</p>
+                </div>
+                <div class="bento-card glass-card text-center space-y-3 cursor-pointer" onclick="toggleTool(this)">
+                    <i class="fa-solid fa-wind text-2xl text-gray-600 transition"></i>
+                    <p class="text-[9px] font-black uppercase tracking-widest">Вакуумник</p>
+                </div>
+                <div class="bento-card glass-card text-center space-y-3 cursor-pointer" onclick="toggleTool(this)">
+                    <i class="fa-solid fa-scissors text-2xl text-gray-600 transition"></i>
+                    <p class="text-[9px] font-black uppercase tracking-widest">Труборез</p>
+                </div>
+                <div class="bento-card glass-card text-center space-y-3 cursor-pointer" onclick="toggleTool(this)">
+                    <i class="fa-solid fa-ruler text-2xl text-gray-600 transition"></i>
+                    <p class="text-[9px] font-black uppercase tracking-widest">Уровень</p>
+                </div>
+                <div class="bento-card glass-card text-center space-y-3 cursor-pointer" onclick="toggleTool(this)">
+                    <i class="fa-solid fa-toolbox text-2xl text-gray-600 transition"></i>
+                    <p class="text-[9px] font-black uppercase tracking-widest">Манометр</p>
+                </div>
             </div>
         </section>
 
-        <footer class="text-center py-10 opacity-20 text-[10px] font-bold uppercase tracking-widest">
-            &copy; 2024 COOLINSTALL ELITE | CIS STANDARD
+        <!-- 3. THE ROADMAP (DETAILED) -->
+        <section id="guide" class="space-y-12">
+            <div class="flex items-center gap-4">
+                <span class="w-10 h-10 rounded-full bg-accent text-black flex items-center justify-center font-black">3</span>
+                <h2 class="text-2xl font-black uppercase italic tracking-widest">Дорожная карта установки</h2>
+            </div>
+
+            <div class="space-y-20">
+                <!-- Step 1 -->
+                <div class="step-card space-y-4">
+                    <h3 class="text-xl font-black italic uppercase tracking-tighter"><span class="text-accent">01.</span> Позиционирование</h3>
+                    <p class="text-sm text-gray-400 leading-relaxed font-medium italic">Внутренний блок должен располагаться минимум в 15 см от потолка. Убедитесь, что поток воздуха не направлен прямо на места отдыха.</p>
+                    <img src="https://images.unsplash.com/photo-1585338107529-13afc5f02586?q=80&w=600&auto=format&fit=crop" class="step-img" alt="Positioning">
+                </div>
+
+                <!-- Step 2 -->
+                <div class="step-card space-y-4">
+                    <h3 class="text-xl font-black italic uppercase tracking-tighter"><span class="text-accent">02.</span> Сверление трассы</h3>
+                    <p class="text-sm text-gray-400 leading-relaxed font-medium italic">Используйте алмазную коронку. Критически важно соблюдать уклон 5 градусов наружу, чтобы конденсат уходил самотеком, а не заливал стену.</p>
+                    <img src="https://images.unsplash.com/photo-1504148455328-c376907d081c?q=80&w=600&auto=format&fit=crop" class="step-img" alt="Drilling">
+                </div>
+
+                <!-- Step 3 -->
+                <div class="step-card space-y-4">
+                    <h3 class="text-xl font-black italic uppercase tracking-tighter"><span class="text-accent">03.</span> Подготовка трубок</h3>
+                    <p class="text-sm text-gray-400 leading-relaxed font-medium italic">Используйте только качественный труборез. После резки обязательно снимите фаску (риммером), чтобы медная крошка не попала в компрессор.</p>
+                    <img src="https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?q=80&w=600&auto=format&fit=crop" class="step-img" alt="Pipe Prep">
+                </div>
+
+                <!-- Step 4 -->
+                <div class="step-card space-y-4">
+                    <h3 class="text-xl font-black italic uppercase tracking-tighter"><span class="text-accent">04.</span> Идеальная вальцовка</h3>
+                    <p class="text-sm text-gray-400 leading-relaxed font-medium italic">Края должны быть зеркальными, без трещин. Это 90% успеха. Плохая вальцовка — это 100% утечка фреона через месяц.</p>
+                    <img src="https://images.unsplash.com/photo-1513694203232-719a280e022f?q=80&w=600&auto=format&fit=crop" class="step-img" alt="Flaring">
+                </div>
+
+                <!-- Step 5 -->
+                <div class="step-card space-y-4">
+                    <h3 class="text-xl font-black italic uppercase tracking-tighter"><span class="text-accent">05.</span> Вакуумная магия</h3>
+                    <p class="text-sm text-gray-400 leading-relaxed font-medium italic">Не пропускайте этот шаг! Насос должен работать минимум 20 минут, чтобы полностью удалить влагу. Влага в системе — это медленная смерть кондиционера.</p>
+                    <img src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?q=80&w=600&auto=format&fit=crop" class="step-img" alt="Vacuum">
+                </div>
+            </div>
+        </section>
+
+        <!-- RED ZONE -->
+        <section class="p-8 glass-card border-t-8 border-danger space-y-4">
+            <h2 class="text-2xl font-black italic uppercase tracking-tighter text-danger">Критический Чек-лист</h2>
+            <div class="space-y-4 text-xs font-bold italic text-gray-400">
+                <p>⚠️ <span class="text-white">ЗАЛОМ ТРУБЫ:</span> Медь нельзя гнуть руками под прямым углом — используйте пружинный трубогиб.</p>
+                <p>⚠️ <span class="text-white">УТЕЧКА:</span> Всегда проверяйте соединения мыльной пеной перед окончательной обмоткой трассы.</p>
+                <p>⚠️ <span class="text-white">ЭЛЕКТРИКА:</span> Используйте кабель с заземлением. Кондиционер — мощный прибор.</p>
+            </div>
+        </section>
+
+        <footer class="text-center py-20 opacity-20 text-[10px] font-black uppercase tracking-[5px]">
+            CoolInstall Apex 2024 &copy; BY Standards
         </footer>
 
     </main>
 
-    <nav class="glass neon-border">
-        <a href="#calc" class="nav-link active"><i class="fa-solid fa-calculator"></i></a>
-        <a href="#tools" class="nav-link"><i class="fa-solid fa-toolbox"></i></a>
-        <a href="#guide" class="nav-link"><i class="fa-solid fa-list-check"></i></a>
+    <nav>
+        <a href="#calc" class="nav-item active"><i class="fa-solid fa-calculator"></i></a>
+        <a href="#tools" class="nav-item"><i class="fa-solid fa-toolbox"></i></a>
+        <a href="#guide" class="nav-item"><i class="fa-solid fa-list-check"></i></a>
     </nav>
 
     <script>
-        function updateMastery() {
-            let points = 0;
-            if(document.getElementById('area').value > 0) points += 20;
-            const checked = document.querySelectorAll('.tool-item-checked').length;
-            points += (checked * 10);
-            if(points > 100) points = 100;
-            
-            document.getElementById('pBar').style.width = points + '%';
-            document.getElementById('masteryText').innerText = points + '%';
+        function updateT() {
+            const val = document.getElementById('tKnob').value;
+            document.getElementById('tVal').innerText = val + '°C';
         }
 
-        function checkTool(el) {
-            el.classList.toggle('tool-item-checked');
+        function updateMastery() {
+            let p = 0;
+            if(document.getElementById('area').value > 0) p += 20;
+            const checked = document.querySelectorAll('.checked-tool').length;
+            p += (checked * 10);
+            if(p > 100) p = 100;
+            
+            document.getElementById('mBar').style.width = p + '%';
+            document.getElementById('masteryVal').innerText = p + '%';
+            
+            const s = document.getElementById('statusVal');
+            if(p < 40) s.innerText = "Новичок";
+            else if(p < 80) s.innerText = "Подмастерье";
+            else s.innerText = "Мастер";
+        }
+
+        function toggleTool(el) {
+            el.classList.toggle('checked-tool');
             el.classList.toggle('neon-border');
             const icon = el.querySelector('i');
-            if(el.classList.contains('tool-item-checked')) {
-                icon.style.color = '#00f2ff';
-            } else {
-                icon.style.color = '#555';
-            }
+            icon.style.color = el.classList.contains('checked-tool') ? '#00f2ff' : '#444';
             updateMastery();
         }
 
-        function runCalc() {
+        function runApexCalc() {
             const a = document.getElementById('area').value;
             const h = document.getElementById('height').value || 2.7;
+            const t = document.getElementById('tKnob').value;
             if(!a) return alert("Введите площадь!");
+
+            // Прецизионная формула: База + корректировка на желаемую темп
+            let base = (a / 10) * (h / 2.7);
+            const tempAdjust = (22 - t) * 0.05;
+            let final = base + (base * tempAdjust);
             
-            const power = (a / 10) * (h / 2.7);
             const box = document.getElementById('resBox');
             box.classList.remove('hidden');
-            document.getElementById('resVal').innerText = power.toFixed(1) + " кВт";
+            document.getElementById('resP').innerText = final.toFixed(1) + " кВт";
             
-            let btu = power < 2.5 ? "7000 (Семерка)" : power < 3.5 ? "9000 (Девятка)" : "12000 (Двенадцатка)";
-            document.getElementById('resDesc').innerText = "Вам нужна модель " + btu;
+            let btu = final < 2.5 ? "7000 BTU (S-Class)" : final < 3.5 ? "9000 BTU (Pro)" : "12000 BTU (Elite)";
+            document.getElementById('resB').innerText = "Конфигурация: " + btu;
             updateMastery();
         }
 
-        // Плавная навигация
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.onclick = (e) => {
-                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+        // Smooth nav highlight
+        document.querySelectorAll('.nav-item').forEach(link => {
+            link.onclick = () => {
+                document.querySelectorAll('.nav-item').forEach(l => l.classList.remove('active'));
                 link.classList.add('active');
             }
         });
