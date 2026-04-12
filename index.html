@@ -3,254 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Master of Atmosphere | Expert DIY System</title>
+    <title>CoolInstall | Ставим сами и экономим</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --accent: #00f2ff; --bg: #030508; --card: rgba(255, 255, 255, 0.02); --border: rgba(255, 255, 255, 0.08); }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: #fff; line-height: 1.6; -webkit-tap-highlight-color: transparent; scroll-behavior: smooth; }
+        :root { --accent: #00f2ff; --bg: #05070a; --card: rgba(255, 255, 255, 0.03); }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: #fff; line-height: 1.6; -webkit-tap-highlight-color: transparent; }
         
-        /* Progress Header */
-        .p-header { position: fixed; top: 0; left: 0; right: 0; background: rgba(3, 5, 8, 0.95); backdrop-filter: blur(15px); border-bottom: 1px solid var(--border); z-index: 2000; padding: 12px 20px; }
-        .p-fill { width: 0%; height: 4px; background: var(--accent); box-shadow: 0 0 15px var(--accent); transition: 0.8s cubic-bezier(0.4, 0, 0.2, 1); margin-top: 8px; border-radius: 2px; }
+        .p-header { position: fixed; top: 0; left: 0; right: 0; background: rgba(5,7,10,0.95); backdrop-filter: blur(15px); z-index: 2000; padding: 15px 20px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .p-fill { width: 0%; height: 4px; background: var(--accent); box-shadow: 0 0 15px var(--accent); transition: 0.8s cubic-bezier(0.4, 0, 0.2, 1); border-radius: 2px; margin-top: 8px; }
 
-        .bento { background: var(--card); border: 1px solid var(--border); border-radius: 28px; padding: 25px; transition: 0.3s; }
+        .bento { background: var(--card); border: 1px solid rgba(255,255,255,0.08); border-radius: 24px; padding: 20px; }
         .neon-text { color: var(--accent); text-shadow: 0 0 10px rgba(0, 242, 255, 0.4); }
         
-        input, select { background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 12px; padding: 14px; color: white; width: 100%; outline: none; font-size: 15px; }
-        input:focus { border-color: var(--accent); }
+        input { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 14px; color: white; width: 100%; outline: none; transition: 0.3s; }
+        input:focus { border-color: var(--accent); background: rgba(255,255,255,0.08); }
+        
+        .temp-knob { text-align: center; padding: 15px; border-radius: 20px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.05); }
+        .temp-val { font-size: 3.5rem; font-weight: 800; color: var(--accent); letter-spacing: -2px; }
+        .temp-slider { width: 100%; -webkit-appearance: none; height: 4px; background: #222; border-radius: 10px; }
+        .temp-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 24px; height: 24px; background: #fff; border: 4px solid var(--accent); border-radius: 50%; cursor: pointer; }
 
-        .temp-knob { text-align: center; padding: 20px; border-radius: 25px; background: rgba(0,0,0,0.3); border: 1px solid var(--border); }
-        .temp-val { font-size: 3.5rem; font-weight: 800; color: var(--accent); letter-spacing: -3px; }
-        .temp-slider { width: 100%; -webkit-appearance: none; height: 4px; background: #222; border-radius: 10px; margin-top: 15px; }
-        .temp-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 24px; height: 24px; background: #fff; border: 5px solid var(--accent); border-radius: 50%; cursor: pointer; }
+        .btn-main { background: var(--accent); color: #000; font-weight: 800; border-radius: 12px; padding: 16px; width: 100%; border: none; cursor: pointer; text-transform: uppercase; transition: 0.3s; }
+        .btn-main:active { transform: scale(0.96); opacity: 0.9; }
+        
+        .terminal { background: #000; padding: 12px; border-radius: 12px; font-family: monospace; font-size: 11px; color: #00ffaa; min-height: 80px; border: 1px solid #111; overflow-y: auto; }
+        .game-btn { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 15px; font-size: 10px; font-weight: 900; color: #555; transition: 0.3s; }
+        .game-btn.active { color: var(--accent); border-color: var(--accent); background: rgba(0,242,255,0.05); box-shadow: 0 0 10px rgba(0, 242, 255, 0.2); }
 
-        .step-card { border-left: 2px solid var(--border); padding-left: 25px; position: relative; margin-bottom: 45px; }
-        .step-card::before { content: ''; position: absolute; left: -7px; top: 0; width: 12px; height: 12px; background: var(--border); border-radius: 50%; transition: 0.4s; }
-        .step-card.active::before { background: var(--accent); box-shadow: 0 0 15px var(--accent); }
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 3000; display: none; align-items: center; justify-content: center; padding: 20px; }
+        .modal-content { background: #0a0c10; border: 2px solid #ff0055; border-radius: 24px; padding: 30px; text-align: center; max-width: 400px; }
 
-        .btn-apex { background: var(--accent); color: #000; font-weight: 900; text-transform: uppercase; border-radius: 15px; padding: 18px; width: 100%; border: none; cursor: pointer; transition: 0.3s; }
-        .btn-apex:active { transform: scale(0.96); }
-
-        /* Game UI */
-        .terminal { background: #000; border: 1px solid #111; padding: 15px; border-radius: 15px; font-family: monospace; font-size: 11px; color: #00ffaa; min-height: 80px; }
-        .game-btn { background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 12px; padding: 15px; font-size: 10px; font-weight: 900; color: #555; transition: 0.3s; }
-        .game-btn.active { color: var(--accent); border-color: var(--accent); background: rgba(0,242,255,0.05); }
-
-        nav { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 420px; background: rgba(5,7,10,0.85); backdrop-filter: blur(20px); border: 1px solid var(--border); border-radius: 24px; height: 65px; display: flex; justify-content: space-around; align-items: center; z-index: 1000; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+        nav { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 400px; background: rgba(10,15,20,0.9); backdrop-filter: blur(20px); border-radius: 20px; height: 65px; display: flex; justify-content: space-around; align-items: center; z-index: 1000; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
         .nav-link { color: #444; font-size: 1.2rem; transition: 0.3s; }
         .nav-link.active { color: var(--accent); transform: translateY(-3px); }
-
-        .label-mini { font-size: 9px; font-weight: 800; color: #555; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 8px; display: block; }
     </style>
 </head>
 <body class="pt-24 pb-40">
 
+    <!-- TOP PROGRESS -->
     <div class="p-header">
-        <div class="flex justify-between items-end px-2">
-            <span class="text-[10px] font-black uppercase text-gray-500">Ранг: <span id="statusTxt" class="text-accent">Новичок</span></span>
+        <div class="flex justify-between items-end px-1">
+            <span class="text-[10px] font-bold uppercase text-gray-500 tracking-tighter">Ваш статус: <span id="statusTxt" class="text-accent">Новичок</span></span>
             <span id="percentTxt" class="text-xs font-black italic text-accent">0%</span>
         </div>
         <div class="p-fill" id="pBar"></div>
     </div>
 
-    <main class="max-w-2xl mx-auto px-6 space-y-16">
+    <main class="max-w-xl mx-auto px-6 space-y-16">
 
-        <!-- 01. CALCULATOR & ESTIMATE -->
+        <!-- HERO -->
+        <section class="text-center space-y-4">
+            <h1 class="text-5xl font-black italic tracking-tighter uppercase leading-none">Cool<span class="neon-text">Install</span></h1>
+            <p class="text-gray-400 text-xs font-medium italic">Инструкция: Как сэкономить 400+ BYN на монтаже</p>
+            <div class="inline-flex items-center gap-2 bg-emerald-500/10 text-emerald-400 px-4 py-1 rounded-full border border-emerald-500/20 text-[10px] font-black uppercase">
+                <i class="fa-solid fa-wallet"></i> Экономия подтверждена
+            </div>
+        </section>
+
+        <!-- 01. CALCULATOR -->
         <section id="calc" class="space-y-8">
-            <h2 class="text-2xl font-black italic tracking-tighter uppercase"><span class="neon-text">01.</span> Проектирование</h2>
+            <h2 class="text-2xl font-black italic tracking-tighter uppercase opacity-30">01. Подбор и Смета</h2>
             <div class="bento space-y-6">
-                <div class="grid grid-cols-2 gap-4">
-                    <div><span class="label-mini">Площадь (м²)</span><input type="number" id="area" placeholder="20" oninput="upd()"></div>
-                    <div><span class="label-mini">Высота (м)</span><input type="number" id="height" value="2.7" oninput="upd()"></div>
+                <div>
+                    <label class="text-[9px] font-black text-gray-500 uppercase mb-2 block tracking-widest">Площадь комнаты (м²)</label>
+                    <input type="number" id="area" placeholder="Напр: 20" oninput="upd()">
                 </div>
-                <div><span class="label-mini">Длина трассы (метры)</span><input type="number" id="length" placeholder="Напр: 5" oninput="upd()"></div>
                 
+                <div>
+                    <label class="text-[9px] font-black text-gray-500 uppercase mb-2 block tracking-widest">Длина труб (метры)</label>
+                    <input type="number" id="length" placeholder="Расстояние между блоками" oninput="upd()">
+                </div>
+
                 <div class="temp-knob">
-                    <span class="label-mini">Комфорт</span>
+                    <label class="text-[9px] font-black text-gray-500 uppercase mb-3 block italic tracking-widest">Желаемая прохлада</label>
                     <div class="temp-val" id="tDisp">22°C</div>
-                    <input type="range" min="16" max="26" value="22" id="tKnob" class="temp-slider" oninput="updT()">
-                </div>
-
-                <button class="btn-apex" onclick="runCalc()">Рассчитать систему и смету</button>
-
-                <!-- Result Box -->
-                <div id="resBox" class="hidden space-y-6 animate-in slide-in-from-bottom-4 duration-500">
-                    <div class="p-6 rounded-2xl bg-cyan-400/5 border border-cyan-400/20 text-center">
-                        <p class="label-mini text-accent">Мощность</p>
-                        <h4 id="resP" class="text-4xl font-black italic">0.0 кВт</h4>
-                    </div>
-                    
-                    <div class="bento bg-white/5 border-dashed">
-                        <h3 class="text-xs font-bold uppercase mb-4 text-gray-400 italic">Смета материалов:</h3>
-                        <div id="smeta" class="text-[11px] space-y-2 font-medium">
-                            <!-- JS Inject -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 02. ZONING RULES -->
-        <section id="zoning" class="space-y-6">
-            <h2 class="text-2xl font-black italic tracking-tighter uppercase"><span class="neon-text">02.</span> Размещение</h2>
-            <div class="grid grid-cols-1 gap-4">
-                <div class="bento border-l-4 border-emerald-500">
-                    <h4 class="font-black text-xs uppercase mb-2">Где вешать блок?</h4>
-                    <ul class="text-[11px] text-gray-400 space-y-2 italic">
-                        <li>● 15 см зазор от потолка (для забора воздуха).</li>
-                        <li>● Не направлять струю на кровать или рабочий стол.</li>
-                        <li>● Убедитесь, что стена выдержит вес (минимум 15-20 кг).</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <!-- 03. ENGINEERING ROADMAP -->
-        <section id="roadmap" class="space-y-8">
-            <h2 class="text-2xl font-black italic tracking-tighter uppercase"><span class="neon-text">03.</span> Техкарта</h2>
-            <div class="space-y-2">
-                <div class="step-card active">
-                    <h4 class="text-xs font-black uppercase text-accent">1. Алмазное бурение</h4>
-                    <p class="text-[11px] text-gray-400 italic">Сверлим с уклоном 3-5 градусов НАРУЖУ. Это гарантирует, что конденсат не потечет под обои.</p>
-                </div>
-                <div class="step-card active">
-                    <h4 class="text-xs font-black uppercase text-accent">2. Прокладка трассы</h4>
-                    <p class="text-[11px] text-gray-400 italic">Медь в флексе (утеплителе). Концы труб ОБЯЗАТЕЛЬНО замотать скотчем, чтобы не попала пыль.</p>
-                </div>
-                <div class="step-card active">
-                    <h4 class="text-xs font-black uppercase text-accent">3. Электрика (Важно)</h4>
-                    <p class="text-[11px] text-gray-400 italic">Схема: L (фаза - коричневый), N (ноль - синий), G (земля - желто-зеленый). Клеммы 1-2-3 должны совпадать на обоих блоках.</p>
-                </div>
-                <div class="step-card active">
-                    <h4 class="text-xs font-black uppercase text-accent">4. Вакуумирование</h4>
-                    <p class="text-[11px] text-gray-400 italic">Насос на 20 минут. Стрелка манометра ниже нуля. Это удаляет влагу — главного врага компрессора.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- 04. GAME: LAUNCH SIMULATOR -->
-        <section id="game" class="space-y-8">
-            <h2 class="text-2xl font-black italic tracking-tighter uppercase text-rose-500">04. Симулятор пуска</h2>
-            <div class="bento space-y-5 border-rose-500/20">
-                <p class="text-[10px] font-bold text-gray-500 uppercase text-center">Проверка готовности системы</p>
-                <div class="terminal" id="term">Awaiting Engineering Input...</div>
-                
-                <div class="grid grid-cols-2 gap-3">
-                    <button class="game-btn" id="g1" onclick="gameAction('vac', this)">ВАКУУМАЦИЯ 20 МИН</button>
-                    <button class="game-btn" id="g2" onclick="gameAction('leak', this)">ТЕСТ ПЕНОЙ (LEAK CHECK)</button>
-                    <button class="game-btn" id="g3" onclick="gameAction('valves', this)">ОТКРЫТЬ ВЕНТИЛИ</button>
-                    <button class="game-btn" id="g4" onclick="gameAction('power', this)">ПУСК ПИТАНИЯ</button>
-                </div>
-                <button class="w-full py-2 text-[10px] font-bold text-gray-600 uppercase" onclick="resetGame()">Перезагрузить логику</button>
-            </div>
-        </section>
-
-        <footer class="text-center py-10 opacity-20 text-[9px] font-black uppercase tracking-[5px]">
-            Absolute Mastery v24.0 &copy; Engineering Standard
-        </footer>
-
-    </main>
-
-    <!-- Navigation -->
-    <nav>
-        <a href="#calc" class="nav-link active"><i class="fa-solid fa-calculator"></i></a>
-        <a href="#zoning" class="nav-link"><i class="fa-solid fa-compass"></i></a>
-        <a href="#roadmap" class="nav-link"><i class="fa-solid fa-list-check"></i></a>
-        <a href="#game" class="nav-link"><i class="fa-solid fa-gamepad"></i></a>
-    </nav>
-
-    <!-- Error Modal -->
-    <div class="modal" id="gameErr">
-        <div class="modal-content">
-            <h2 class="text-danger font-black text-xl uppercase italic">Критический сбой! 🛑</h2>
-            <p id="errTxt" class="text-[11px] text-gray-400 my-6 font-medium italic leading-relaxed"></p>
-            <button class="btn-apex" style="background: #fff" onclick="resetGame()">Исправить и повторить</button>
-        </div>
-    </div>
-
-    <script>
-        function updT() { document.getElementById('tDisp').innerText = document.getElementById('tKnob').value + '°C'; }
-        
-        let p = { calc:0, smeta:0, game:0 };
-
-        function upd() {
-            let total = p.calc + p.smeta + p.game;
-            document.getElementById('pBar').style.width = total + '%';
-            document.getElementById('percentTxt').innerText = total + '%';
-            let s = "Новичок";
-            if(total > 30) s = "Техник";
-            if(total > 70) s = "Инженер";
-            if(total >= 100) s = "Мастер Атмосферы";
-            document.getElementById('statusTxt').innerText = s;
-        }
-
-        function runCalc() {
-            const area = document.getElementById('area').value;
-            const len = document.getElementById('length').value;
-            if(!area || !len) return alert("Введите площадь и длину трассы!");
-
-            p.calc = 30; p.smeta = 30;
-            const power = (area / 10).toFixed(1);
-            document.getElementById('resBox').classList.remove('hidden');
-            document.getElementById('resP').innerText = power + " кВт";
-
-            const smeta = document.getElementById('smeta');
-            smeta.innerHTML = `
-                <div class="flex justify-between border-b border-white/5 pb-1"><span>Медная труба 1/4" (жидкость):</span><span class="text-accent">${(len * 1.1).toFixed(1)} м</span></div>
-                <div class="flex justify-between border-b border-white/5 pb-1"><span>Медная труба 3/8" (газ):</span><span class="text-accent">${(len * 1.1).toFixed(1)} м</span></div>
-                <div class="flex justify-between border-b border-white/5 pb-1"><span>Кабель межблочный 4х1.5:</span><span class="text-accent">${(parseFloat(len) + 2)} м</span></div>
-                <div class="flex justify-between border-b border-white/5 pb-1"><span>Дренажный шланг 16мм:</span><span class="text-accent">${(len * 1.1).toFixed(1)} м</span></div>
-                <div class="flex justify-between"><span>Кронштейны (пара):</span><span class="text-accent">1 компл.</span></div>
-            `;
-            upd();
-            window.location.hash = "resBox";
-        }
-
-        let gStep = 0;
-        function gameAction(type, el) {
-            const term = document.getElementById('term');
-            if(el.classList.contains('active')) return;
-
-            if(type === 'vac' && gStep === 0) { log("Vacuum Pump: Running... [OK]"); step(el); }
-            else if(type === 'leak' && gStep === 1) { log("Leak Test: No Bubbles... [OK]"); step(el); }
-            else if(type === 'valves' && gStep === 2) { log("Valves: Freon Released... [OK]"); step(el); }
-            else if(type === 'power' && gStep === 3) {
-                log("SYSTEM START: COOLING ACTIVATED!");
-                el.classList.add('active');
-                p.game = 40; upd();
-                confetti({ particleCount: 150, spread: 60, colors: ['#00f2ff', '#ffffff'] });
-            } else { err(type); }
-        }
-
-        function log(m) { document.getElementById('term').innerHTML += `<br>> ${m}`; }
-        function step(el) { el.classList.add('active'); gStep++; }
-        
-        function err(t) {
-            const m = document.getElementById('gameErr');
-            const txt = document.getElementById('errTxt');
-            m.style.display = 'flex';
-            if(t === 'valves') txt.innerText = "ОШИБКА: Ты открыл фреон в систему, где остался воздух и влага! Это приведет к окислению масла и заклиниванию компрессора через месяц.";
-            else if(t === 'power') txt.innerText = "ОШИБКА: Запуск компрессора 'на сухую' (без фреона) сожжет обмотки двигателя за 30 секунд. Сначала открой вентили!";
-            else txt.innerText = "НАРУШЕН ТЕХНОЛОГИЧЕСКИЙ ПРОЦЕСС: Сначала нужно подготовить систему (вакуум и тест), а только потом запускать газ.";
-        }
-
-        function resetGame() {
-            gStep = 0; p.game = 0;
-            document.getElementById('term').innerText = "Awaiting Engineering Input...";
-            document.querySelectorAll('.game-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById('gameErr').style.display = 'none';
-            upd();
-        }
-
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.onclick = () => {
-                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-                link.classList.add('active');
-            }
-        });
-    </script>
-</body>
-</html>
+                    <input type="range" min="16
