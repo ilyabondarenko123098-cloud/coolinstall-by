@@ -3,36 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CoolInstall BY — Профессиональный монтаж кондиционеров в Беларуси</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <title>CoolInstall Ultra — Инженерный портал по монтажу AC</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary: #007AFF;
-            --primary-dark: #0056b3;
-            --secondary: #eef6ff;
-            --text-main: #2c3e50;
-            --text-muted: #7f8c8d;
+            --primary: #00d2ff;
+            --primary-dark: #007aff;
+            --accent: #ff4d4d;
+            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
             --white: #ffffff;
-            --accent: #00d2ff;
-            --danger: #ff4d4d;
-            --success: #2ecc71;
-            --warning: #f1c40f;
-            --bg-body: #f8fbff;
-            --bg-card: #ffffff;
-            --border-color: #eee;
-        }
-
-        [data-theme="dark"] {
-            --primary: #0A84FF;
-            --primary-dark: #409CFF;
-            --secondary: #1C2533;
-            --text-main: #E5E5E7;
-            --text-muted: #A1A1AA;
-            --white: #1C1C1E;
-            --bg-body: #0b0e14;
-            --bg-card: #1C1C1E;
-            --border-color: #333;
         }
 
         * {
@@ -43,598 +27,507 @@
         }
 
         body {
-            font-family: 'Inter', sans-serif;
-            line-height: 1.6;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--bg-gradient);
+            background-attachment: fixed;
             color: var(--text-main);
-            background-color: var(--bg-body);
-            transition: background 0.3s, color 0.3s;
+            min-height: 100vh;
+            line-height: 1.6;
         }
 
-        /* Header */
+        /* Glassmorphism Header */
         header {
-            background: rgba(var(--white), 0.95);
-            backdrop-filter: blur(10px);
-            padding: 1rem 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
             position: sticky;
             top: 0;
             z-index: 1000;
-            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
-            background-color: var(--white);
+            padding: 1.2rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--glass-border);
         }
 
         .logo {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--primary);
+            font-size: 1.6rem;
+            font-weight: 800;
+            background: linear-gradient(to right, var(--primary), var(--primary-dark));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             display: flex;
             align-items: center;
-            gap: 10px;
-        }
-
-        nav {
-            display: flex;
-            align-items: center;
-            gap: 20px;
+            gap: 12px;
         }
 
         nav a {
             text-decoration: none;
             color: var(--text-main);
+            margin-left: 20px;
             font-weight: 500;
-            transition: 0.3s;
             font-size: 0.9rem;
-        }
-
-        nav a:hover { color: var(--primary); }
-
-        .theme-toggle {
-            cursor: pointer;
-            font-size: 1.2rem;
-            color: var(--text-main);
             transition: 0.3s;
-            margin-left: 15px;
+            opacity: 0.8;
         }
+
+        nav a:hover { opacity: 1; color: var(--primary); }
 
         /* Hero Section */
         .hero {
-            padding: 100px 5%;
+            padding: 120px 5% 60px;
             text-align: center;
-            background: linear-gradient(135deg, var(--secondary) 0%, var(--white) 100%);
-            background-color: var(--secondary);
+            max-width: 1000px;
+            margin: 0 auto;
         }
 
         .hero h1 {
-            font-size: 3.5rem;
-            margin-bottom: 20px;
-            color: var(--text-main);
-            letter-spacing: -1px;
+            font-size: 4rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 25px;
+            letter-spacing: -2px;
         }
 
         .hero p {
             font-size: 1.2rem;
             color: var(--text-muted);
-            max-width: 800px;
-            margin: 0 auto 40px;
+            margin-bottom: 40px;
         }
 
-        .btn-main {
-            text-decoration: none;
-            background: var(--primary);
-            color: white;
-            padding: 18px 35px;
-            border-radius: 50px;
-            font-weight: 600;
-            transition: 0.3s;
-            box-shadow: 0 4px 15px rgba(0,122,255,0.3);
-            display: inline-block;
+        /* Modern Glass Card */
+        .glass-card {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 32px;
+            padding: 40px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            max-width: 900px;
+            margin: 0 auto 60px;
         }
 
-        .btn-main:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(0,122,255,0.4); }
-
-        /* Section General */
-        .section { padding: 80px 5%; }
         .section-title {
             text-align: center;
-            margin-bottom: 50px;
+            margin-bottom: 40px;
             font-size: 2.2rem;
-            color: var(--text-main);
-        }
-        .section-title::after {
-            content: '';
-            display: block;
-            width: 60px;
-            height: 4px;
-            background: var(--primary);
-            margin: 15px auto 0;
-            border-radius: 2px;
+            font-weight: 700;
         }
 
-        .card {
-            background: var(--bg-card);
-            border-radius: 24px;
-            padding: 40px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.05);
-            max-width: 900px;
-            margin: 0 auto;
-            border: 1px solid var(--border-color);
-        }
-
-        /* Calculator */
+        /* Advanced Calculator Layout */
         .calc-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 25px;
-            margin-bottom: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
         }
 
-        .input-group { display: flex; flex-direction: column; gap: 10px; }
-        label { font-weight: 600; font-size: 0.9rem; }
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        label {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
         input, select {
-            padding: 14px;
-            border: 1.5px solid var(--border-color);
-            border-radius: 12px;
-            background: var(--white);
-            color: var(--text-main);
+            padding: 15px;
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            background: rgba(0, 0, 0, 0.2);
+            color: white;
             font-size: 1rem;
             transition: 0.3s;
         }
-        input:focus { border-color: var(--primary); outline: none; }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(0, 210, 255, 0.2);
+        }
+
+        /* TEMPERATURE KNOB (Stylized Range) */
+        .temp-control {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            background: rgba(0,0,0,0.3);
+            padding: 20px;
+            border-radius: 24px;
+            border: 1px solid var(--glass-border);
+        }
+
+        .knob-value {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--primary);
+            text-shadow: 0 0 20px rgba(0, 210, 255, 0.5);
+        }
+
+        .knob-slider {
+            width: 100%;
+            -webkit-appearance: none;
+            height: 10px;
+            background: #334155;
+            border-radius: 5px;
+            outline: none;
+        }
+
+        .knob-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 25px;
+            height: 25px;
+            background: var(--primary);
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 0 10px var(--primary);
+            border: 3px solid white;
+        }
 
         .calc-btn {
             width: 100%;
-            padding: 18px;
-            background: var(--primary);
+            margin-top: 30px;
+            padding: 20px;
+            background: linear-gradient(to right, var(--primary), var(--primary-dark));
             color: white;
             border: none;
-            border-radius: 12px;
-            font-size: 1.1rem;
-            font-weight: 600;
+            border-radius: 16px;
+            font-size: 1.2rem;
+            font-weight: 700;
             cursor: pointer;
             transition: 0.3s;
         }
+
+        .calc-btn:hover { transform: translateY(-3px); opacity: 0.9; }
 
         .result-box {
             margin-top: 30px;
-            padding: 25px;
-            background: var(--secondary);
-            border-radius: 15px;
+            padding: 30px;
+            background: rgba(0, 210, 255, 0.1);
+            border: 1px solid var(--primary);
+            border-radius: 24px;
             text-align: center;
             display: none;
-            animation: fadeIn 0.5s ease;
+            animation: slideUp 0.5s ease;
         }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        .result-val { font-size: 2rem; font-weight: 700; color: var(--primary); margin: 10px 0; }
+        .result-val { font-size: 3rem; font-weight: 800; color: var(--white); }
 
-        /* Budget Table */
-        .budget-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            display: none;
-        }
-        .budget-table th, .budget-table td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid var(--border-color);
+        /* Leak Timer */
+        .timer-box {
+            text-align: center;
+            padding: 20px;
+            background: rgba(255, 77, 77, 0.1);
+            border: 1px solid var(--accent);
+            border-radius: 24px;
+            margin-bottom: 40px;
         }
 
-        /* Comparison Table */
-        .comp-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 30px 0;
+        #timerDisplay {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin: 15px 0;
+            color: var(--accent);
+        }
+
+        /* Checklist & Copy */
+        .checklist-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .check-category {
+            background: rgba(0,0,0,0.2);
+            padding: 25px;
+            border-radius: 24px;
+            border: 1px solid var(--glass-border);
+        }
+
+        .check-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+
+        .copy-btn {
+            display: block;
+            margin: 20px auto;
+            padding: 12px 25px;
             background: var(--white);
             color: var(--text-main);
-            border-radius: 15px;
-            overflow: hidden;
-        }
-        .comp-table th, .comp-table td {
-            padding: 15px;
-            border: 1px solid var(--border-color);
-            text-align: center;
-        }
-        .comp-table th { background: var(--primary); color: white; }
-
-        /* Steps */
-        .steps { max-width: 900px; margin: 0 auto; }
-        .step {
-            display: flex;
-            gap: 25px;
-            margin-bottom: 25px;
-            background: var(--bg-card);
-            padding: 25px;
-            border-radius: 20px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.03);
-            border-left: 5px solid transparent;
-            transition: 0.3s;
-            border: 1px solid var(--border-color);
-        }
-        .step:hover { transform: translateX(10px); border-left-color: var(--primary); }
-        .step-number {
-            background: var(--primary);
-            color: white;
-            width: 45px;
-            height: 45px;
+            border: none;
             border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            flex-shrink: 0;
-        }
-
-        /* Tools */
-        .tools-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            max-width: 1100px;
-            margin: 0 auto;
-        }
-        .tool-category {
-            background: var(--bg-card);
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.03);
-            border: 1px solid var(--border-color);
-        }
-        .tool-category h3 { margin-bottom: 20px; color: var(--primary); display: flex; align-items: center; gap: 10px; }
-        .check-item { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; cursor: pointer; }
-
-        /* Local Info Boxes */
-        .info-box {
-            max-width: 900px;
-            margin: 40px auto;
-            padding: 25px;
-            border-radius: 20px;
-            display: flex;
-            gap: 20px;
-            align-items: flex-start;
-            border: 1px solid transparent;
-        }
-        .legal { background: #fffbe6; border-color: #ffe58f; color: #856404; }
-        .climate { background: #e6f7ff; border-color: #91d5ff; color: #0050b3; }
-        .warning { background: #fff1f0; border-color: #ffa39e; color: #cf1322; }
-
-        /* FAQ Accordion */
-        .faq-item {
-            background: var(--bg-card);
-            margin-bottom: 10px;
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-            overflow: hidden;
-        }
-        .faq-question {
-            padding: 20px;
-            cursor: pointer;
             font-weight: 600;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            cursor: pointer;
+            transition: 0.3s;
         }
-        .faq-answer {
-            padding: 0 20px 20px;
-            display: none;
-            color: var(--text-muted);
+
+        .copy-btn:hover { background: var(--primary); color: white; }
+
+        /* Tables */
+        .modern-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: rgba(0,0,0,0.2);
+            border-radius: 16px;
+            overflow: hidden;
         }
+
+        .modern-table th, .modern-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .modern-table th { background: rgba(0, 210, 255, 0.2); color: var(--primary); }
 
         footer {
             text-align: center;
             padding: 60px 5%;
-            background: #f1f3f5;
             color: var(--text-muted);
-            background-color: var(--secondary);
+            font-size: 0.9rem;
         }
 
         @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
             .calc-grid { grid-template-columns: 1fr; }
-            .hero h1 { font-size: 2.2rem; }
-            header { flex-direction: column; gap: 15px; text-align: center; }
-            nav { flex-wrap: wrap; justify-content: center; }
-        }
-
-        @media print {
-            header, .hero, .calc-btn, .theme-toggle, nav { display: none !important; }
-            body { background: white; color: black; }
-            .card, .step, .tool-category { box-shadow: none; border: 1px solid #ccc; }
+            header { flex-direction: column; gap: 15px; }
+            nav { display: flex; flex-wrap: wrap; justify-content: center; }
+            nav a { margin: 5px 10px; }
         }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="logo"><i class="fas fa-snowflake"></i> CoolInstall BY</div>
+        <div class="logo"><i class="fas fa-wind"></i> CoolInstall Ultra</div>
         <nav>
-            <a href="#calc">Подбор</a>
-            <a href="#guide">Монтаж</a>
+            <a href="#calc">Калькулятор</a>
+            <a href="#leak">Тест</a>
             <a href="#tools">Инструменты</a>
-            <a href="#legal">Закон</a>
-            <a href="#faq">FAQ</a>
-            <div class="theme-toggle" onclick="toggleTheme()"><i class="fas fa-moon"></i></div>
+            <a href="#tech">Справочник</a>
         </nav>
     </header>
 
     <section class="hero">
-        <h1>Идеальный климат <br>в вашем доме в Беларуси</h1>
-        <p>Полный технический гид по подбору и установке кондиционера. Учитываем особенности белорусского жилого фонда и климата.</p>
-        <a href="#calc" class="btn-main">Рассчитать систему $\rightarrow$</a>
+        <h1>Монтаж кондиционера <br><span style="color: var(--primary);">без ошибок.</span></h1>
+        <p>Профессиональный инженерный инструмент для тех, кто устанавливает систему самостоятельно. Точность до BTU, контроль каждого шага.</p>
     </section>
 
-    <!-- Calculator -->
+    <!-- Advanced Calculator -->
     <section class="section" id="calc">
-        <h2 class="section-title">Инженерный расчет (BY)</h2>
-        <div class="card">
+        <h2 class="section-title">Инженерный расчет нагрузки</h2>
+        <div class="glass-card">
             <div class="calc-grid">
                 <div class="input-group">
                     <label>Площадь помещения (м²)</label>
                     <input type="number" id="area" value="20">
                 </div>
                 <div class="input-group">
-                    <label>Высота потолков (м)</label>
+                    <label>Высота потолка (м)</label>
                     <input type="number" id="height" value="2.7">
                 </div>
                 <div class="input-group">
-                    <label>Инсоляция (Солнце)</label>
-                    <select id="sun">
-                        <option value="1">Нормальная / Тень</option>
-                        <option value="1.2">Южная сторона (Жарко)</option>
-                        <option value="1.4">Панорамные окна</option>
+                    <label>Материал стен (теплопотери)</label>
+                    <select id="material">
+                        <option value="1">Бетон / Кирпич (Норма)</option>
+                        <option value="1.3">Дерево / Старый фонд (Высокие)</option>
+                        <option value="0.8">Сэндвич-панель / Утепл. (Низкие)</option>
+                        <option value="1.1">Гипсокартон / Перегородки</option>
                     </select>
                 </div>
                 <div class="input-group">
-                    <label>Длина трассы (м) — для сметы</label>
-                    <input type="number" id="pipeLen" value="5">
+                    <label>Солнечная сторона</label>
+                    <select id="sun">
+                        <option value="1">Тень / Обычная</option>
+                        <option value="1.2">Южная сторона</option>
+                        <option value="1.4">Панорамные окна</option>
+                    </select>
                 </div>
             </div>
-            <button class="calc-btn" onclick="calculateAll()">Рассчитать мощность и смету</button>
-            
+
+            <div style="margin-top: 30px; display: flex; flex-direction: column; align-items: center;">
+                <label style="margin-bottom: 15px;">Желаемая температура в комнате (°C)</label>
+                <div class="temp-control">
+                    <div class="knob-value" id="tempVal">22°C</div>
+                    <input type="range" min="16" max="26" value="22" class="knob-slider" id="tempKnob" oninput="updateTemp()">
+                </div>
+            </div>
+
+            <button class="calc-btn" onclick="calculateUltra()">Рассчитать мощность системы</button>
+
             <div class="result-box" id="resultBox">
-                <p>Необходимая мощность:</p>
+                <p>Рекомендуемая холодопроизводительность:</p>
                 <div class="result-val" id="resultVal">0 кВт</div>
-                <p id="acType" style="font-weight: 700; color: var(--primary); margin-bottom: 20px;"></p>
-                
-                <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 20px 0;">
-                <p><strong>Примерная смета на материалы (BYN):</strong></p>
-                <table class="budget-table" id="budgetTable">
-                    <thead>
-                        <tr><th>Позиция</th><th>Цена (примерно)</th></tr>
-                    </thead>
-                    <tbody id="budgetBody"></tbody>
-                </table>
-                <div id="totalPrice" style="margin-top: 15px; font-weight: 700; font-size: 1.2rem; color: var(--primary);"></div>
+                <p id="btuVal" style="color: var(--text-muted); margin-bottom: 15px;"></p>
+                <p id="acType" style="font-weight: 700; color: var(--primary);"></p>
             </div>
         </div>
     </section>
 
-    <!-- Comparison -->
-    <section class="section" style="background-color: var(--secondary);">
-        <h2 class="section-title">Инвертор или Обычный (On/Off)?</h2>
-        <div class="card" style="max-width: 1000px;">
-            <table class="comp-table">
+    <!-- Leak Test Timer -->
+    <section class="section" id="leak">
+        <h2 class="section-title">Контроль герметичности</h2>
+        <div class="glass-card" style="text-align: center;">
+            <p>Нанесите мыльный раствор на все вальцовочные соединения. Запустите таймер и следите за пузырьками.</p>
+            <div class="timer-box">
+                <div id="timerDisplay">20:00</div>
+                <button class="calc-btn" id="timerBtn" onclick="startTimer()" style="max-width: 200px;">Начать тест</button>
+            </div>
+            <p style="font-size: 0.9rem; color: var(--text-muted);">Если за 20 минут пузырьков нет — система герметична.</p>
+        </div>
+    </section>
+
+    <!-- Tools Section -->
+    <section class="section" id="tools">
+        <h2 class="section-title">Чек-лист мастера</h2>
+        <div class="checklist-container">
+            <div class="check-category">
+                <h3><i class="fas fa-tools"></i> Инструмент</h3>
+                <label class="check-item"><input type="checkbox"> Вальцовка (профессиональная)</label>
+                <label class="check-item"><input type="checkbox"> Вакуумный насос</label>
+                <label class="check-item"><input type="checkbox"> Труборез</label>
+                <label class="check-item"><input type="checkbox"> Строительный уровень</label>
+                <label class="check-item"><input type="checkbox"> Манометрическая станция</label>
+            </div>
+            <div class="check-category">
+                <h3><i class="fas fa-box"></i> Расходники</h3>
+                <label class="check-item"><input type="checkbox"> Медная трубка + флекс</label>
+                <label class="check-item"><input type="checkbox"> Кабель ВВГнг 3х2.5</label>
+                <label class="check-item"><input type="checkbox"> Дренажный шланг</label>
+                <label class="check-item"><input type="checkbox"> Кронштейны + Анкеры</label>
+                <label class="check-item"><input type="checkbox"> Мыльный раствор (для теста)</label>
+            </div>
+        </div>
+        <button class="copy-btn" onclick="copyList()">Скопировать список в буфер 📋</button>
+    </section>
+
+    <!-- Technical Reference -->
+    <section class="section" id="tech">
+        <h2 class="section-title">Технический справочник</h2>
+        <div class="glass-card">
+            <h3>Давление фреона (при +25°C на улице)</h3>
+            <table class="modern-table">
                 <thead>
-                    <tr>
-                        <th>Характеристика</th>
-                        <th>Обычный (On/Off)</th>
-                        <th>Инверторный</th>
-                    </tr>
+                    <tr><th>Тип газа</th><th>Давление (низкое)</th><th>Особенности</th></tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td><strong>Работа</strong></td>
-                        <td>Вкл/Выкл на полную мощность</td>
-                        <td>Плавно меняет мощность</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Экономия</strong></td>
-                        <td>Средний расход</td>
-                        <td>Экономия до 30-40% энергии</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Комфорт</strong></td>
-                        <td>Резкие перепады температуры</td>
-                        <td>Стабильная температура</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Обогрев</strong></td>
-                        <td>До -5°C</td>
-                        <td>До -15°C или -25°C (зависит от модели)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Цена</strong></td>
-                        <td>Доступнее</td>
-                        <td>Дороже</td>
-                    </tr>
+                    <tr><td><strong>R32</strong></td><td>~8-10 бар</td><td>Экологичный, высокая эффективность</td></tr>
+                    <tr><td><strong>R410A</strong></td><td>~11-13 бар</td><td>Стандарт, высокая плотность</td></tr>
                 </tbody>
             </table>
+            <p style="margin-top: 20px; font-size: 0.9rem; color: var(--text-muted);">* Данные ориентировочные. Сверяйтесь с манометром и техпаспортом конкретной модели.</p>
         </div>
     </section>
-
-    <!-- Legal & Climate -->
-    <section class="section">
-        <div class="info-box legal">
-            <i class="fas fa-gavel" style="font-size: 2rem;"></i>
-            <div>
-                <strong>🇧🇾 Юридический момент (Беларусь):</strong><br>
-                Если вы живете в многоквартирном доме, установка внешнего блока на фасад может потребовать согласования с <strong>ЖЭС, ТСЦ или местным исполкомом</strong>. В некоторых домах запрещен монтаж на определенные участки фасада. Рекомендуем уточнить правила вашего дома, чтобы избежать предписаний о демонтаже.
-            </div>
-        </div>
-
-        <div class="info-box climate">
-            <i class="fas fa-thermometer-half" style="font-size: 2rem;"></i>
-            <div>
-                <strong>❄️ Совет по климату РБ:</strong><br>
-                В Беларуси кондиционер часто используют как основной обогрев в октябре-ноябре и марте. Если планируете греться, выбирайте <strong>инверторную модель</strong> с пометкой «обогрев до -15°C». Это в 2-3 раза эффективнее обычных электрообогревателей.
-            </div>
-        </div>
-    </section>
-
-    <!-- Guide -->
-    <section class="section" id="guide" style="background-color: var(--white);">
-        <h2 class="section-title">Пошаговый монтаж</h2>
-        <div class="steps">
-            <div class="step">
-                <div class="step-number">1</div>
-                <div>
-                    <h3>Разметка и согласование</h3>
-                    <p>Проверьте, чтобы блок не перекрывал окна соседям и не висел над входом в подъезд. Отступ от потолка — 10-15 см.</p>
-                </div>
-            </div>
-            <div class="step">
-                <div class="step-number">2</div>
-                <div>
-                    <h3>Сверление (Уклон!)</h3>
-                    <p>Отверстие 45-55 мм. Уклон 3-5° на улицу обязателен, иначе конденсат потечет по стене в комнату.</p>
-                </div>
-            </div>
-            <div class="step">
-                <div class="step-number">3</div>
-                <div>
-                    <h3>Вакуумирование</h3>
-                    <p>Использование вакуумного насоса обязательно. Удаление воздуха и влаги из системы — залог долгой работы компрессора.</p>
-                </div>
-            </div>
-            <div class="step">
-                <div class="step-number">4</div>
-                <div>
-                    <h3>Электрика (BY Стандарт)</h3>
-                    <p>Подключение к сети 230В. Рекомендуется использовать отдельный автомат в щитке. Проверьте наличие заземления.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Tools -->
-    <section class="section" id="tools">
-        <h2 class="section-title">Инструменты и материалы</h2>
-        <div class="tools-container">
-            <div class="tool-category">
-                <h3><i class="fas fa-tools"></i> Инструмент</h3>
-                <label class="check-item"><input type="checkbox"> Перфоратор + коронка</label>
-                <label class="check-item"><input type="checkbox"> Вальцовка (обязательно)</label>
-                <label class="check-item"><input type="checkbox"> Вакуумный насос</label>
-                <label class="check-item"><input type="checkbox"> Строительный уровень</label>
-                <label class="check-item"><input type="checkbox"> Набор ключей</label>
-            </div>
-            <div class="tool-category">
-                <h3><i class="fas fa-layer-group"></i> Материалы</h3>
-                <label class="check-item"><input type="checkbox"> Медная трубка (диаметр по паспорту)</label>
-                <label class="check-item"><input type="checkbox"> Теплоизоляция (флекс)</label>
-                <label class="check-item"><input type="checkbox"> Дренажный шланг</label>
-                <label class="check-item"><input type="checkbox"> Кабель ВВГнг 3х2.5</label>
-                <label class="check-item"><input type="checkbox"> Кронштейны + Анкеры</label>
-            </div>
-        </div>
-    </section>
-
-    <!-- FAQ -->
-    <section class="section" id="faq">
-        <h2 class="section-title">Частые вопросы (FAQ)</h2>
-        <div style="max-width: 800px; margin: 0 auto;">
-            <div class="faq-item">
-                <div class="faq-question" onclick="toggleFaq(this)">Где купить качественный фреон в РБ? <i class="fas fa-chevron-down"></i></div>
-                <div class="faq-answer">Рекомендуем специализированные магазины холодильного оборудования в Минске (например, в районе ул. Ваупшаса или специализированные склады). Не покупайте газ с рук без сертификата.</div>
-            </div>
-            <div class="faq-item">
-                <div class="faq-question" onclick="toggleFaq(this)">Какой бренд лучше для нашего климата? <i class="fas fa-chevron-down"></i></div>
-                <div class="faq-answer">Популярны и надежны: Gree, Haier, Midea (хорошее соотношение цена/качество) и Daikin/Mitsubishi (премиум-сегмент с отличным сервисом в РБ).</div>
-            </div>
-            <div class="faq-item">
-                <div class="faq-question" onclick="toggleFaq(this)">Нужно ли дозаправлять фреон каждый год? <i class="fas fa-chevron-down"></i></div>
-                <div class="faq-answer">Нет. Кондиционер — это замкнутая система. Если фреон уходит, значит есть утечка. Нужно искать дыру и устранять её, а не просто доливать газ.</div>
-            </div>
-        </div>
-    </section>
-
-    <div class="info-box warning" style="margin-bottom: 80px;">
-        <i class="fas fa-exclamation-triangle" style="font-size: 2rem;"></i>
-        <div>
-            <strong>Внимание:</strong> Работа с электричеством и газом под давлением опасна. Если вы не уверены в своих навыках, обратитесь в сертифицированную компанию по монтажу.
-        </div>
-    </div>
 
     <footer>
-        <p>&copy; 2024 CoolInstall BY — Профессиональный гид по климату в Беларуси</p>
-        <p style="font-size: 0.8rem; margin-top: 10px;">Сайт носит ознакомительный характер. Всегда сверяйтесь с техническим паспортом вашего устройства.</p>
+        <p>&copy; 2024 CoolInstall Ultra — Инструментарий для DIY-мастеров Беларуси</p>
+        <p style="margin-top: 10px; opacity: 0.6;">Разработано для точного и безопасного монтажа</p>
     </footer>
 
     <script>
-        function toggleTheme() {
-            const body = document.body;
-            const icon = document.querySelector('.theme-toggle i');
-            if (body.getAttribute('data-theme') === 'dark') {
-                body.removeAttribute('data-theme');
-                icon.className = 'fas fa-moon';
-            } else {
-                body.setAttribute('data-theme', 'dark');
-                icon.className = 'fas fa-sun';
-            }
+        // Температурный регулятор
+        function updateTemp() {
+            const val = document.getElementById('tempKnob').value;
+            document.getElementById('tempVal').innerText = val + '°C';
         }
 
-        function toggleFaq(element) {
-            const answer = element.nextElementSibling;
-            const icon = element.querySelector('i');
-            if (answer.style.display === 'block') {
-                answer.style.display = 'none';
-                icon.style.transform = 'rotate(0deg)';
-            } else {
-                answer.style.display = 'block';
-                icon.style.transform = 'rotate(180deg)';
-            }
-        }
-
-        function calculateAll() {
+        // Продвинутый расчет
+        function calculateUltra() {
             const area = parseFloat(document.getElementById('area').value);
             const height = parseFloat(document.getElementById('height').value);
+            const material = parseFloat(document.getElementById('material').value);
             const sun = parseFloat(document.getElementById('sun').value);
-            const pipeLen = parseFloat(document.getElementById('pipeLen').value) || 5;
+            const tempPref = parseInt(document.getElementById('tempKnob').value);
 
             if (!area || !height) {
-                alert("Пожалуйста, введите данные");
+                alert("Заполните площадь и высоту");
                 return;
             }
 
-            // Расчет мощности
-            let power = (area / 10) * (height / 2.7) * sun;
+            // Базовая мощность: 1 кВт на 10 м²
+            let power = (area / 10) * (height / 2.7) * material * sun;
+
+            // Коррекция по температуре: 
+            // Стандарт расчетных условий обычно +22°C. 
+            // Если пользователь хочет +18°C, нагрузка растет на ~10% за каждый градус разницы.
+            const tempDiff = 22 - tempPref;
+            if (tempDiff > 0) {
+                power += (power * (tempDiff * 0.05)); 
+            }
+
             const btu = power * 3412;
 
             document.getElementById('resultBox').style.display = 'block';
             document.getElementById('resultVal').innerText = power.toFixed(2) + ' кВт';
-            
+            document.getElementById('btuVal').innerText = 'Примерно ' + Math.round(btu) + ' BTU';
+
             let type = "";
             if (power <= 2.5) type = "Рекомендуем: Модель 'Семерка' (7000 BTU)";
             else if (power <= 3.5) type = "Рекомендуем: Модель 'Девятка' (9000 BTU)";
             else if (power <= 5) type = "Рекомендуем: Модель 'Двенадцатка' (12000 BTU)";
-            else type = "Рекомендуем: Мощную систему (18000 BTU+)";
+            else type = "Рекомендуем: Мощную систему (18000+ BTU)";
+            
             document.getElementById('acType').innerText = type;
-
-            // Расчет сметы в BYN (Примерные рыночные цены РБ)
-            const prices = {
-                pipe: 15, // за метр медной трубы с изоляцией
-                cable: 3, // за метр кабеля
-                brackets: 45, // комплект кронштейнов
-                drain: 2, // за метр шланга
-                misc: 30 // крепеж, мелочи
-            };
-
-            const budgetBody = document.getElementById('budgetBody');
-            budgetBody.innerHTML = `
-                <tr><td>Медная трасса + флекс (${pipeLen}м)</td><td>${(pipeLen * prices.pipe).toFixed(0)} BYN</td></tr>
-                <tr><td>Кабель питания (${pipeLen}м)</td><td>${(pipeLen * prices.cable).toFixed(0)} BYN</td></tr>
-                <tr><td>Кронштейны (комплект)</td><td>${prices.brackets} BYN</td></tr>
-                <tr><td>Дренажный шланг (${pipeLen}м)</td><td>${(pipeLen * prices.drain).toFixed(0)} BYN</td></tr>
-                <tr><td>Расходники (анкеры, дюбеля)</td><td>${prices.misc} BYN</td></tr>
-            `;
-
-            const total = (pipeLen * prices.pipe) + (pipeLen * prices.cable) + prices.brackets + (pipeLen * prices.drain) + prices.misc;
-            document.getElementById('totalPrice').innerText = `Итого по материалам: ~${total.toFixed(0)} BYN`;
-            document.getElementById('budgetTable').style.display = 'table';
-
             document.getElementById('resultBox').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        // Таймер утечки
+        let timerInterval;
+        function startTimer() {
+            const btn = document.getElementById('timerBtn');
+            const display = document.getElementById('timerDisplay');
+            
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+                btn.innerText = "Начать тест";
+                display.innerText = "20:00";
+                return;
+            }
+
+            let time = 20 * 60;
+            btn.innerText = "Остановить";
+            
+            timerInterval = setInterval(() => {
+                let mins = Math.floor(time / 60);
+                let secs = time % 60;
+                display.innerText = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+                if (time <= 0) {
+                    clearInterval(timerInterval);
+                    display.innerText = "ГОТОВО!";
+                    btn.innerText = "Начать заново";
+                }
+                time--;
+            }, 1000);
+        }
+
+        // Копирование списка
+        function copyList() {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+            let list = "🛒 Мой список для установки AC:\n";
+            checkboxes.forEach((item, index) => {
+                list += `${index + 1}. ${item.parentElement.innerText.trim()}\n`;
+            });
+            
+            if (checkboxes.length === 0) {
+                alert("Сначала отметьте нужные инструменты!");
+                return;
+            }
+
+            navigator.clipboard.writeText(list).then(() => {
+                alert("Список скопирован в буфер обмена!");
+            });
         }
     </script>
 </body>
