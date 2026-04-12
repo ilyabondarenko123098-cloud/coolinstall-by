@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CoolInstall Ultra — Инженерный портал по монтажу AC</title>
+    <title>CoolInstall Elite — Экспертная система монтажа AC</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -11,20 +11,16 @@
             --primary: #00d2ff;
             --primary-dark: #007aff;
             --accent: #ff4d4d;
+            --success: #00ffaa;
             --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-            --glass: rgba(255, 255, 255, 0.05);
+            --glass: rgba(255, 255, 255, 0.03);
             --glass-border: rgba(255, 255, 255, 0.1);
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
             --white: #ffffff;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            scroll-behavior: smooth;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; scroll-behavior: smooth; }
 
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
@@ -35,302 +31,174 @@
             line-height: 1.6;
         }
 
-        /* Glassmorphism Header */
         header {
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            padding: 1.2rem 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(15, 23, 42, 0.8);
-            backdrop-filter: blur(15px);
+            position: sticky; top: 0; z-index: 1000; padding: 1.2rem 5%;
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(15px);
             border-bottom: 1px solid var(--glass-border);
         }
 
         .logo {
-            font-size: 1.6rem;
-            font-weight: 800;
+            font-size: 1.6rem; font-weight: 800;
             background: linear-gradient(to right, var(--primary), var(--primary-dark));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            display: flex;
-            align-items: center;
-            gap: 12px;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            display: flex; align-items: center; gap: 12px;
         }
 
         nav a {
-            text-decoration: none;
-            color: var(--text-main);
-            margin-left: 20px;
-            font-weight: 500;
-            font-size: 0.9rem;
-            transition: 0.3s;
-            opacity: 0.8;
+            text-decoration: none; color: var(--text-main); margin-left: 20px;
+            font-weight: 500; font-size: 0.9rem; transition: 0.3s; opacity: 0.8;
         }
 
         nav a:hover { opacity: 1; color: var(--primary); }
 
-        /* Hero Section */
-        .hero {
-            padding: 120px 5% 60px;
-            text-align: center;
-            max-width: 1000px;
-            margin: 0 auto;
-        }
+        .hero { padding: 100px 5% 60px; text-align: center; max-width: 1000px; margin: 0 auto; }
+        .hero h1 { font-size: 3.5rem; font-weight: 800; line-height: 1.1; margin-bottom: 25px; letter-spacing: -2px; }
 
-        .hero h1 {
-            font-size: 4rem;
-            font-weight: 800;
-            line-height: 1.1;
-            margin-bottom: 25px;
-            letter-spacing: -2px;
-        }
-
-        .hero p {
-            font-size: 1.2rem;
-            color: var(--text-muted);
-            margin-bottom: 40px;
-        }
-
-        /* Modern Glass Card */
         .glass-card {
-            background: var(--glass);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--glass-border);
-            border-radius: 32px;
-            padding: 40px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
-            max-width: 900px;
-            margin: 0 auto 60px;
+            background: var(--glass); backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border); border-radius: 32px;
+            padding: 40px; box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            max-width: 900px; margin: 0 auto 60px;
         }
 
-        .section-title {
-            text-align: center;
-            margin-bottom: 40px;
-            font-size: 2.2rem;
-            font-weight: 700;
-        }
+        .section-title { text-align: center; margin-bottom: 40px; font-size: 2.2rem; font-weight: 700; }
 
-        /* Advanced Calculator Layout */
-        .calc-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-        }
-
-        .input-group {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        label {
-            font-weight: 600;
-            font-size: 0.9rem;
-            color: var(--text-muted);
-        }
-
+        /* Calculator & Inputs */
+        .calc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+        .input-group { display: flex; flex-direction: column; gap: 10px; }
+        label { font-weight: 600; font-size: 0.85rem; color: var(--text-muted); }
         input, select {
-            padding: 15px;
-            border: 1px solid var(--glass-border);
-            border-radius: 16px;
-            background: rgba(0, 0, 0, 0.2);
-            color: white;
-            font-size: 1rem;
-            transition: 0.3s;
+            padding: 14px; border: 1px solid var(--glass-border); border-radius: 16px;
+            background: rgba(0, 0, 0, 0.3); color: white; font-size: 1rem; transition: 0.3s;
         }
+        input:focus, select:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(0, 210, 255, 0.2); }
 
-        input:focus, select:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(0, 210, 255, 0.2);
-        }
-
-        /* TEMPERATURE KNOB (Stylized Range) */
+        /* Temperature Knob */
         .temp-control {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
-            background: rgba(0,0,0,0.3);
-            padding: 20px;
-            border-radius: 24px;
-            border: 1px solid var(--glass-border);
+            display: flex; flex-direction: column; align-items: center; gap: 15px;
+            background: rgba(0,0,0,0.3); padding: 20px; border-radius: 24px; border: 1px solid var(--glass-border);
         }
-
-        .knob-value {
-            font-size: 3rem;
-            font-weight: 800;
-            color: var(--primary);
-            text-shadow: 0 0 20px rgba(0, 210, 255, 0.5);
-        }
-
-        .knob-slider {
-            width: 100%;
-            -webkit-appearance: none;
-            height: 10px;
-            background: #334155;
-            border-radius: 5px;
-            outline: none;
-        }
-
-        .knob-slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 25px;
-            height: 25px;
-            background: var(--primary);
-            border-radius: 50%;
-            cursor: pointer;
-            box-shadow: 0 0 10px var(--primary);
-            border: 3px solid white;
-        }
+        .knob-value { font-size: 2.5rem; font-weight: 800; color: var(--primary); text-shadow: 0 0 15px rgba(0, 210, 255, 0.4); }
+        .knob-slider { width: 100%; -webkit-appearance: none; height: 8px; background: #334155; border-radius: 5px; outline: none; }
+        .knob-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 22px; height: 22px; background: var(--primary); border-radius: 50%; cursor: pointer; border: 3px solid white; }
 
         .calc-btn {
-            width: 100%;
-            margin-top: 30px;
-            padding: 20px;
+            width: 100%; margin-top: 30px; padding: 18px;
             background: linear-gradient(to right, var(--primary), var(--primary-dark));
-            color: white;
-            border: none;
-            border-radius: 16px;
-            font-size: 1.2rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: 0.3s;
+            color: white; border: none; border-radius: 16px; font-size: 1.2rem; font-weight: 700; cursor: pointer; transition: 0.3s;
         }
 
-        .calc-btn:hover { transform: translateY(-3px); opacity: 0.9; }
-
+        /* Result & Explanation */
         .result-box {
-            margin-top: 30px;
-            padding: 30px;
-            background: rgba(0, 210, 255, 0.1);
-            border: 1px solid var(--primary);
-            border-radius: 24px;
-            text-align: center;
-            display: none;
-            animation: slideUp 0.5s ease;
+            margin-top: 30px; padding: 30px; background: rgba(0, 210, 255, 0.05);
+            border: 1px solid var(--primary); border-radius: 24px; text-align: center; display: none;
         }
-
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
         .result-val { font-size: 3rem; font-weight: 800; color: var(--white); }
-
-        /* Leak Timer */
-        .timer-box {
-            text-align: center;
-            padding: 20px;
-            background: rgba(255, 77, 77, 0.1);
-            border: 1px solid var(--accent);
-            border-radius: 24px;
-            margin-bottom: 40px;
+        .explanation-box {
+            margin-top: 20px; padding: 20px; background: rgba(255,255,255,0.05);
+            border-radius: 16px; text-align: left; font-size: 0.95rem; color: var(--text-muted);
+            border-left: 4px solid var(--primary);
         }
 
-        #timerDisplay {
-            font-size: 2.5rem;
-            font-weight: 800;
-            margin: 15px 0;
-            color: var(--accent);
+        /* AC Type Selector */
+        .type-selector {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-top: 30px;
+        }
+        .type-card {
+            padding: 20px; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border);
+            border-radius: 20px; cursor: pointer; text-align: center; transition: 0.3s;
+        }
+        .type-card:hover, .type-card.active { border-color: var(--primary); background: rgba(0, 210, 255, 0.1); transform: translateY(-5px); }
+        .type-card i { font-size: 1.5rem; margin-bottom: 10px; display: block; }
+
+        .pros-cons {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px; display: none;
+        }
+        .pc-box { padding: 15px; border-radius: 16px; font-size: 0.9rem; }
+        .pros { background: rgba(0, 255, 170, 0.1); border: 1px solid var(--success); color: var(--success); }
+        .cons { background: rgba(255, 77, 77, 0.1); border: 1px solid var(--accent); color: var(--accent); }
+
+        /* NEW INSTALLATION TIMELINE */
+        .timeline { position: relative; max-width: 800px; margin: 0 auto; padding: 20px 0; }
+        .timeline::before {
+            content: ''; position: absolute; left: 20px; top: 0; bottom: 0;
+            width: 2px; background: var(--glass-border);
+        }
+        .timeline-item {
+            position: relative; margin-bottom: 40px; padding-left: 60px;
+        }
+        .timeline-dot {
+            position: absolute; left: 11px; top: 0; width: 20px; height: 20px;
+            background: var(--primary); border-radius: 50%; border: 4px solid var(--bg-gradient);
+            box-shadow: 0 0 10px var(--primary);
+        }
+        .timeline-content {
+            background: var(--glass); border: 1px solid var(--glass-border);
+            padding: 25px; border-radius: 24px; transition: 0.3s;
+        }
+        .timeline-content:hover { background: rgba(255,255,255,0.07); transform: scale(1.02); }
+        .timeline-content h3 { margin-bottom: 10px; color: var(--primary); }
+        .detail-box {
+            margin-top: 15px; padding: 12px; background: rgba(0,0,0,0.2);
+            border-radius: 12px; font-size: 0.85rem; color: var(--text-muted);
+            border-left: 3px solid var(--primary-dark);
         }
 
-        /* Checklist & Copy */
-        .checklist-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
+        /* Timer & Bubble Button */
+        .timer-container { text-align: center; padding: 30px; background: rgba(0,0,0,0.3); border-radius: 32px; border: 1px solid var(--glass-border); }
+        #timerDisplay { font-size: 3rem; font-weight: 800; color: var(--accent); margin: 20px 0; }
+        .bubble-btn {
+            background: var(--accent); color: white; border: none; padding: 15px 30px;
+            border-radius: 50px; font-weight: 700; cursor: pointer; margin-top: 20px;
+            box-shadow: 0 0 20px rgba(255, 77, 77, 0.4); transition: 0.3s;
         }
+        .bubble-btn:hover { transform: scale(1.1); background: #ff1a1a; }
 
-        .check-category {
-            background: rgba(0,0,0,0.2);
-            padding: 25px;
-            border-radius: 24px;
-            border: 1px solid var(--glass-border);
+        /* Modal for Bubble Fix */
+        .modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9); display: none; justify-content: center; align-items: center; z-index: 2000; padding: 20px;
         }
-
-        .check-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 10px;
-            cursor: pointer;
-            font-size: 0.95rem;
+        .modal-content {
+            background: #1e293b; padding: 40px; border-radius: 32px; max-width: 500px;
+            border: 2px solid var(--accent); text-align: center; animation: fadeIn 0.3s ease;
         }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        .copy-btn {
-            display: block;
-            margin: 20px auto;
-            padding: 12px 25px;
-            background: var(--white);
-            color: var(--text-main);
-            border: none;
-            border-radius: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .copy-btn:hover { background: var(--primary); color: white; }
-
-        /* Tables */
-        .modern-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-            background: rgba(0,0,0,0.2);
-            border-radius: 16px;
-            overflow: hidden;
-        }
-
-        .modern-table th, .modern-table td {
-            padding: 15px;
-            text-align: left;
-            border-bottom: 1px solid var(--glass-border);
-        }
-
-        .modern-table th { background: rgba(0, 210, 255, 0.2); color: var(--primary); }
-
-        footer {
-            text-align: center;
-            padding: 60px 5%;
-            color: var(--text-muted);
-            font-size: 0.9rem;
-        }
+        footer { text-align: center; padding: 60px 5%; color: var(--text-muted); font-size: 0.9rem; }
 
         @media (max-width: 768px) {
-            .hero h1 { font-size: 2.5rem; }
+            .hero h1 { font-size: 2.2rem; }
             .calc-grid { grid-template-columns: 1fr; }
-            header { flex-direction: column; gap: 15px; }
-            nav { display: flex; flex-wrap: wrap; justify-content: center; }
-            nav a { margin: 5px 10px; }
+            .pros-cons { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="logo"><i class="fas fa-wind"></i> CoolInstall Ultra</div>
+        <div class="logo"><i class="fas fa-wind"></i> CoolInstall Elite</div>
         <nav>
-            <a href="#calc">Калькулятор</a>
+            <a href="#calc">Расчет</a>
+            <a href="#type">Тип AC</a>
+            <a href="#guide">Монтаж</a>
             <a href="#leak">Тест</a>
-            <a href="#tools">Инструменты</a>
-            <a href="#tech">Справочник</a>
         </nav>
     </header>
 
     <section class="hero">
-        <h1>Монтаж кондиционера <br><span style="color: var(--primary);">без ошибок.</span></h1>
-        <p>Профессиональный инженерный инструмент для тех, кто устанавливает систему самостоятельно. Точность до BTU, контроль каждого шага.</p>
+        <h1>Профессиональный монтаж <br><span style="color: var(--primary);">с точностью до детали.</span></h1>
+        <p>Интерактивная среда для DIY-мастеров. Мы не просто считаем мощность, мы помогаем вам избежать фатальных ошибок при установке.</p>
     </section>
 
-    <!-- Advanced Calculator -->
+    <!-- Calculator -->
     <section class="section" id="calc">
-        <h2 class="section-title">Инженерный расчет нагрузки</h2>
+        <h2 class="section-title">Расчет нагрузки и мощности</h2>
         <div class="glass-card">
             <div class="calc-grid">
                 <div class="input-group">
-                    <label>Площадь помещения (м²)</label>
+                    <label>Площадь (м²)</label>
                     <input type="number" id="area" value="20">
                 </div>
                 <div class="input-group">
@@ -338,18 +206,17 @@
                     <input type="number" id="height" value="2.7">
                 </div>
                 <div class="input-group">
-                    <label>Материал стен (теплопотери)</label>
+                    <label>Материал стен</label>
                     <select id="material">
-                        <option value="1">Бетон / Кирпич (Норма)</option>
-                        <option value="1.3">Дерево / Старый фонд (Высокие)</option>
-                        <option value="0.8">Сэндвич-панель / Утепл. (Низкие)</option>
-                        <option value="1.1">Гипсокартон / Перегородки</option>
+                        <option value="1">Бетон / Кирпич</option>
+                        <option value="1.3">Дерево / Старый фонд</option>
+                        <option value="0.8">Утепленные панели</option>
                     </select>
                 </div>
                 <div class="input-group">
-                    <label>Солнечная сторона</label>
+                    <label>Инсоляция</label>
                     <select id="sun">
-                        <option value="1">Тень / Обычная</option>
+                        <option value="1">Обычная</option>
                         <option value="1.2">Южная сторона</option>
                         <option value="1.4">Панорамные окна</option>
                     </select>
@@ -357,137 +224,221 @@
             </div>
 
             <div style="margin-top: 30px; display: flex; flex-direction: column; align-items: center;">
-                <label style="margin-bottom: 15px;">Желаемая температура в комнате (°C)</label>
+                <label style="margin-bottom: 15px;">Желаемая температура (°C)</label>
                 <div class="temp-control">
                     <div class="knob-value" id="tempVal">22°C</div>
                     <input type="range" min="16" max="26" value="22" class="knob-slider" id="tempKnob" oninput="updateTemp()">
                 </div>
             </div>
 
-            <button class="calc-btn" onclick="calculateUltra()">Рассчитать мощность системы</button>
+            <button class="calc-btn" onclick="calculateElite()">Рассчитать и обосновать</button>
 
             <div class="result-box" id="resultBox">
-                <p>Рекомендуемая холодопроизводительность:</p>
+                <p>Рекомендуемая мощность:</p>
                 <div class="result-val" id="resultVal">0 кВт</div>
                 <p id="btuVal" style="color: var(--text-muted); margin-bottom: 15px;"></p>
-                <p id="acType" style="font-weight: 700; color: var(--primary);"></p>
+                <p id="acType" style="font-weight: 700; color: var(--primary); margin-bottom: 20px;"></p>
+                
+                <div class="explanation-box" id="explanation"></div>
             </div>
         </div>
     </section>
 
-    <!-- Leak Test Timer -->
-    <section class="section" id="leak">
-        <h2 class="section-title">Контроль герметичности</h2>
-        <div class="glass-card" style="text-align: center;">
-            <p>Нанесите мыльный раствор на все вальцовочные соединения. Запустите таймер и следите за пузырьками.</p>
-            <div class="timer-box">
-                <div id="timerDisplay">20:00</div>
-                <button class="calc-btn" id="timerBtn" onclick="startTimer()" style="max-width: 200px;">Начать тест</button>
-            </div>
-            <p style="font-size: 0.9rem; color: var(--text-muted);">Если за 20 минут пузырьков нет — система герметична.</p>
-        </div>
-    </section>
-
-    <!-- Tools Section -->
-    <section class="section" id="tools">
-        <h2 class="section-title">Чек-лист мастера</h2>
-        <div class="checklist-container">
-            <div class="check-category">
-                <h3><i class="fas fa-tools"></i> Инструмент</h3>
-                <label class="check-item"><input type="checkbox"> Вальцовка (профессиональная)</label>
-                <label class="check-item"><input type="checkbox"> Вакуумный насос</label>
-                <label class="check-item"><input type="checkbox"> Труборез</label>
-                <label class="check-item"><input type="checkbox"> Строительный уровень</label>
-                <label class="check-item"><input type="checkbox"> Манометрическая станция</label>
-            </div>
-            <div class="check-category">
-                <h3><i class="fas fa-box"></i> Расходники</h3>
-                <label class="check-item"><input type="checkbox"> Медная трубка + флекс</label>
-                <label class="check-item"><input type="checkbox"> Кабель ВВГнг 3х2.5</label>
-                <label class="check-item"><input type="checkbox"> Дренажный шланг</label>
-                <label class="check-item"><input type="checkbox"> Кронштейны + Анкеры</label>
-                <label class="check-item"><input type="checkbox"> Мыльный раствор (для теста)</label>
-            </div>
-        </div>
-        <button class="copy-btn" onclick="copyList()">Скопировать список в буфер 📋</button>
-    </section>
-
-    <!-- Technical Reference -->
-    <section class="section" id="tech">
-        <h2 class="section-title">Технический справочник</h2>
+    <!-- AC Type Selection -->
+    <section class="section" id="type">
+        <h2 class="section-title">Выберите тип устройства</h2>
         <div class="glass-card">
-            <h3>Давление фреона (при +25°C на улице)</h3>
-            <table class="modern-table">
-                <thead>
-                    <tr><th>Тип газа</th><th>Давление (низкое)</th><th>Особенности</th></tr>
-                </thead>
-                <tbody>
-                    <tr><td><strong>R32</strong></td><td>~8-10 бар</td><td>Экологичный, высокая эффективность</td></tr>
-                    <tr><td><strong>R410A</strong></td><td>~11-13 бар</td><td>Стандарт, высокая плотность</td></tr>
-                </tbody>
-            </table>
-            <p style="margin-top: 20px; font-size: 0.9rem; color: var(--text-muted);">* Данные ориентировочные. Сверяйтесь с манометром и техпаспортом конкретной модели.</p>
+            <div class="type-selector">
+                <div class="type-card" onclick="selectType('split', this)">
+                    <i class="fas fa-snowflake"></i> Сплит-система
+                </div>
+                <div class="type-card" onclick="selectType('multi', this)">
+                    <i class="fas fa-network-wired"></i> Мульти-сплит
+                </div>
+                <div class="type-card" onclick="selectType('floor', this)">
+                    <i class="fas fa-compress-arrows-alt"></i> Напольный AC
+                </div>
+                <div class="type-card" onclick="selectType('mobile', this)">
+                    <i class="fas fa-box"></i> Мобильный
+                </div>
+            </div>
+
+            <div class="pros-cons" id="prosCons">
+                <div class="pc-box pros" id="prosList"></div>
+                <div class="pc-box cons" id="consList"></div>
+            </div>
         </div>
     </section>
+
+    <!-- Detailed Guide -->
+    <section class="section" id="guide">
+        <h2 class="section-title">Инструкция по монтажу</h2>
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <h3>1. Проектирование и Разметка</h3>
+                    <p>Определите точку установки внутреннего блока. Он не должен дуть на кровать или рабочий стол.</p>
+                    <div class="detail-box">
+                        <strong>Важно:</strong> Оставьте зазор 10-15 см от потолка для свободного забора воздуха.
+                    </div>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <h3>2. Алмазное сверление отверстия</h3>
+                    <p>Используйте коронку 45-55 мм. Сверлите с уклоном вниз на улицу.</p>
+                    <div class="detail-box">
+                        <strong>Нюанс:</strong> Если отверстие будет строго горизонтальным, вода (конденсат) потечет в комнату.
+                    </div>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <h3>3. Вальцовка медных трубок</h3>
+                    <p>Обрежьте трубу труборезом, снимите заусенцы и сделайте идеальный «раструб» вальцовкой.</p>
+                    <div class="detail-box">
+                        <strong>Проверка:</strong> Края вальцовки должны быть гладкими, без трещин, иначе будет утечка фреона.
+                    </div>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <h3>4. Вакуумирование системы</h3>
+                    <p>Подключите вакуумный насос через манометрическую станцию. Удалите весь воздух и влагу.</p>
+                    <div class="detail-box">
+                        <strong>Технический факт:</strong> Влага в системе превращается в лед, который убивает компрессор через 1-2 года.
+                    </div>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <h3>5. Пуск и Контроль</h3>
+                    <p>Откройте вентили, запустите AC в режиме Turbo. Проверьте все стыки мыльным раствором.</p>
+                    <div class="detail-box">
+                        <strong>Рекомендация:</strong> Работайте в режиме охлаждения минимум 20 минут перед сдачей.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Leak Test -->
+    <section class="section" id="leak">
+        <h2 class="section-title">Тест на герметичность</h2>
+        <div class="glass-card timer-container">
+            <p>Нанесите пену на все гайки. Запустите таймер контроля.</p>
+            <div id="timerDisplay">20:00</div>
+            <button class="calc-btn" id="timerBtn" onclick="startTimer()" style="max-width: 200px;">Начать тест</button>
+            <br>
+            <button class="bubble-btn" onclick="showBubbleFix()">🚨 ПОШЛИ ПУЗЫРЬКИ!</button>
+        </div>
+    </section>
+
+    <!-- Bubble Fix Modal -->
+    <div class="modal" id="bubbleModal">
+        <div class="modal-content">
+            <h2 style="color: var(--accent); margin-bottom: 20px;">Обнаружена утечка! 🛑</h2>
+            <div style="text-align: left; margin-bottom: 20px;">
+                <p><strong>Шаг 1:</strong> Попробуйте осторожно подтянуть гайку ключом (не перетяните, чтобы не раздавить вальцовку!).</p>
+                <p style="margin-top:10px;"><strong>Шаг 2:</strong> Если пузыри не исчезли — значит, вальцовка сделана неправильно.</p>
+                <p style="margin-top:10px;"><strong>Шаг 3:</strong> Отрежьте старый конец трубы, сделайте новую вальцовку и затяните заново.</p>
+            </div>
+            <button class="calc-btn" onclick="closeModal()">Я всё исправил</button>
+        </div>
+    </div>
 
     <footer>
-        <p>&copy; 2024 CoolInstall Ultra — Инструментарий для DIY-мастеров Беларуси</p>
-        <p style="margin-top: 10px; opacity: 0.6;">Разработано для точного и безопасного монтажа</p>
+        <p>&copy; 2024 CoolInstall Elite — Высший стандарт DIY монтажа в Беларуси</p>
     </footer>
 
     <script>
-        // Температурный регулятор
         function updateTemp() {
             const val = document.getElementById('tempKnob').value;
             document.getElementById('tempVal').innerText = val + '°C';
         }
 
-        // Продвинутый расчет
-        function calculateUltra() {
+        function calculateElite() {
             const area = parseFloat(document.getElementById('area').value);
             const height = parseFloat(document.getElementById('height').value);
             const material = parseFloat(document.getElementById('material').value);
             const sun = parseFloat(document.getElementById('sun').value);
             const tempPref = parseInt(document.getElementById('tempKnob').value);
 
-            if (!area || !height) {
-                alert("Заполните площадь и высоту");
-                return;
-            }
+            if (!area || !height) { alert("Заполните данные"); return; }
 
-            // Базовая мощность: 1 кВт на 10 м²
             let power = (area / 10) * (height / 2.7) * material * sun;
-
-            // Коррекция по температуре: 
-            // Стандарт расчетных условий обычно +22°C. 
-            // Если пользователь хочет +18°C, нагрузка растет на ~10% за каждый градус разницы.
             const tempDiff = 22 - tempPref;
-            if (tempDiff > 0) {
-                power += (power * (tempDiff * 0.05)); 
-            }
+            if (tempDiff > 0) power += (power * (tempDiff * 0.05));
 
             const btu = power * 3412;
-
             document.getElementById('resultBox').style.display = 'block';
             document.getElementById('resultVal').innerText = power.toFixed(2) + ' кВт';
             document.getElementById('btuVal').innerText = 'Примерно ' + Math.round(btu) + ' BTU';
 
             let type = "";
-            if (power <= 2.5) type = "Рекомендуем: Модель 'Семерка' (7000 BTU)";
-            else if (power <= 3.5) type = "Рекомендуем: Модель 'Девятка' (9000 BTU)";
-            else if (power <= 5) type = "Рекомендуем: Модель 'Двенадцатка' (12000 BTU)";
-            else type = "Рекомендуем: Мощную систему (18000+ BTU)";
-            
+            let reason = "";
+
+            if (power <= 2.5) {
+                type = "Рекомендуем: Модель 'Семерка' (7000 BTU)";
+                reason = "Эта мощность идеальна для вашей площади. Кондиционер будет работать в оптимальном режиме, обеспечивая комфорт без лишнего расхода энергии.";
+            } else if (power <= 3.5) {
+                type = "Рекомендуем: Модель 'Девятка' (9000 BTU)";
+                reason = "Вашему помещению требуется средняя мощность. Более слабый блок будет работать на износ 24/7, что приведет к поломке компрессора через пару лет.";
+            } else if (power <= 5) {
+                type = "Рекомендуем: Модель 'Двенадцатка' (12000 BTU)";
+                reason = "Высокая тепловая нагрузка (солнце/материалы). Мощный блок быстро охладит комнату и уйдет в эконом-режим, экономя ваше электричество.";
+            } else {
+                type = "Рекомендуем: Мощную систему (18000+ BTU)";
+                reason = "Обычный бытовой кондиционер здесь не справится. Вам нужна профессиональная сплит-система, иначе в комнате останется духота.";
+            }
+
             document.getElementById('acType').innerText = type;
+            document.getElementById('explanation').innerHTML = `<strong>Почему так?</strong> ${reason}`;
             document.getElementById('resultBox').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
 
-        // Таймер утечки
+        const acData = {
+            split: {
+                pros: ["Бесшумность", "Энергоэффективность", "Простая установка", "Доступная цена"],
+                cons: ["Нужно отверстие в стене", "Занимает место на фасаде"]
+            },
+            multi: {
+                pros: ["Один внешний блок на весь дом", "Эстетика фасада", "Гибкость зон"],
+                cons: ["Дорогой монтаж", "Сложная трасса", "Если сломается внешний блок — встанут все комнаты"]
+            },
+            floor: {
+                pros: ["Очень мощный поток воздуха", "Не нужно сверлить верх стен", "Эффект обогревателя"],
+                cons: ["Занимает полезную площадь пола", "Высокая стоимость", "Шумнее настенных моделей"]
+            },
+            mobile: {
+                pros: ["Не требует монтажа", "Можно переносить по комнатам"],
+                cons: ["Сильный шум", "Низкий КПД", "Необходим вывод гофры в окно"]
+            }
+        };
+
+        function selectType(type, el) {
+            document.querySelectorAll('.type-card').forEach(c => c.classList.remove('active'));
+            el.classList.add('active');
+            
+            const data = acData[type];
+            const prosBox = document.getElementById('prosList');
+            const consBox = document.getElementById('consList');
+            
+            prosBox.innerHTML = "<strong>Плюсы:</strong><br>• " + data.pros.join('<br>• ');
+            consBox.innerHTML = "<strong>Минусы:</strong><br>• " + data.cons.join('<br>• ');
+            
+            document.getElementById('prosCons').style.display = 'grid';
+        }
+
         let timerInterval;
         function startTimer() {
             const btn = document.getElementById('timerBtn');
             const display = document.getElementById('timerDisplay');
-            
             if (timerInterval) {
                 clearInterval(timerInterval);
                 timerInterval = null;
@@ -495,10 +446,8 @@
                 display.innerText = "20:00";
                 return;
             }
-
             let time = 20 * 60;
             btn.innerText = "Остановить";
-            
             timerInterval = setInterval(() => {
                 let mins = Math.floor(time / 60);
                 let secs = time % 60;
@@ -512,23 +461,8 @@
             }, 1000);
         }
 
-        // Копирование списка
-        function copyList() {
-            const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
-            let list = "🛒 Мой список для установки AC:\n";
-            checkboxes.forEach((item, index) => {
-                list += `${index + 1}. ${item.parentElement.innerText.trim()}\n`;
-            });
-            
-            if (checkboxes.length === 0) {
-                alert("Сначала отметьте нужные инструменты!");
-                return;
-            }
-
-            navigator.clipboard.writeText(list).then(() => {
-                alert("Список скопирован в буфер обмена!");
-            });
-        }
+        function showBubbleFix() { document.getElementById('bubbleModal').style.display = 'flex'; }
+        function closeModal() { document.getElementById('bubbleModal').style.display = 'none'; }
     </script>
 </body>
 </html>
