@@ -3,303 +3,239 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CoolInstall Elite — Expert System</title>
+    <title>CoolInstall Elite v5.0 | Masterpiece</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary: #00d2ff;
-            --primary-dark: #007aff;
-            --accent: #ff4d4d;
-            --success: #00ffaa;
-            --warning: #facc15;
-            --bg: #020617;
-            --glass: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(255, 255, 255, 0.1);
+            --neon: #00f2ff;
+            --neon-purple: #7000ff;
+            --danger: #ff0055;
+            --bg: #05070a;
         }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: #fff; overflow-x: hidden; scroll-behavior: smooth; }
+        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.08); }
+        .neon-border { border: 1px solid var(--neon); box-shadow: 0 0 15px rgba(0, 242, 255, 0.2); }
+        .neon-text { color: var(--neon); text-shadow: 0 0 10px rgba(0, 242, 255, 0.5); }
+        
+        /* Progress Bar */
+        .progress-container { position: fixed; top: 0; left: 0; width: 100%; height: 6px; background: #111; z-index: 2000; }
+        .progress-fill { width: 0%; height: 100%; background: linear-gradient(90deg, var(--neon), var(--neon-purple)); transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 0 15px var(--neon); }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; scroll-behavior: smooth; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: #f8fafc; line-height: 1.6; overflow-x: hidden; }
+        /* Navigation */
+        nav { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 400px; height: 70px; border-radius: 25px; z-index: 1000; display: flex; justify-content: space-around; align-items: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .nav-link { color: #555; font-size: 1.2rem; transition: 0.3s; }
+        .nav-link.active { color: var(--neon); transform: translateY(-5px); }
 
-        header {
-            position: sticky; top: 0; z-index: 1000; padding: 1.2rem 5%;
-            display: flex; justify-content: space-between; align-items: center;
-            background: rgba(2, 6, 23, 0.85); backdrop-filter: blur(15px);
-            border-bottom: 1px solid var(--glass-border);
-        }
-        .logo { font-size: 1.4rem; font-weight: 800; color: var(--primary); text-transform: uppercase; letter-spacing: 2px; }
-        nav a { text-decoration: none; color: #94a3b8; margin-left: 20px; font-weight: 600; font-size: 0.8rem; transition: 0.3s; }
-        nav a:hover { color: var(--primary); }
+        /* Bento Cards */
+        .bento-card { border-radius: 30px; transition: 0.3s; position: relative; overflow: hidden; }
+        .bento-card:active { transform: scale(0.97); }
+        
+        /* Media Box */
+        .media-box { width: 100%; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); background: #000; position: relative; }
+        .media-box img { width: 100%; height: auto; border-radius: 20px; opacity: 0.85; transition: 0.3s; }
+        .media-box:hover img { opacity: 1; }
 
-        .section { padding: 60px 5%; max-width: 1100px; margin: 0 auto; }
-        .glass-card {
-            background: var(--glass); border: 1px solid var(--glass-border);
-            border-radius: 32px; padding: 35px; backdrop-filter: blur(10px);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5); margin-bottom: 40px;
-        }
-        .section-title { text-align: center; margin-bottom: 40px; font-size: 2rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; }
-        .neon-text { color: var(--primary); text-shadow: 0 0 15px rgba(0, 210, 255, 0.6); }
+        /* Custom UI */
+        .status-badge { padding: 4px 12px; border-radius: 100px; font-size: 0.6rem; font-weight: 800; text-transform: uppercase; background: rgba(0,242,255,0.1); color: var(--neon); border: 1px solid var(--neon); }
+        input, select { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 15px; padding: 15px; color: white; width: 100%; outline: none; transition: 0.3s; }
+        input:focus { border-color: var(--neon); box-shadow: 0 0 10px rgba(0,242,255,0.2); }
+        
+        .main-btn { background: var(--neon); color: #000; font-weight: 900; text-transform: uppercase; border-radius: 18px; padding: 20px; transition: 0.3s; width: 100%; box-shadow: 0 5px 15px rgba(0, 242, 255, 0.3); }
+        .main-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(0, 242, 255, 0.5); }
 
-        /* CALCULATOR */
-        .calc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
-        input, select {
-            width: 100%; padding: 15px; border-radius: 16px; border: 1px solid var(--glass-border);
-            background: rgba(0,0,0,0.3); color: white; outline: none; margin-top: 8px;
-        }
-        .temp-control { background: rgba(0,0,0,0.3); padding: 25px; border-radius: 28px; border: 1px solid var(--glass-border); text-align: center; margin-top: 20px; }
-        .knob-value { font-size: 3rem; font-weight: 800; color: var(--primary); text-shadow: 0 0 20px rgba(0, 210, 255, 0.5); }
-        .knob-slider { width: 100%; -webkit-appearance: none; height: 6px; background: #334155; border-radius: 10px; margin-top: 15px; }
-        .knob-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 24px; height: 24px; background: white; border-radius: 50%; border: 4px solid var(--primary); cursor: pointer; }
+        .sos-btn { position: fixed; top: 20px; right: 20px; width: 50px; height: 50px; border-radius: 15px; background: var(--danger); display: flex; align-items: center; justify-content: center; z-index: 1000; box-shadow: 0 0 15px rgba(255,0,85,0.4); }
 
-        .btn-main {
-            width: 100%; padding: 20px; border-radius: 18px; border: none;
-            background: linear-gradient(90deg, var(--primary), var(--primary-dark));
-            color: #000; font-weight: 800; font-size: 1.1rem; text-transform: uppercase; cursor: pointer; margin-top: 30px; transition: 0.3s;
-        }
-        .btn-main:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0, 210, 255, 0.4); }
-
-        .result-box { display: none; margin-top: 30px; padding: 25px; background: rgba(0,210,255,0.05); border: 2px solid var(--primary); border-radius: 24px; text-align: center; }
-
-        /* TYPE SELECTOR */
-        .type-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-top: 20px; }
-        .type-card { padding: 20px; background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border); border-radius: 20px; cursor: pointer; text-align: center; transition: 0.3s; }
-        .type-card.active { border-color: var(--primary); background: rgba(0,210,255,0.1); }
-        .type-card i { font-size: 1.5rem; margin-bottom: 10px; display: block; color: var(--primary); }
-        .pros-cons { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px; display: none; }
-        .pc-box { padding: 15px; border-radius: 16px; font-size: 0.85rem; }
-        .pros { background: rgba(0, 255, 170, 0.05); border: 1px solid var(--success); color: var(--success); }
-        .cons { background: rgba(255, 77, 77, 0.05); border: 1px solid var(--accent); color: var(--accent); }
-
-        /* TOOLS */
-        .tool-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; }
-        .tool-item { background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border); padding: 15px; border-radius: 18px; text-align: center; cursor: pointer; transition: 0.3s; }
-        .tool-item.checked { border-color: var(--success); background: rgba(0, 255, 170, 0.05); }
-        .tool-item i { font-size: 1.2rem; margin-bottom: 8px; display: block; }
-        .tool-item span { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; }
-
-        /* RED ZONE */
-        .error-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
-        .error-card { background: rgba(255, 77, 77, 0.03); border: 1px solid rgba(255, 77, 77, 0.2); padding: 25px; border-radius: 24px; }
-        .error-card h3 { color: var(--accent); margin-bottom: 10px; font-size: 1.1rem; }
-
-        /* GUIDE WITH NEON GIFS */
-        .step { margin-bottom: 60px; }
-        .step h3 { font-size: 1.5rem; margin-bottom: 15px; color: var(--primary); }
-        .neon-media {
-            width: 100%; border-radius: 24px; overflow: hidden; border: 2px solid var(--primary);
-            box-shadow: 0 0 25px rgba(0, 210, 255, 0.2); margin: 20px 0; background: #000;
-        }
-        .neon-media img { width: 100%; height: auto; display: block; opacity: 0.9; }
-
-        /* TIMER & SOS */
-        .timer-container { text-align: center; }
-        #timerDisplay { font-size: 4rem; font-weight: 800; color: var(--accent); text-shadow: 0 0 20px rgba(255, 77, 77, 0.3); }
-        .sos-float { position: fixed; bottom: 30px; right: 30px; z-index: 1000; background: var(--accent); color: white; width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 30px rgba(255, 77, 77, 0.5); text-decoration: none; animation: pulse-sos 2s infinite; }
-        @keyframes pulse-sos { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
-
-        /* MODAL */
-        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; justify-content: center; align-items: center; z-index: 2000; padding: 20px; }
-        .modal-content { background: #0f172a; padding: 35px; border-radius: 30px; border: 2px solid var(--accent); max-width: 500px; text-align: center; }
-
-        footer { text-align: center; padding: 60px; opacity: 0.4; font-size: 0.8rem; }
-
-        @media (max-width: 768px) {
-            .hero h1 { font-size: 2.2rem; }
-            .pros-cons { grid-template-columns: 1fr; }
-            nav { display: none; }
-        }
+        @media (max-width: 768px) { h1 { font-size: 2.2rem !important; } }
     </style>
 </head>
-<body>
+<body class="pb-32">
 
-    <a href="https://t.me/your_handle" class="sos-float"><i class="fab fa-telegram-plane text-3xl"></i></a>
+    <div class="progress-container"><div class="progress-fill" id="pBar"></div></div>
 
-    <header>
-        <div class="logo">COOL<span class="neon-text">INSTALL</span></div>
-        <nav>
-            <a href="#calc">Расчет</a>
-            <a href="#tools">Инструмент</a>
-            <a href="#guide">Инструкция</a>
-            <a href="#leak">Тест</a>
-        </nav>
-    </header>
+    <a href="https://t.me/your_handle" class="sos-btn"><i class="fab fa-telegram-plane text-xl"></i></a>
 
-    <section class="section" style="text-align: center; padding-top: 100px;">
-        <h1 style="font-size: 3.5rem; font-weight: 900; line-height: 1;">Монтаж AC <br><span class="neon-text">Elite Level.</span></h1>
-        <p style="color: #94a3b8; margin-top: 20px;">Профессиональная интерактивная среда для самостоятельной установки.</p>
-    </section>
-
-    <!-- 1. CALCULATOR -->
-    <section class="section" id="calc">
-        <h2 class="section-title">1. Расчет <span class="neon-text">Параметров</span></h2>
-        <div class="glass-card">
-            <div class="calc-grid">
-                <div><label>Площадь (м²)</label><input type="number" id="area" value="20"></div>
-                <div><label>Высота потолка (м)</label><input type="number" id="height" value="2.7"></div>
-                <div><label>Материал стен</label><select id="material"><option value="1">Бетон / Кирпич</option><option value="1.3">Дерево</option><option value="0.8">Утепление</option></select></div>
-                <div><label>Солнечная сторона</label><select id="sun"><option value="1">Нет</option><option value="1.2">Да</option><option value="1.4">Панорама</option></select></div>
-            </div>
-            <div class="temp-control">
-                <label>Желаемая прохлада</label>
-                <div class="knob-value" id="tempVal">22°C</div>
-                <input type="range" min="16" max="26" value="22" class="knob-slider" id="tempKnob" oninput="updateTemp()">
-            </div>
-            <button class="btn-main" onclick="calculateElite()">Рассчитать мощность</button>
-            <div class="result-box" id="resultBox">
-                <div id="resultVal" style="font-size: 3rem; font-weight: 900;">0 кВт</div>
-                <p id="btuVal" style="color: var(--primary); font-weight: 800;"></p>
-                <p id="explanation" style="margin-top: 15px; font-size: 0.9rem; opacity: 0.7;"></p>
-            </div>
-        </div>
-    </section>
-
-    <!-- 2. TYPE SELECTION -->
-    <section class="section" id="type">
-        <h2 class="section-title">2. Выбор <span class="neon-text">Системы</span></h2>
-        <div class="glass-card">
-            <div class="type-grid">
-                <div class="type-card" onclick="selectType('split', this)"><i class="fas fa-snowflake"></i> Сплит</div>
-                <div class="type-card" onclick="selectType('multi', this)"><i class="fas fa-network-wired"></i> Мульти</div>
-                <div class="type-card" onclick="selectType('floor', this)"><i class="fas fa-compress-arrows-alt"></i> Напольный</div>
-                <div class="type-card" onclick="selectType('mobile', this)"><i class="fas fa-box"></i> Мобильный</div>
-            </div>
-            <div class="pros-cons" id="prosCons">
-                <div class="pc-box pros" id="prosList"></div>
-                <div class="pc-box cons" id="consList"></div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 3. TOOLS CHECKLIST -->
-    <section class="section" id="tools">
-        <h2 class="section-title">3. Чек-лист <span class="neon-text">Инструмента</span></h2>
-        <div class="glass-card">
-            <div class="tool-grid">
-                <div class="tool-item" onclick="toggleTool(this, 0)"><i class="fas fa-hammer"></i><span>Перфоратор</span></div>
-                <div class="tool-item" onclick="toggleTool(this, 1)"><i class="fas fa-level-up-alt"></i><span>Уровень</span></div>
-                <div class="tool-item" onclick="toggleTool(this, 2)"><i class="fas fa-scissors"></i><span>Труборез</span></div>
-                <div class="tool-item" onclick="toggleTool(this, 3)"><i class="fas fa-expand-arrows-alt"></i><span>Вальцовка</span></div>
-                <div class="tool-item" onclick="toggleTool(this, 4)"><i class="fas fa-wind"></i><span>Вакуумник</span></div>
-                <div class="tool-item" onclick="toggleTool(this, 5)"><i class="fas fa-wrench"></i><span>Ключи</span></div>
-            </div>
-            <div id="toolWarn" style="margin-top: 25px; padding: 15px; border-radius: 15px; background: rgba(250, 204, 21, 0.1); color: var(--warning); font-size: 0.8rem; display: none; text-align: center; border: 1px solid var(--warning);">
-                <i class="fas fa-exclamation-triangle"></i> Внимание: Без вакуумного насоса монтаж считается некачественным!
-            </div>
-        </div>
-    </section>
-
-    <!-- 4. RED ZONE -->
-    <section class="section">
-        <h2 class="section-title" style="color: var(--accent);">Критическая <span style="text-shadow: 0 0 15px var(--accent);">Зона</span></h2>
-        <div class="error-grid">
-            <div class="error-card"><h3>Залом трассы</h3><p>Никогда не гните трубу руками под острым углом. Залом = смерть компрессора.</p></div>
-            <div class="error-card"><h3>Уклон дренажа</h3><p>Трубка слива должна идти только вниз. Иначе вода потечет из блока на пол.</p></div>
-            <div class="error-card"><h3>Грязь в системе</h3><p>Пыль и стружка внутри трубок работают как наждачка для мотора.</p></div>
-        </div>
-    </section>
-
-    <!-- 5. INSTRUCTIONS WITH LOGICAL GIFS -->
-    <section class="section" id="guide">
-        <h2 class="section-title">5. Пошаговый <span class="neon-text">Монтаж</span></h2>
+    <main class="max-w-4xl mx-auto px-6 pt-12 space-y-12">
         
-        <div class="step">
-            <h3>1. Бурение отверстия</h3>
-            <p>Обязательно делайте уклон 3-5 градусов в сторону улицы для слива конденсата.</p>
-            <div class="neon-media">
-                <!-- GIF: Drilling a wall -->
-                <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHJsc2s1OXN3ZnM2NXZmNzd5NnV0cWRpazhnbHplOTN1NGpudDRjcyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/l41lO6pCO9vUfIK0o/giphy.gif" alt="Drilling">
+        <!-- HERO -->
+        <section class="text-center space-y-4">
+            <div class="inline-flex items-center gap-2 bg-white/5 p-2 px-4 rounded-full border border-white/10">
+                <span class="w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></span>
+                <span class="text-[10px] font-bold uppercase tracking-widest text-gray-400">Expert System 5.0</span>
             </div>
-        </div>
+            <h1 class="text-5xl font-black italic tracking-tighter leading-none">УСТАНОВИ AC <br><span class="neon-text uppercase">КАК ПРОФИ.</span></h1>
+            <p class="text-gray-400 text-sm max-w-md mx-auto">Интерактивная станция для тех, кто ценит качество и хочет сэкономить на монтаже без риска.</p>
+        </section>
 
-        <div class="step">
-            <h3>2. Вальцовка меди</h3>
-            <p>Снимите фаску и сделайте идеальный раструб. Он должен быть гладким, как зеркало.</p>
-            <div class="neon-media">
-                <!-- GIF: Flaring tool in action -->
-                <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNGpsYmRxbmphYjBnaHJyNWRwYXh6c2V4Ynl2bTZ6bHpsYm9ueHZyMyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3o7TKVUn7iM8FMEU24/giphy.gif" alt="Flaring">
+        <!-- 1. МАСТЕРСТВО (STATS) -->
+        <div class="glass p-6 bento-card flex justify-between items-center border-l-4 border-cyan-400">
+            <div>
+                <p class="text-[10px] font-bold text-gray-500 uppercase">Готовность к монтажу</p>
+                <h3 id="masteryText" class="text-2xl font-black">0%</h3>
             </div>
+            <i class="fa-solid fa-trophy text-3xl text-cyan-400/20"></i>
         </div>
 
-        <div class="step">
-            <h3>3. Вакуумирование</h3>
-            <p>Минимум 15 минут работы насоса, чтобы удалить всю невидимую влагу из системы.</p>
-            <div class="neon-media">
-                <!-- GIF: Vacuum pump with gauges -->
-                <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3hmd2d4Ynh6bHpsYm9ueHZyMyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/l0HlS1l2kH7X6f584/giphy.gif" alt="Vacuuming">
+        <!-- 2. CALCULATOR -->
+        <section id="calc" class="space-y-6">
+            <div class="flex justify-between items-end">
+                <h2 class="text-2xl font-black italic uppercase tracking-tighter">1. Расчет <span class="text-cyan-400">BTU</span></h2>
+                <span class="status-badge">Smart Logic</span>
             </div>
-        </div>
-    </section>
+            <div class="glass p-8 bento-card space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div><label class="text-[10px] font-bold uppercase opacity-40">Площадь (м2)</label><input type="number" id="area" oninput="updateMastery()" placeholder="20"></div>
+                    <div><label class="text-[10px] font-bold uppercase opacity-40">Высота (м)</label><input type="number" id="height" oninput="updateMastery()" placeholder="2.7"></div>
+                </div>
+                <button class="main-btn" onclick="runCalc()">Узнать результат</button>
+                <div id="resBox" class="hidden p-6 rounded-2xl bg-cyan-400/5 border border-cyan-400/20 text-center animate-pulse">
+                    <p class="text-[10px] font-bold uppercase text-cyan-400">Нужная мощность:</p>
+                    <h4 id="resVal" class="text-4xl font-black my-2">0 кВт</h4>
+                    <p id="resDesc" class="text-xs italic text-gray-400"></p>
+                </div>
+            </div>
+        </section>
 
-    <!-- 6. LEAK TEST -->
-    <section class="section" id="leak">
-        <h2 class="section-title">6. Тест на <span class="neon-text">Герметичность</span></h2>
-        <div class="glass-card timer-container">
-            <div id="timerDisplay">20:00</div>
-            <button class="btn-main" id="timerBtn" onclick="startTimer()" style="max-width: 250px;">Запустить таймер</button>
-            <button onclick="showBubbleFix()" style="background: none; border: 1px solid var(--accent); color: var(--accent); padding: 10px 20px; border-radius: 50px; margin-top: 20px; font-weight: 800; cursor: pointer;">🚨 ИДУТ ПУЗЫРИ!</button>
-        </div>
-    </section>
+        <!-- 3. TOOLS CHECKLIST -->
+        <section id="tools" class="space-y-6">
+            <h2 class="text-2xl font-black italic uppercase tracking-tighter">2. Экипировка</h2>
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                <div class="glass p-4 bento-card flex flex-col items-center gap-2 cursor-pointer border border-white/5" onclick="checkTool(this)">
+                    <i class="fa-solid fa-hammer text-lg text-gray-500"></i>
+                    <span class="text-[10px] font-bold uppercase">Перфоратор</span>
+                </div>
+                <div class="glass p-4 bento-card flex flex-col items-center gap-2 cursor-pointer" onclick="checkTool(this)">
+                    <i class="fa-solid fa-scissors text-lg text-gray-500"></i>
+                    <span class="text-[10px] font-bold uppercase">Труборез</span>
+                </div>
+                <div class="glass p-4 bento-card flex flex-col items-center gap-2 cursor-pointer" onclick="checkTool(this)">
+                    <i class="fa-solid fa-expand text-lg text-gray-500"></i>
+                    <span class="text-[10px] font-bold uppercase">Вальцовка</span>
+                </div>
+                <div class="glass p-4 bento-card flex flex-col items-center gap-2 cursor-pointer" onclick="checkTool(this)">
+                    <i class="fa-solid fa-wind text-lg text-gray-500"></i>
+                    <span class="text-[10px] font-bold uppercase">Вакуумник</span>
+                </div>
+                <div class="glass p-4 bento-card flex flex-col items-center gap-2 cursor-pointer" onclick="checkTool(this)">
+                    <i class="fa-solid fa-ruler-combined text-lg text-gray-500"></i>
+                    <span class="text-[10px] font-bold uppercase">Уровень</span>
+                </div>
+                <div class="glass p-4 bento-card flex flex-col items-center gap-2 cursor-pointer" onclick="checkTool(this)">
+                    <i class="fa-solid fa-wrench text-lg text-gray-500"></i>
+                    <span class="text-[10px] font-bold uppercase">Ключи</span>
+                </div>
+            </div>
+        </section>
 
-    <!-- MODAL BUBBLE FIX -->
-    <div class="modal" id="bubbleModal">
-        <div class="modal-content">
-            <h2 style="color: var(--accent);">Утечка! 🛑</h2>
-            <p style="margin: 20px 0; text-align: left; font-size: 0.9rem;">1. Подтяните гайку ключом.<br>2. Если не помогло — перевальцуйте трубу.<br>3. Не запускайте фреон, пока пузыри не исчезнут.</p>
-            <button class="btn-main" onclick="closeModal()">Я исправил</button>
-        </div>
-    </div>
+        <!-- 4. GUIDE WITH LOGICAL GIFS -->
+        <section id="guide" class="space-y-10">
+            <h2 class="text-2xl font-black italic uppercase tracking-tighter text-center">3. Процесс <span class="text-cyan-400">Монтажа</span></h2>
+            
+            <div class="space-y-4">
+                <div class="flex gap-4 items-start">
+                    <div class="w-8 h-8 rounded-full bg-cyan-400 text-black flex items-center justify-center font-black shrink-0">1</div>
+                    <div class="space-y-3">
+                        <h3 class="font-bold text-lg">Сверление отверстия</h3>
+                        <p class="text-gray-400 text-xs leading-relaxed">Используйте бур 45-55мм. Бурите с наклоном 5 градусов на улицу, чтобы конденсат уходил самотеком.</p>
+                        <div class="media-box neon-border">
+                            <img src="https://media.giphy.com/media/l41lO6pCO9vUfIK0o/giphy.gif" alt="Сверление">
+                        </div>
+                    </div>
+                </div>
 
-    <footer>&copy; 2024 COOLINSTALL ELITE — BELARUS MASTER STANDARDS</footer>
+                <div class="flex gap-4 items-start">
+                    <div class="w-8 h-8 rounded-full bg-cyan-400 text-black flex items-center justify-center font-black shrink-0">2</div>
+                    <div class="space-y-3">
+                        <h3 class="font-bold text-lg">Вальцовка меди</h3>
+                        <p class="text-gray-400 text-xs leading-relaxed">Обрежьте трубу, снимите заусенцы. Сделайте "юбку" вальцовкой. Края должны быть ровными и без трещин.</p>
+                        <div class="media-box neon-border">
+                            <img src="https://media.giphy.com/media/3o7TKVUn7iM8FMEU24/giphy.gif" alt="Вальцовка">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex gap-4 items-start">
+                    <div class="w-8 h-8 rounded-full bg-cyan-400 text-black flex items-center justify-center font-black shrink-0">3</div>
+                    <div class="space-y-3">
+                        <h3 class="font-bold text-lg">Вакуумирование</h3>
+                        <p class="text-gray-400 text-xs leading-relaxed">Подключите насос на 15-20 минут. Это удалит воздух и влагу, которые убивают компрессор.</p>
+                        <div class="media-box neon-border">
+                            <img src="https://media.giphy.com/media/l0HlS1l2kH7X6f584/giphy.gif" alt="Вакуум">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. RED ZONE -->
+        <section class="glass p-8 bento-card border-t-8 border-danger">
+            <h2 class="text-danger font-black text-2xl italic uppercase tracking-tighter mb-4">Критическая зона</h2>
+            <div class="space-y-4 text-xs italic text-gray-300">
+                <p>● <b>Залом трубы:</b> Если перегнуть медь, фреон не пройдет. Блок сгорит.</p>
+                <p>● <b>Уровень:</b> Без уклона вода потечет внутрь комнаты по стене.</p>
+                <p>● <b>Гайки:</b> Не перетягивайте их "со всей силы", медь может лопнуть.</p>
+            </div>
+        </section>
+
+        <footer class="text-center py-10 opacity-20 text-[10px] font-bold uppercase tracking-widest">
+            &copy; 2024 COOLINSTALL ELITE | CIS STANDARD
+        </footer>
+
+    </main>
+
+    <nav class="glass neon-border">
+        <a href="#calc" class="nav-link active"><i class="fa-solid fa-calculator"></i></a>
+        <a href="#tools" class="nav-link"><i class="fa-solid fa-toolbox"></i></a>
+        <a href="#guide" class="nav-link"><i class="fa-solid fa-list-check"></i></a>
+    </nav>
 
     <script>
-        function updateTemp() { document.getElementById('tempVal').innerText = document.getElementById('tempKnob').value + '°C'; }
-
-        function calculateElite() {
-            const area = parseFloat(document.getElementById('area').value);
-            const power = (area / 10) * parseFloat(document.getElementById('height').value / 2.7) * parseFloat(document.getElementById('material').value) * parseFloat(document.getElementById('sun').value);
-            const btu = power * 3412;
-            document.getElementById('resultBox').style.display = 'block';
-            document.getElementById('resultVal').innerText = power.toFixed(2) + ' кВт';
-            document.getElementById('btuVal').innerText = Math.round(btu) + ' BTU';
-            document.getElementById('explanation').innerText = power < 2.6 ? "Рекомендуем 7-ку." : power < 3.6 ? "Рекомендуем 9-ку." : "Рекомендуем 12-ку.";
+        function updateMastery() {
+            let points = 0;
+            if(document.getElementById('area').value > 0) points += 20;
+            const checked = document.querySelectorAll('.tool-item-checked').length;
+            points += (checked * 10);
+            if(points > 100) points = 100;
+            
+            document.getElementById('pBar').style.width = points + '%';
+            document.getElementById('masteryText').innerText = points + '%';
         }
 
-        const acData = {
-            split: { pros: ["Тишина", "Экономия"], cons: ["Монтаж в стену"] },
-            multi: { pros: ["1 блок на 2 комнаты"], cons: ["Дорого"] },
-            floor: { pros: ["Мощный обдув"], cons: ["Занимает место"] },
-            mobile: { pros: ["Без монтажа"], cons: ["Очень шумно"] }
-        };
-
-        function selectType(type, el) {
-            document.querySelectorAll('.type-card').forEach(c => c.classList.remove('active'));
-            el.classList.add('active');
-            document.getElementById('prosList').innerHTML = "<b>Плюсы:</b><br>• " + acData[type].pros.join('<br>• ');
-            document.getElementById('consList').innerHTML = "<b>Минусы:</b><br>• " + acData[type].cons.join('<br>• ');
-            document.getElementById('prosCons').style.display = 'grid';
+        function checkTool(el) {
+            el.classList.toggle('tool-item-checked');
+            el.classList.toggle('neon-border');
+            const icon = el.querySelector('i');
+            if(el.classList.contains('tool-item-checked')) {
+                icon.style.color = '#00f2ff';
+            } else {
+                icon.style.color = '#555';
+            }
+            updateMastery();
         }
 
-        function toggleTool(el, idx) {
-            el.classList.toggle('checked');
-            const tools = document.querySelectorAll('.tool-item');
-            document.getElementById('toolWarn').style.display = tools[4].classList.contains('checked') ? 'none' : 'block';
+        function runCalc() {
+            const a = document.getElementById('area').value;
+            const h = document.getElementById('height').value || 2.7;
+            if(!a) return alert("Введите площадь!");
+            
+            const power = (a / 10) * (h / 2.7);
+            const box = document.getElementById('resBox');
+            box.classList.remove('hidden');
+            document.getElementById('resVal').innerText = power.toFixed(1) + " кВт";
+            
+            let btu = power < 2.5 ? "7000 (Семерка)" : power < 3.5 ? "9000 (Девятка)" : "12000 (Двенадцатка)";
+            document.getElementById('resDesc').innerText = "Вам нужна модель " + btu;
+            updateMastery();
         }
 
-        let timer;
-        function startTimer() {
-            let time = 1200;
-            const btn = document.getElementById('timerBtn');
-            if (timer) { clearInterval(timer); timer = null; btn.innerText = "Начать заново"; return; }
-            timer = setInterval(() => {
-                let m = Math.floor(time/60), s = time%60;
-                document.getElementById('timerDisplay').innerText = `${m}:${s<10?'0':''}${s}`;
-                if(time-- <= 0) clearInterval(timer);
-            }, 1000);
-            btn.innerText = "Стоп";
-        }
-
-        function showBubbleFix() { document.getElementById('bubbleModal').style.display = 'flex'; }
-        function closeModal() { document.getElementById('bubbleModal').style.display = 'none'; }
+        // Плавная навигация
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.onclick = (e) => {
+                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+            }
+        });
     </script>
 </body>
 </html>
