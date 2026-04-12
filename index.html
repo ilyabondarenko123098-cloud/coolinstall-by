@@ -3,184 +3,292 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CoolInstall v2.0 | СНГ Самостоятельный Монтаж</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>HVAC Expert Pro | Belarus Edition</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
-        :root { --safety-yellow: #facc15; --bg-dark: #0a0a0a; --card-dark: #141414; }
-        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: #fff; line-height: 1.5; -webkit-tap-highlight-color: transparent; }
-        
-        .p-header { position: fixed; top: 0; left: 0; right: 0; background: #000; z-index: 2000; padding: 15px 20px; border-bottom: 2px solid #222; }
-        .p-track { width: 100%; height: 6px; background: #1a1a1a; border-radius: 3px; margin-top: 8px; overflow: hidden; }
-        .p-bar { width: 0%; height: 100%; background: var(--safety-yellow); transition: 0.6s ease; }
+        :root {
+            --primary: #2c3e50;
+            --accent: #27ae60;
+            --danger: #e74c3c;
+            --rb-red: #cc0000;
+            --light: #ecf0f1;
+        }
 
-        .step-section { display: none; animation: slideUp 0.4s ease; }
-        .step-section.active { display: block; }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            color: var(--primary);
+        }
 
-        .industrial-card { background: var(--card-dark); border: 1px solid #222; border-radius: 12px; padding: 20px; margin-bottom: 15px; border-left: 4px solid var(--safety-yellow); }
-        .btn-safety { background: var(--safety-yellow); color: #000; font-weight: 900; border-radius: 8px; padding: 16px; width: 100%; border: none; text-transform: uppercase; cursor: pointer; transition: 0.3s; }
-        .btn-safety:hover { filter: brightness(1.1); }
+        .app-header {
+            background: var(--primary);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-bottom: 5px solid var(--rb-red);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
 
-        input, select { background: #000; border: 1px solid #333; border-radius: 6px; padding: 12px; color: #fff; width: 100%; margin-top: 5px; }
-        .check-item { display: flex; align-items: center; gap: 10px; font-size: 0.8rem; color: #aaa; margin-bottom: 8px; }
+        .status-bar {
+            background: #dfe6e9;
+            padding: 5px 15px;
+            font-size: 0.8rem;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .main-content {
+            padding: 15px;
+            max-width: 800px;
+            margin: auto;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .card h3 {
+            margin-top: 0;
+            border-bottom: 2px solid var(--light);
+            padding-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--light);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        /* Таймер в стиле приборной панели */
+        .timer-container {
+            text-align: center;
+            padding: 30px 0;
+            background: #2d3436;
+            border-radius: 12px;
+            color: #55efc4;
+            margin: 15px 0;
+        }
+
+        #timer {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 4rem;
+            text-shadow: 0 0 15px #55efc4;
+        }
+
+        .btn-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: transform 0.1s, opacity 0.3s;
+        }
+
+        .btn:active { transform: scale(0.98); }
+        .btn-primary { background: var(--accent); color: white; }
+        .btn-secondary { background: var(--primary); color: white; }
+        .btn-outline { background: transparent; border: 2px solid var(--primary); color: var(--primary); }
+
+        .legal-notice {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 15px;
+            font-size: 0.85rem;
+            margin-top: 20px;
+        }
+
+        .hidden { display: none; }
+
+        @media (max-width: 480px) {
+            #timer { font-size: 3rem; }
+        }
     </style>
 </head>
-<body class="pt-28 pb-10 px-4 md:max-w-2xl md:mx-auto">
+<body>
 
-    <div class="p-header">
-        <div class="flex justify-between items-center">
-            <h1 class="text-xs font-black tracking-widest text-yellow-500 uppercase">CoolInstall <span class="text-white">v2.0</span></h1>
-            <span id="percentLabel" class="text-lg font-black text-yellow-500">0%</span>
+<div class="app-header">
+    <i class="fas fa-snowflake fa-2x"></i>
+    <h1 style="margin: 10px 0 0 0; font-size: 1.5rem;">HVAC BELARUS PRO</h1>
+</div>
+
+<div class="status-bar">
+    <span id="date-display"></span>
+    <span>Версия 2.0.4 (RB)</span>
+</div>
+
+<div class="main-content">
+    
+    <div class="card" id="step1">
+        <h3><i class="fas fa-file-invoice"></i> Данные объекта</h3>
+        <div class="input-group">
+            <label>ФИО Заказчика / Организация</label>
+            <input type="text" id="client" placeholder="Иванов И.И.">
         </div>
-        <div class="p-track"><div class="p-bar" id="pBar"></div></div>
+        <div class="input-group">
+            <label>Адрес (РБ)</label>
+            <input type="text" id="address" placeholder="Минск, пр. Независимости, 1">
+        </div>
+        <div class="input-group">
+            <label>УНП исполнителя (для акта)</label>
+            <input type="number" id="unp" placeholder="123456789">
+        </div>
+        <button class="btn btn-primary" style="width: 100%;" onclick="toStep(2)">Далее: Вакуумирование <i class="fas fa-arrow-right"></i></button>
     </div>
 
-    <div id="s0" class="step-section active space-y-4">
-        <h2 class="text-xl font-black uppercase italic">00. Подготовка и Закон РБ</h2>
-        <div class="industrial-card border-blue-500">
-            <h3 class="text-blue-500 font-bold text-sm mb-2 uppercase">Легализация (Пост. №384)</h3>
-            <p class="text-[11px] text-gray-400 italic">В РБ установка на фасад требует согласования. Сходи в "Одно окно" исполкома с паспортом. Это <b>бесплатно</b> и занимает 15 дней. Без этого — штраф до 15 б.в.</p>
+    <div class="card hidden" id="step2">
+        <h3><i class="fas fa-tachometer-alt"></i> Вакуумирование</h3>
+        <div class="timer-container">
+            <div id="timer">15:00</div>
+            <div style="font-size: 0.8rem; color: #aaa;">УДАЛЕНИЕ ВЛАГИ ИЗ КОНТУРА</div>
         </div>
-        <div class="industrial-card">
-            <h3 class="text-yellow-500 font-bold text-sm mb-2 uppercase">Твой набор для аренды</h3>
-            <div class="space-y-2">
-                <label class="check-item"><input type="checkbox"> Перфоратор SDS-Max (Бур 45-55мм)</label>
-                <label class="check-item"><input type="checkbox"> Вакуумный насос + манометры</label>
-                <label class="check-item"><input type="checkbox"> Набор вальцовок + ример</label>
-            </div>
-            <p class="text-[10px] mt-4 text-green-500 font-bold uppercase text-center">Экономия на инструменте: ~600 BYN (при аренде)</p>
-        </div>
-        <button class="btn-safety" onclick="next(1, 20, 'Planning')">Инструмент готов, погнали</button>
-    </div>
-
-    <div id="s1" class="step-section space-y-4">
-        <h2 class="text-xl font-black uppercase italic">01. Точный расчет</h2>
-        <div class="industrial-card">
-            <div class="grid grid-cols-2 gap-3 mb-4">
-                <div><label class="text-[10px] uppercase font-bold text-gray-500">Площадь (м²)</label><input type="number" id="area" placeholder="20"></div>
-                <div><label class="text-[10px] uppercase font-bold text-gray-500">Потолок (м)</label><input type="number" id="height" value="2.7"></div>
-            </div>
-            <label class="text-[10px] uppercase font-bold text-gray-500">Тип стен</label>
-            <select id="wall">
-                <option value="1">Кирпич / Бетон (Стандарт)</option>
-                <option value="1.3">Панелька / Южная сторона</option>
-                <option value="0.8">Дерево / Газобетон</option>
-            </select>
-            <button class="btn-safety mt-6" onclick="calculate()">Рассчитать мощность</button>
-        </div>
-        <div id="resBox" class="hidden industrial-card border-green-500 animate-pulse">
-            <p class="text-center font-black text-lg" id="resText"></p>
-            <p class="text-[10px] text-center text-gray-400 mt-2">Рекомендуем брать инверторный тип для экономии энергии в РБ.</p>
-            <button class="btn-safety mt-4" onclick="next(2, 40, 'Shopping')">К списку покупок</button>
+        <div class="btn-grid">
+            <button class="btn btn-primary" onclick="toggleTimer()" id="timerBtn"><i class="fas fa-play"></i> Старт</button>
+            <button class="btn btn-outline" onclick="toStep(3)">Пропустить <i class="fas fa-forward"></i></button>
         </div>
     </div>
 
-    <div id="s2" class="step-section space-y-4">
-        <h2 class="text-xl font-black uppercase italic">02. Смета материалов</h2>
-        <div class="industrial-card font-mono text-xs space-y-2">
-            <p>● Труба медь 1/4 (от 3м) - 45 BYN</p>
-            <p>● Труба медь 3/8 (от 3м) - 75 BYN</p>
-            <p>● Изоляция (K-Flex) - 15 BYN</p>
-            <p>● Кронштейны (450мм) - 25 BYN</p>
-            <p>● Кабель 4х1.5 ПВС - 12 BYN</p>
-            <hr class="border-gray-800 my-2">
-            <p class="text-yellow-500 font-bold">Итого расходники: ~170 BYN</p>
+    <div class="card hidden" id="step3">
+        <h3><i class="fas fa-tools"></i> Пуск и наладка</h3>
+        <div class="input-group">
+            <label>Давление на всасывании (Bar)</label>
+            <input type="number" step="0.1" id="press" placeholder="8.5">
         </div>
-        <div class="p-4 bg-red-900/20 border border-red-500/50 rounded-lg text-[11px] italic">
-            <b>PRO-TIP:</b> Не покупай медь в строймаркетах. Ищи спец. фирмы "Холод-комплект" в твоем городе. Там медь отдают в нарезку дешевле на 30%.
+        <div class="input-group">
+            <label>Температура на выходе (°C)</label>
+            <input type="number" id="temp" placeholder="7">
         </div>
-        <button class="btn-safety" onclick="next(3, 60, 'Hardware')">Всё купил, начинаю монтаж</button>
+        <div class="input-group">
+            <label>Комментарий / Модель</label>
+            <textarea id="model" rows="2"></textarea>
+        </div>
+        
+        <button class="btn btn-primary" style="width: 100%; margin-bottom: 10px;" onclick="savePDF()">
+            <i class="fas fa-file-pdf"></i> СФОРМИРОВАТЬ АКТ (PDF)
+        </button>
+        <button class="btn btn-outline" style="width: 100%;" onclick="location.reload()">Новый заказ</button>
     </div>
 
-    <div id="s3" class="step-section space-y-4">
-        <h2 class="text-xl font-black uppercase italic">03. Монтаж: Инструкция</h2>
-        <div class="space-y-3">
-            <div class="industrial-card">
-                <p class="font-black text-yellow-500 text-xs uppercase">1. Внутренний блок</p>
-                <p class="text-[11px] text-gray-400">Строго по уровню! Отступ от потолка — 15 см (для забора воздуха). Если будет криво — потечет конденсат на обои.</p>
-            </div>
-            <div class="industrial-card">
-                <p class="font-black text-yellow-500 text-xs uppercase">2. Трасса и бурение</p>
-                <p class="text-[11px] text-gray-400">Бей отверстие под уклоном 5° вниз к улице. Это закон гравитации для слива воды.</p>
-            </div>
-            <div class="industrial-card">
-                <p class="font-black text-yellow-500 text-xs uppercase">3. Вальцовка</p>
-                <p class="text-[11px] text-gray-400">Снимай фаску римером (ножом вниз!). Медь должна быть идеально ровной, без зазубрин.</p>
-            </div>
-        </div>
-        <button class="btn-safety" onclick="next(4, 80, 'Testing')">Трасса готова. Проверяем</button>
+    <div class="legal-notice">
+        <strong>ВНИМАНИЕ:</strong> Согласно Постановлению Совмина РБ №384, установка кондиционера на фасадах жилых домов требует предварительного согласования с местным исполнительным органом.
     </div>
+</div>
 
-    <div id="s4" class="step-section space-y-4">
-        <h2 class="text-xl font-black uppercase italic text-red-500">04. Пуск и Наладка</h2>
-        <div class="industrial-card text-center">
-            <p class="text-[11px] uppercase text-gray-500 mb-4 tracking-widest">Процесс вакуумации (15 мин)</p>
-            <div id="timer" class="text-6xl font-black mb-4 tabular-nums">15:00</div>
-            <button id="tBtn" class="btn-safety" onclick="startTimer()">Запустить вакуум</button>
-        </div>
-        <div class="p-4 bg-yellow-500/10 border border-yellow-500/30 rounded-lg text-[10px] text-gray-400">
-            <b>ВНИМАНИЕ:</b> Не открывай краны внешнего блока, пока стрелка манометра не уйдет в "-1". Влага в системе — смерть компрессора через год.
-        </div>
-        <button id="nextToQuiz" class="btn-safety hidden" onclick="next(5, 95, 'Certification')">Вакуум в норме. Экзамен</button>
-    </div>
+<script>
+    // Автоматическая дата
+    document.getElementById('date-display').innerText = new Date().toLocaleDateString();
 
-    <div id="s5" class="step-section space-y-4 text-center">
-        <h2 class="text-2xl font-black text-yellow-500 uppercase">Поздравляем!</h2>
-        <div class="industrial-card">
-            <p class="text-sm italic">Ты только что сэкономил около <b>350-500 BYN</b> на услугах монтажников. Твой кондиционер готов к работе.</p>
-            <div class="mt-6 p-4 border-2 border-dashed border-yellow-500 rounded">
-                <p class="text-[10px] uppercase font-bold text-gray-500">Статус:</p>
-                <p class="text-2xl font-black text-white">CLIMATE MASTER</p>
-            </div>
-        </div>
-        <button class="btn-safety" onclick="location.reload()">Начать новый проект</button>
-    </div>
+    let time = 15 * 60;
+    let timerRunning = false;
+    let interval;
 
-    <script>
-        function next(step, pct, label) {
-            document.querySelectorAll('.step-section').forEach(s => s.classList.remove('active'));
-            document.getElementById('s' + step).classList.add('active');
-            document.getElementById('pBar').style.width = pct + '%';
-            document.getElementById('percentLabel').innerText = pct + '%';
-            window.scrollTo(0, 0);
-        }
+    function toStep(n) {
+        document.querySelectorAll('.card').forEach(c => c.classList.add('hidden'));
+        document.getElementById('step' + n).classList.remove('hidden');
+        window.scrollTo(0,0);
+    }
 
-        function calculate() {
-            const s = document.getElementById('area').value;
-            const h = document.getElementById('height').value;
-            const w = document.getElementById('wall').value;
-            if(!s) return alert("Введите площадь!");
-            
-            const btu = (s * h * 35 * w) * 3.41;
-            let model = "";
-            if(btu <= 7500) model = "7000 BTU (07)";
-            else if(btu <= 9500) model = "9000 BTU (09)";
-            else if(btu <= 12500) model = "12000 BTU (12)";
-            else model = "18000+ BTU";
-
-            document.getElementById('resBox').classList.remove('hidden');
-            document.getElementById('resText').innerText = "Твоя мощность: " + model;
-        }
-
-        function startTimer() {
-            let t = 900;
-            document.getElementById('tBtn').disabled = true;
-            document.getElementById('tBtn').innerText = "ОТКАЧКА ВОЗДУХА...";
-            let itv = setInterval(() => {
-                let m = Math.floor(t/60), s = t%60;
-                document.getElementById('timer').innerText = `${m}:${s < 10 ? '0' : ''}${s}`;
-                if(t-- <= 0) {
-                    clearInterval(itv);
-                    document.getElementById('timer').innerText = "ГОТОВО";
-                    document.getElementById('timer').style.color = "#4ade80";
-                    document.getElementById('nextToQuiz').classList.remove('hidden');
-                    confetti({ particleCount: 150, spread: 60 });
+    function toggleTimer() {
+        const btn = document.getElementById('timerBtn');
+        if (!timerRunning) {
+            timerRunning = true;
+            btn.innerHTML = '<i class="fas fa-pause"></i> Пауза';
+            interval = setInterval(() => {
+                time--;
+                updateTimerDisplay();
+                if (time <= 0) {
+                    clearInterval(interval);
+                    toStep(3);
                 }
             }, 1000);
+        } else {
+            timerRunning = false;
+            clearInterval(interval);
+            btn.innerHTML = '<i class="fas fa-play"></i> Старт';
         }
-    </script>
+    }
+
+    function updateTimerDisplay() {
+        let m = Math.floor(time / 60);
+        let s = time % 60;
+        document.getElementById('timer').innerText = `${m}:${s < 10 ? '0' : ''}${s}`;
+    }
+
+    function savePDF() {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        
+        const client = document.getElementById('client').value || 'Не указан';
+        const addr = document.getElementById('address').value || 'Не указан';
+        const unp = document.getElementById('unp').value || '---';
+        const p = document.getElementById('press').value || '-';
+        const t = document.getElementById('temp').value || '-';
+        const m = document.getElementById('model').value || 'Стандарт';
+
+        doc.setFont("helvetica", "bold");
+        doc.text("АКТ ПУСКО-НАЛАДОЧНЫХ РАБОТ (РБ)", 105, 20, { align: "center" });
+        
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(10);
+        doc.text(`Дата: ${new Date().toLocaleDateString()}`, 20, 40);
+        doc.text(`УНП Исполнителя: ${unp}`, 20, 50);
+        doc.text(`Заказчик: ${client}`, 20, 60);
+        doc.text(`Адрес: ${addr}`, 20, 70);
+        
+        doc.line(20, 75, 190, 75);
+        
+        doc.text("ТЕХНИЧЕСКИЕ ПАРАМЕТРЫ:", 20, 85);
+        doc.text(`Модель: ${m}`, 25, 95);
+        doc.text(`Рабочее давление: ${p} Bar`, 25, 105);
+        doc.text(`Температура на выходе: ${t} C`, 25, 115);
+        
+        doc.text("Заключение: Система герметична, параметры в норме.", 20, 130);
+        doc.setFontSize(8);
+        doc.text("Работы выполнены согласно Постановлению СМ РБ №384.", 20, 140);
+        
+        doc.text("Подпись исполнителя: ___________________", 20, 160);
+        doc.text("Подпись заказчика: ___________________", 120, 160);
+
+        doc.save(`Akt_HVAC_${client}.pdf`);
+    }
+</script>
+
 </body>
 </html>
