@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CoolInstall Elite — Экспертная система монтажа AC</title>
+    <title>CoolInstall Elite — Expert AC System</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -11,366 +11,190 @@
             --primary: #00d2ff;
             --primary-dark: #007aff;
             --accent: #ff4d4d;
-            --warning: #facc15;
             --success: #00ffaa;
-            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            --bg: #030712;
             --glass: rgba(255, 255, 255, 0.03);
             --glass-border: rgba(255, 255, 255, 0.1);
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; scroll-behavior: smooth; }
 
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background: var(--bg-gradient);
-            background-attachment: fixed;
-            color: var(--text-main);
-            min-height: 100vh;
+            background: var(--bg);
+            color: #f8fafc;
             line-height: 1.6;
             overflow-x: hidden;
         }
 
+        /* Анимированный фон Hero */
+        .hero-bg {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 50% 50%, rgba(0, 210, 255, 0.1) 0%, transparent 70%);
+            z-index: -1; animation: pulse 8s infinite alternate;
+        }
+        @keyframes pulse { from { opacity: 0.3; } to { opacity: 1; } }
+
         header {
-            position: sticky; top: 0; z-index: 1000; padding: 1.2rem 5%;
+            position: sticky; top: 0; z-index: 1000; padding: 1rem 5%;
             display: flex; justify-content: space-between; align-items: center;
-            background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(15px);
+            background: rgba(3, 7, 18, 0.8); backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--glass-border);
         }
 
-        .logo {
-            font-size: 1.4rem; font-weight: 800;
-            background: linear-gradient(to right, var(--primary), var(--primary-dark));
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            display: flex; align-items: center; gap: 10px;
-        }
+        .logo { font-size: 1.4rem; font-weight: 800; color: var(--primary); text-transform: uppercase; letter-spacing: 2px; }
 
-        nav a {
-            text-decoration: none; color: var(--text-main); margin-left: 15px;
-            font-weight: 600; font-size: 0.8rem; transition: 0.3s; opacity: 0.7;
-            text-transform: uppercase; letter-spacing: 1px;
-        }
-
-        nav a:hover { opacity: 1; color: var(--primary); }
-
-        .hero { padding: 80px 5% 40px; text-align: center; max-width: 900px; margin: 0 auto; }
-        .hero h1 { font-size: 3rem; font-weight: 800; line-height: 1.1; margin-bottom: 20px; letter-spacing: -1.5px; }
-        .hero p { color: var(--text-muted); font-size: 1.1rem; }
-
-        .section { padding: 40px 5%; max-width: 1100px; margin: 0 auto; }
+        .section { padding: 60px 5%; max-width: 1000px; margin: 0 auto; }
         .glass-card {
-            background: var(--glass); backdrop-filter: blur(15px);
-            border: 1px solid var(--glass-border); border-radius: 32px;
-            padding: 35px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
-            margin-bottom: 40px;
+            background: var(--glass); border: 1px solid var(--glass-border);
+            border-radius: 30px; padding: 30px; backdrop-filter: blur(10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5); margin-bottom: 40px;
         }
 
-        .section-title { text-align: center; margin-bottom: 30px; font-size: 1.8rem; font-weight: 800; italic; text-transform: uppercase; letter-spacing: 1px;}
+        .section-title { text-align: center; margin-bottom: 40px; font-weight: 800; font-size: 2rem; letter-spacing: -1px; }
+        .neon-text { color: var(--primary); text-shadow: 0 0 10px rgba(0, 210, 255, 0.5); }
 
-        /* TOOLS CHECKLIST */
-        .tool-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; }
-        .tool-item {
-            background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border);
-            padding: 20px; border-radius: 20px; cursor: pointer; transition: 0.3s;
-            display: flex; flex-direction: column; align-items: center; text-align: center;
+        /* NEON GIF BOX */
+        .neon-media {
+            width: 100%; border-radius: 20px; overflow: hidden;
+            border: 2px solid var(--primary); margin: 20px 0;
+            box-shadow: 0 0 20px rgba(0, 210, 255, 0.3);
+            position: relative; background: #000;
         }
-        .tool-item i { font-size: 1.5rem; margin-bottom: 10px; color: var(--text-muted); }
-        .tool-item.checked { border-color: var(--success); background: rgba(0, 255, 170, 0.05); }
-        .tool-item.checked i { color: var(--success); }
-        .tool-item span { font-size: 0.75rem; font-weight: 700; }
+        .neon-media img { width: 100%; height: auto; display: block; opacity: 0.8; transition: 0.5s; }
+        .neon-media:hover img { opacity: 1; transform: scale(1.02); }
+        
+        .neon-media::after {
+            content: 'LIVE PREVIEW'; position: absolute; top: 10px; left: 10px;
+            background: var(--primary); color: #000; font-size: 0.6rem; font-weight: 900;
+            padding: 3px 8px; border-radius: 5px;
+        }
 
-        /* RED ZONE: ERRORS */
-        .error-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
-        .error-card {
-            background: rgba(255, 77, 77, 0.05); border: 1px solid rgba(255, 77, 77, 0.2);
-            padding: 25px; border-radius: 24px; position: relative; overflow: hidden;
+        /* Timeline / Guide */
+        .step { position: relative; padding-left: 40px; margin-bottom: 50px; }
+        .step-num {
+            position: absolute; left: 0; top: 0; width: 30px; height: 30px;
+            background: var(--primary); color: #000; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; font-weight: 900;
         }
-        .error-card::before {
-            content: '!'; position: absolute; right: -10px; top: -10px; font-size: 5rem;
-            font-weight: 900; color: rgba(255, 77, 77, 0.1);
-        }
-        .error-card h3 { color: var(--accent); margin-bottom: 10px; font-size: 1.1rem; text-transform: uppercase; }
-        .error-card p { font-size: 0.85rem; color: var(--text-muted); }
+        .step h3 { margin-bottom: 10px; font-size: 1.3rem; }
 
-        /* SOS BUTTON */
-        .sos-btn {
-            position: fixed; bottom: 30px; right: 30px; z-index: 2000;
+        /* SOS Button */
+        .sos-float {
+            position: fixed; bottom: 30px; right: 30px; z-index: 1000;
             background: var(--accent); color: white; width: 60px; height: 60px;
-            border-radius: 50%; display: flex; items-center; justify-content: center;
-            font-size: 1.5rem; box-shadow: 0 10px 25px rgba(255, 77, 77, 0.4);
-            cursor: pointer; transition: 0.4s; text-decoration: none;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            text-decoration: none; box-shadow: 0 0 20px rgba(255, 77, 77, 0.5);
+            animation: bounce 2s infinite;
         }
-        .sos-btn:hover { transform: scale(1.1) rotate(15deg); }
-        .sos-tooltip {
-            position: absolute; right: 75px; background: white; color: black;
-            padding: 8px 15px; border-radius: 10px; font-size: 0.8rem; font-weight: 700;
-            white-space: nowrap; opacity: 0; transition: 0.3s; pointer-events: none;
-        }
-        .sos-btn:hover .sos-tooltip { opacity: 1; transform: translateX(-10px); }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 
-        /* Calculator Styles preserved and polished */
-        .calc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
-        .input-group { display: flex; flex-direction: column; gap: 10px; }
-        label { font-weight: 600; font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+        /* Calculator Styles */
+        .calc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         input, select {
-            padding: 14px; border: 1px solid var(--glass-border); border-radius: 16px;
-            background: rgba(0, 0, 0, 0.3); color: white; font-size: 1rem; transition: 0.3s;
+            width: 100%; padding: 15px; border-radius: 15px; border: 1px solid var(--glass-border);
+            background: rgba(255,255,255,0.05); color: white; outline: none; margin-top: 5px;
         }
-        .calc-btn {
-            width: 100%; margin-top: 30px; padding: 20px;
-            background: linear-gradient(to right, var(--primary), var(--primary-dark));
-            color: white; border: none; border-radius: 18px; font-size: 1.1rem; font-weight: 800;
-            cursor: pointer; transition: 0.3s; box-shadow: 0 10px 20px rgba(0, 122, 255, 0.2);
+        .btn-main {
+            width: 100%; padding: 18px; border-radius: 15px; border: none;
+            background: var(--primary); color: #000; font-weight: 900;
+            text-transform: uppercase; margin-top: 20px; cursor: pointer;
         }
-        .calc-btn:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(0, 122, 255, 0.4); }
-
-        .result-box {
-            margin-top: 30px; padding: 30px; background: rgba(0, 210, 255, 0.05);
-            border: 2px solid var(--primary); border-radius: 24px; text-align: center; display: none;
-            animation: slideUp 0.5s ease;
-        }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
-        .temp-control {
-            display: flex; flex-direction: column; align-items: center; gap: 15px;
-            background: rgba(0,0,0,0.3); padding: 25px; border-radius: 28px; border: 1px solid var(--glass-border);
-        }
-        .knob-value { font-size: 3rem; font-weight: 800; color: var(--primary); text-shadow: 0 0 20px rgba(0, 210, 255, 0.5); }
-        .knob-slider { width: 100%; -webkit-appearance: none; height: 6px; background: #334155; border-radius: 10px; }
-        .knob-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 24px; height: 24px; background: var(--white); border-radius: 50%; border: 4px solid var(--primary); cursor: pointer; }
-
-        /* INSTALLATION TIMELINE */
-        .timeline-item { position: relative; margin-bottom: 30px; padding-left: 50px; }
-        .timeline-dot { position: absolute; left: 0; top: 0; width: 25px; height: 25px; background: var(--primary); border-radius: 50%; box-shadow: 0 0 15px var(--primary); }
-        .timeline-content { background: rgba(255,255,255,0.03); padding: 20px; border-radius: 20px; border: 1px solid var(--glass-border); }
-        .timeline-content h3 { color: var(--primary); font-size: 1rem; margin-bottom: 8px; }
-
-        footer { text-align: center; padding: 40px; color: var(--text-muted); font-size: 0.8rem; }
 
         @media (max-width: 768px) {
+            .calc-grid { grid-template-columns: 1fr; }
             .hero h1 { font-size: 2.2rem; }
-            header { padding: 1rem 5%; }
-            nav { display: none; } /* Mobile menu could be added here */
         }
     </style>
 </head>
 <body>
 
-    <a href="https://t.me/your_link" target="_blank" class="sos-btn">
-        <div class="sos-tooltip">Застряли? Пишите мастеру!</div>
-        <i class="fab fa-telegram-plane"></i>
-    </a>
+    <a href="#" class="sos-float"><i class="fab fa-telegram-plane text-2xl"></i></a>
 
     <header>
-        <div class="logo"><i class="fas fa-snowflake"></i> CoolInstall <span style="font-weight:300">Elite</span></div>
-        <nav>
-            <a href="#calc">Мощность</a>
-            <a href="#tools">Инструмент</a>
-            <a href="#guide">Инструкция</a>
-            <a href="#errors">Ошибки</a>
-        </nav>
+        <div class="logo">COOL<span class="neon-text">INSTALL</span></div>
+        <div style="font-size: 0.7rem; font-weight: 800; opacity: 0.5;">BELARUS PRO</div>
     </header>
 
-    <section class="hero">
-        <div style="display: inline-block; padding: 5px 15px; background: rgba(0, 210, 255, 0.1); border-radius: 10px; color: var(--primary); font-size: 0.7rem; font-weight: 800; margin-bottom: 15px; text-transform: uppercase;">Система экспертной поддержки</div>
-        <h1>Установи кондиционер <br><span style="color: var(--primary);">как профессионал.</span></h1>
-        <p>Мы подготовили все расчеты и чек-листы, чтобы ваш самостоятельный монтаж прошел без поломок и утечек фреона.</p>
+    <section class="section" style="text-align: center; position: relative;">
+        <div class="hero-bg"></div>
+        <h1 style="font-size: 3rem; font-weight: 900; margin-bottom: 20px;">Монтаж без <span class="neon-text">ошибок.</span></h1>
+        <p style="color: #94a3b8;">Интерактивное руководство для тех, кто ставит кондиционер своими руками.</p>
     </section>
 
     <!-- CALCULATOR -->
     <section class="section" id="calc">
-        <h2 class="section-title">1. Расчет мощности</h2>
         <div class="glass-card">
+            <h2 class="section-title">Расчет <span class="neon-text">BTU</span></h2>
             <div class="calc-grid">
-                <div class="input-group">
-                    <label>Площадь комнаты (м²)</label>
+                <div>
+                    <label style="font-size: 0.7rem; font-weight: 800; opacity: 0.5;">ПЛОЩАДЬ (М2)</label>
                     <input type="number" id="area" value="20">
                 </div>
-                <div class="input-group">
-                    <label>Высота потолков (м)</label>
+                <div>
+                    <label style="font-size: 0.7rem; font-weight: 800; opacity: 0.5;">ВЫСОТА ПОТОЛКА</label>
                     <input type="number" id="height" value="2.7">
                 </div>
-                <div class="input-group">
-                    <label>Сторона света</label>
-                    <select id="sun">
-                        <option value="1">Север / Тень</option>
-                        <option value="1.2" selected>Юг / Солнце</option>
-                        <option value="1.4">Панорамное остекление</option>
-                    </select>
-                </div>
             </div>
-
-            <div style="margin-top: 30px; text-align: center;">
-                <label>Желаемый комфорт</label>
-                <div class="temp-control" style="margin-top: 15px;">
-                    <div class="knob-value" id="tempVal">22°C</div>
-                    <input type="range" min="16" max="26" value="22" class="knob-slider" id="tempKnob" oninput="updateTemp()">
-                </div>
-            </div>
-
-            <button class="calc-btn" onclick="calculateElite()">Рассчитать систему</button>
-
-            <div class="result-box" id="resultBox">
-                <p style="font-size: 0.8rem; font-weight: 700; color: var(--primary); text-transform: uppercase;">Рекомендация:</p>
-                <div class="result-val" id="resultVal">0 кВт</div>
-                <p id="btuVal" style="color: var(--text-muted); margin: 10px 0; font-weight: 700;"></p>
-                <div style="padding: 15px; background: rgba(255,255,255,0.03); border-radius: 15px; font-size: 0.85rem; text-align: left; color: var(--text-muted);" id="explanation"></div>
+            <button class="btn-main" onclick="calc()">Получить расчет</button>
+            <div id="res" style="display:none; margin-top: 20px; text-align: center;">
+                <p id="resVal" style="font-size: 2rem; font-weight: 900;"></p>
+                <p id="resDesc" style="font-size: 0.8rem; color: var(--primary);"></p>
             </div>
         </div>
     </section>
 
-    <!-- TOOLS CHECKLIST -->
-    <section class="section" id="tools">
-        <h2 class="section-title">2. Чек-лист инструмента</h2>
-        <div class="glass-card">
-            <p style="text-align: center; margin-bottom: 25px; font-size: 0.9rem; color: var(--text-muted);">Нажмите на инструмент, чтобы отметить его наличие:</p>
-            <div class="tool-grid">
-                <div class="tool-item" onclick="toggleTool(this)">
-                    <i class="fas fa-hammer"></i>
-                    <span>Перфоратор (бур 45+)</span>
-                </div>
-                <div class="tool-item" onclick="toggleTool(this)">
-                    <i class="fas fa-level-up-alt"></i>
-                    <span>Строительный уровень</span>
-                </div>
-                <div class="tool-item" onclick="toggleTool(this)">
-                    <i class="fas fa-scissors"></i>
-                    <span>Труборез для меди</span>
-                </div>
-                <div class="tool-item" onclick="toggleTool(this)">
-                    <i class="fas fa-expand-arrows-alt"></i>
-                    <span>Вальцовка</span>
-                </div>
-                <div class="tool-item" onclick="toggleTool(this)">
-                    <i class="fas fa-wind"></i>
-                    <span>Вакуумный насос</span>
-                </div>
-                <div class="tool-item" onclick="toggleTool(this)">
-                    <i class="fas fa-wrench"></i>
-                    <span>Динамометрический ключ</span>
-                </div>
-            </div>
-            <div id="toolWarn" style="margin-top: 25px; padding: 15px; border-radius: 15px; background: rgba(250, 204, 21, 0.1); color: var(--warning); font-size: 0.8rem; display: none;">
-                <i class="fas fa-exclamation-triangle"></i> <strong>Внимание:</strong> Без вакуумного насоса срок службы компрессора сокращается в 3 раза!
-            </div>
-        </div>
-    </section>
-
-    <!-- RED ZONE -->
-    <section class="section" id="errors">
-        <h2 class="section-title" style="color: var(--accent);">Критическая зона</h2>
-        <div class="error-grid">
-            <div class="error-card">
-                <h3>Залом трассы</h3>
-                <p>Медная трубка — хрупкая. Резкий сгиб без трубогиба создаст "залом", который перекроет ток фреона. Компрессор сгорит через час работы.</p>
-            </div>
-            <div class="error-card">
-                <h3>Уклон дренажа</h3>
-                <p>Внутренний блок должен иметь уклон 1-2 градуса в сторону выхода трубки. Если уклона нет — вода (конденсат) потечет по обоям внутри комнаты.</p>
-            </div>
-            <div class="error-card">
-                <h3>Мусор в трубке</h3>
-                <p>При сверлении и прокладке трассы концы трубок должны быть замотаны скотчем. Любая пыль внутри системы — это абразив, убивающий мотор.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- GUIDE -->
+    <!-- GUIDE WITH GIFS -->
     <section class="section" id="guide">
-        <h2 class="section-title">Порядок действий</h2>
-        <div class="glass-card">
-            <div class="timeline-item">
-                <div class="timeline-dot"></div>
-                <div class="timeline-content">
-                    <h3>1. Монтаж пластины</h3>
-                    <p class="text-sm">Используйте уровень. Ошибка в 5мм приведет к протечке конденсата.</p>
-                </div>
+        <h2 class="section-title">Мастер-класс <span class="neon-text">Инструкция</span></h2>
+        
+        <div class="step">
+            <div class="step-num">1</div>
+            <h3>Вальцовка труб</h3>
+            <p style="color: #94a3b8; font-size: 0.9rem;">Самый важный этап. Медь должна превратиться в идеальную "юбку" для герметичного соединения.</p>
+            <!-- GIF Вальцовки -->
+            <div class="neon-media">
+                <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNGpsYmRxbmphYjBnaHJyNWRwYXh6c2V4Ynl2bTZ6bHpsYm9ueHZyMyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3o7TKVUn7iM8FMEU24/giphy.gif" alt="Flaring process">
             </div>
-            <div class="timeline-item">
-                <div class="timeline-dot"></div>
-                <div class="timeline-content">
-                    <h3>2. Бурение отверстия</h3>
-                    <p class="text-sm">Обязательно под уклоном 3-5 градусов в сторону улицы.</p>
-                </div>
+        </div>
+
+        <div class="step">
+            <div class="step-num">2</div>
+            <h3>Вакуумирование системы</h3>
+            <p style="color: #94a3b8; font-size: 0.9rem;">Удаляем влагу и воздух. Стрелка манометра должна зайти в вакуум на 15-20 минут.</p>
+            <!-- GIF Вакуумации -->
+            <div class="neon-media">
+                <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3hmd2d4Ynh6bHpsYm9ueHZyMyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/l0HlS1l2kH7X6f584/giphy.gif" alt="Vacuum pump">
             </div>
-            <div class="timeline-item">
-                <div class="timeline-dot"></div>
-                <div class="timeline-content">
-                    <h3>3. Вальцовка и Соединение</h3>
-                    <p class="text-sm">Края должны быть зеркальными. Используйте немного холодильного масла на конус.</p>
-                </div>
-            </div>
-            <div class="timeline-item">
-                <div class="timeline-dot"></div>
-                <div class="timeline-content">
-                    <h3>4. Вакуумация (15-20 мин)</h3>
-                    <p class="text-sm">Стрелка манометра должна уйти в -1 бар. Это удаляет влагу.</p>
-                </div>
+        </div>
+
+        <div class="step">
+            <div class="step-num">3</div>
+            <h3>Монтаж внешнего блока</h3>
+            <p style="color: #94a3b8; font-size: 0.9rem;">Установка на кронштейны. Обязательно используйте виброгасители, чтобы шум не шел в стену.</p>
+            <div class="neon-media">
+                <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNXhmd2d4Ynh6bHpsYm9ueHZyMyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/xT9IgK6B7W21bW9pMA/giphy.gif" alt="AC Installation">
             </div>
         </div>
     </section>
 
-    <footer>
-        <p>&copy; 2024 CoolInstall Elite — Технический справочник по монтажу в Беларуси</p>
+    <footer style="text-align: center; padding: 40px; font-size: 0.7rem; opacity: 0.3;">
+        &copy; 2024 COOLINSTALL ELITE BY
     </footer>
 
     <script>
-        function updateTemp() {
-            const val = document.getElementById('tempKnob').value;
-            document.getElementById('tempVal').innerText = val + '°C';
-        }
-
-        function toggleTool(el) {
-            el.classList.toggle('checked');
-            const checkedCount = document.querySelectorAll('.tool-item.checked').length;
-            const warn = document.getElementById('toolWarn');
-            // Если вакуумник не выбран (5-й элемент), показываем варнинг
-            const tools = document.querySelectorAll('.tool-item');
-            if(!tools[4].classList.contains('checked')) {
-                warn.style.display = 'block';
-            } else {
-                warn.style.display = 'none';
-            }
-        }
-
-        function calculateElite() {
-            const area = parseFloat(document.getElementById('area').value);
-            const height = parseFloat(document.getElementById('height').value);
-            const sun = parseFloat(document.getElementById('sun').value);
-            const tempPref = parseInt(document.getElementById('tempKnob').value);
-
-            if (!area || !height) { alert("Заполните базовые параметры!"); return; }
-
-            // Логика: 1кВт на 10м2 + коэффициенты
-            let power = (area / 10) * (height / 2.7) * sun;
+        function calc() {
+            const a = document.getElementById('area').value;
+            const h = document.getElementById('height').value;
+            if(!a) return alert("Введите площадь");
             
-            // Коррекция на температуру
-            const tempDiff = 22 - tempPref;
-            if (tempDiff > 0) power += (power * (tempDiff * 0.04));
-
-            const btu = power * 3412;
-            document.getElementById('resultBox').style.display = 'block';
-            document.getElementById('resultVal').innerText = power.toFixed(2) + ' кВт';
+            const power = (a / 10) * (h / 2.7);
+            document.getElementById('res').style.display = 'block';
+            document.getElementById('resVal').innerText = power.toFixed(1) + " кВт";
             
-            let model = "";
-            let info = "";
-            
-            if(btu < 7500) {
-                model = "7000 BTU (Семерка)";
-                info = "Идеально для спальни. Низкий уровень шума и потребления.";
-            } else if (btu < 10000) {
-                model = "9000 BTU (Девятка)";
-                info = "Стандарт для комнат 20-25м2. Самая популярная модель.";
-            } else {
-                model = "12000 BTU (Двенадцатка)";
-                info = "Для больших залов или солнечных сторон. Требует усиленного кронштейна.";
-            }
-
-            document.getElementById('btuVal').innerText = "Ваша модель: " + model;
-            document.getElementById('explanation').innerHTML = `<strong>Технический совет:</strong> ${info} При выборе материалов в Беларуси ориентируйтесь на медную трубу толщиной стенки не менее 0.81мм (стандарт ASTM B280).`;
-            
-            document.getElementById('resultBox').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            let model = power < 2.5 ? "7000 BTU" : power < 3.5 ? "9000 BTU" : "12000 BTU";
+            document.getElementById('resDesc').innerText = "Вам подойдет модель: " + model;
+            document.getElementById('res').scrollIntoView({behavior:'smooth'});
         }
     </script>
 </body>
