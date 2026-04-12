@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CoolInstall v31.0 | Industrial Master</title>
+    <title>CoolInstall v2.0 | СНГ Самостоятельный Монтаж</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
@@ -12,247 +12,174 @@
         :root { --safety-yellow: #facc15; --bg-dark: #0a0a0a; --card-dark: #141414; }
         body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: #fff; line-height: 1.5; -webkit-tap-highlight-color: transparent; }
         
-        /* Индустриальный прогресс-бар */
-        .p-header { position: fixed; top: 0; left: 0; right: 0; background: #000; z-index: 2000; padding: 20px; border-bottom: 2px solid #222; }
-        .p-track { width: 100%; height: 8px; background: #1a1a1a; border-radius: 4px; margin-top: 10px; overflow: hidden; border: 1px solid #333; }
-        .p-bar { width: 0%; height: 100%; background: var(--safety-yellow); transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 0 15px rgba(250, 204, 21, 0.3); }
+        .p-header { position: fixed; top: 0; left: 0; right: 0; background: #000; z-index: 2000; padding: 15px 20px; border-bottom: 2px solid #222; }
+        .p-track { width: 100%; height: 6px; background: #1a1a1a; border-radius: 3px; margin-top: 8px; overflow: hidden; }
+        .p-bar { width: 0%; height: 100%; background: var(--safety-yellow); transition: 0.6s ease; }
 
-        .step-section { display: none; animation: fadeIn 0.4s ease; }
+        .step-section { display: none; animation: slideUp 0.4s ease; }
         .step-section.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        .industrial-card { background: var(--card-dark); border: 1px solid #222; border-radius: 12px; padding: 25px; margin-bottom: 20px; position: relative; overflow: hidden; }
-        .industrial-card::before { content: ''; position: absolute; left: 0; top: 0; width: 4px; height: 100%; background: var(--safety-yellow); }
+        .industrial-card { background: var(--card-dark); border: 1px solid #222; border-radius: 12px; padding: 20px; margin-bottom: 15px; border-left: 4px solid var(--safety-yellow); }
+        .btn-safety { background: var(--safety-yellow); color: #000; font-weight: 900; border-radius: 8px; padding: 16px; width: 100%; border: none; text-transform: uppercase; cursor: pointer; transition: 0.3s; }
+        .btn-safety:hover { filter: brightness(1.1); }
 
-        .btn-safety { background: var(--safety-yellow); color: #000; font-weight: 900; border-radius: 8px; padding: 18px; width: 100%; border: none; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: 0.2s; }
-        .btn-safety:active { background: #eab308; transform: translateY(2px); }
-
-        input, select { background: #000; border: 2px solid #222; border-radius: 8px; padding: 14px; color: #fff; width: 100%; outline: none; font-weight: bold; }
-        input:focus { border-color: var(--safety-yellow); }
-
-        .temp-display { font-size: 4.5rem; font-weight: 900; color: var(--safety-yellow); text-align: center; line-height: 1; margin: 15px 0; }
-        .slider-safety { width: 100%; -webkit-appearance: none; height: 10px; background: #1a1a1a; border-radius: 5px; outline: none; border: 1px solid #333; }
-        .slider-safety::-webkit-slider-thumb { -webkit-appearance: none; width: 30px; height: 30px; background: var(--safety-yellow); border-radius: 4px; cursor: pointer; }
-
-        /* Модалка ошибок */
-        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 3000; display: none; align-items: center; justify-content: center; padding: 20px; }
-        .modal-content { background: #111; border: 3px solid #ff4444; border-radius: 8px; padding: 30px; max-width: 450px; }
+        input, select { background: #000; border: 1px solid #333; border-radius: 6px; padding: 12px; color: #fff; width: 100%; margin-top: 5px; }
+        .check-item { display: flex; align-items: center; gap: 10px; font-size: 0.8rem; color: #aaa; margin-bottom: 8px; }
     </style>
 </head>
-<body class="pt-32 pb-40 px-6">
+<body class="pt-28 pb-10 px-4 md:max-w-2xl md:mx-auto">
 
-    <!-- PROGRESS HEADER -->
     <div class="p-header">
-        <div class="flex justify-between items-end">
-            <div>
-                <p class="text-[10px] font-black uppercase text-yellow-500 tracking-[3px]">Protocol: <span id="rankLabel">Novice</span></p>
-                <p id="stepTitle" class="text-xs font-bold mt-1 text-gray-400 italic">Stage 1: Planning</p>
-            </div>
-            <span id="percentLabel" class="text-xl font-black text-yellow-500">0%</span>
+        <div class="flex justify-between items-center">
+            <h1 class="text-xs font-black tracking-widest text-yellow-500 uppercase">CoolInstall <span class="text-white">v2.0</span></h1>
+            <span id="percentLabel" class="text-lg font-black text-yellow-500">0%</span>
         </div>
         <div class="p-track"><div class="p-bar" id="pBar"></div></div>
     </div>
 
-    <!-- STAGE 1: CALC -->
-    <div id="s1" class="step-section active space-y-6">
-        <h2 class="text-2xl font-black uppercase italic tracking-tighter underline decoration-yellow-500 underline-offset-8 decoration-4">01. Расчет системы</h2>
-        <div class="industrial-card space-y-6">
-            <div class="grid grid-cols-2 gap-4">
-                <div><label class="text-[10px] font-bold text-gray-500 uppercase">Площадь м²</label><input type="number" id="area" placeholder="20"></div>
-                <div><label class="text-[10px] font-bold text-gray-500 uppercase">Потолок м</label><input type="number" id="height" value="2.7"></div>
+    <div id="s0" class="step-section active space-y-4">
+        <h2 class="text-xl font-black uppercase italic">00. Подготовка и Закон РБ</h2>
+        <div class="industrial-card border-blue-500">
+            <h3 class="text-blue-500 font-bold text-sm mb-2 uppercase">Легализация (Пост. №384)</h3>
+            <p class="text-[11px] text-gray-400 italic">В РБ установка на фасад требует согласования. Сходи в "Одно окно" исполкома с паспортом. Это <b>бесплатно</b> и занимает 15 дней. Без этого — штраф до 15 б.в.</p>
+        </div>
+        <div class="industrial-card">
+            <h3 class="text-yellow-500 font-bold text-sm mb-2 uppercase">Твой набор для аренды</h3>
+            <div class="space-y-2">
+                <label class="check-item"><input type="checkbox"> Перфоратор SDS-Max (Бур 45-55мм)</label>
+                <label class="check-item"><input type="checkbox"> Вакуумный насос + манометры</label>
+                <label class="check-item"><input type="checkbox"> Набор вальцовок + ример</label>
             </div>
-            <div>
-                <label class="text-[10px] font-bold text-gray-500 uppercase">Материал стен дома</label>
-                <select id="wall"><option value="1">Бетон / Кирпич</option><option value="1.3">Дерево / Сруб</option><option value="0.9">Газосиликат</option></select>
+            <p class="text-[10px] mt-4 text-green-500 font-bold uppercase text-center">Экономия на инструменте: ~600 BYN (при аренде)</p>
+        </div>
+        <button class="btn-safety" onclick="next(1, 20, 'Planning')">Инструмент готов, погнали</button>
+    </div>
+
+    <div id="s1" class="step-section space-y-4">
+        <h2 class="text-xl font-black uppercase italic">01. Точный расчет</h2>
+        <div class="industrial-card">
+            <div class="grid grid-cols-2 gap-3 mb-4">
+                <div><label class="text-[10px] uppercase font-bold text-gray-500">Площадь (м²)</label><input type="number" id="area" placeholder="20"></div>
+                <div><label class="text-[10px] uppercase font-bold text-gray-500">Потолок (м)</label><input type="number" id="height" value="2.7"></div>
             </div>
-            <div class="temp-display" id="tVal">22°C</div>
-            <input type="range" min="16" max="28" value="22" class="slider-safety" oninput="updT(this.value)">
-            <button class="btn-safety" onclick="goS2()">Рассчитать и начать закупку</button>
+            <label class="text-[10px] uppercase font-bold text-gray-500">Тип стен</label>
+            <select id="wall">
+                <option value="1">Кирпич / Бетон (Стандарт)</option>
+                <option value="1.3">Панелька / Южная сторона</option>
+                <option value="0.8">Дерево / Газобетон</option>
+            </select>
+            <button class="btn-safety mt-6" onclick="calculate()">Рассчитать мощность</button>
+        </div>
+        <div id="resBox" class="hidden industrial-card border-green-500 animate-pulse">
+            <p class="text-center font-black text-lg" id="resText"></p>
+            <p class="text-[10px] text-center text-gray-400 mt-2">Рекомендуем брать инверторный тип для экономии энергии в РБ.</p>
+            <button class="btn-safety mt-4" onclick="next(2, 40, 'Shopping')">К списку покупок</button>
         </div>
     </div>
 
-    <!-- STAGE 2: ESTIMATE & BYN -->
-    <div id="s2" class="step-section space-y-6">
-        <h2 class="text-2xl font-black uppercase italic tracking-tighter underline decoration-yellow-500 underline-offset-8 decoration-4">02. Смета материалов</h2>
-        <div class="industrial-card space-y-4">
-            <div class="p-4 bg-yellow-500/10 border border-yellow-500/20 text-yellow-500 font-bold text-center rounded-lg">
-                Вам нужна модель: <span id="resModel" class="underline">...</span>
-            </div>
-            <div id="smetaList" class="text-xs space-y-2 font-mono">
-                <!-- JS Inject -->
-            </div>
-            <div class="p-3 bg-blue-500/10 border-l-4 border-blue-500 text-[10px] italic text-blue-200">
-                <b>Совет РБ:</b> Согласуйте внешний блок в исполкоме (через "Одно окно"). Это бесплатно, но избавит от штрафов.
-            </div>
-            <button class="btn-safety" onclick="goS3()">Я всё купил, готов к монтажу</button>
+    <div id="s2" class="step-section space-y-4">
+        <h2 class="text-xl font-black uppercase italic">02. Смета материалов</h2>
+        <div class="industrial-card font-mono text-xs space-y-2">
+            <p>● Труба медь 1/4 (от 3м) - 45 BYN</p>
+            <p>● Труба медь 3/8 (от 3м) - 75 BYN</p>
+            <p>● Изоляция (K-Flex) - 15 BYN</p>
+            <p>● Кронштейны (450мм) - 25 BYN</p>
+            <p>● Кабель 4х1.5 ПВС - 12 BYN</p>
+            <hr class="border-gray-800 my-2">
+            <p class="text-yellow-500 font-bold">Итого расходники: ~170 BYN</p>
         </div>
+        <div class="p-4 bg-red-900/20 border border-red-500/50 rounded-lg text-[11px] italic">
+            <b>PRO-TIP:</b> Не покупай медь в строймаркетах. Ищи спец. фирмы "Холод-комплект" в твоем городе. Там медь отдают в нарезку дешевле на 30%.
+        </div>
+        <button class="btn-safety" onclick="next(3, 60, 'Hardware')">Всё купил, начинаю монтаж</button>
     </div>
 
-    <!-- STAGE 3: INSTALLATION ROADMAP -->
-    <div id="s3" class="step-section space-y-6">
-        <h2 class="text-2xl font-black uppercase italic tracking-tighter underline decoration-yellow-500 underline-offset-8 decoration-4">03. Инструкция: 7 шагов</h2>
-        <div class="space-y-4">
+    <div id="s3" class="step-section space-y-4">
+        <h2 class="text-xl font-black uppercase italic">03. Монтаж: Инструкция</h2>
+        <div class="space-y-3">
             <div class="industrial-card">
-                <h4 class="font-black text-yellow-500 uppercase text-xs mb-2">1. Отступ</h4>
-                <p class="text-[11px] italic text-gray-400">Минимум 15 см от потолка. Используй уровень. Кривой блок = течь конденсата.</p>
+                <p class="font-black text-yellow-500 text-xs uppercase">1. Внутренний блок</p>
+                <p class="text-[11px] text-gray-400">Строго по уровню! Отступ от потолка — 15 см (для забора воздуха). Если будет криво — потечет конденсат на обои.</p>
             </div>
             <div class="industrial-card">
-                <h4 class="font-black text-yellow-500 uppercase text-xs mb-2">2. Бурение</h4>
-                <p class="text-[11px] italic text-gray-400">Уклон отверстия 5 градусов НА УЛИЦУ. Бур 45-55мм.</p>
+                <p class="font-black text-yellow-500 text-xs uppercase">2. Трасса и бурение</p>
+                <p class="text-[11px] text-gray-400">Бей отверстие под уклоном 5° вниз к улице. Это закон гравитации для слива воды.</p>
             </div>
             <div class="industrial-card">
-                <h4 class="font-black text-yellow-500 uppercase text-xs mb-2">3. Вальцовка</h4>
-                <p class="text-[11px] italic text-gray-400">Отрежь трубу труборезом. Сними фаску риммером. Вальцуй до зеркального блеска.</p>
+                <p class="font-black text-yellow-500 text-xs uppercase">3. Вальцовка</p>
+                <p class="text-[11px] text-gray-400">Снимай фаску римером (ножом вниз!). Медь должна быть идеально ровной, без зазубрин.</p>
             </div>
-            <div class="industrial-card">
-                <h4 class="font-black text-yellow-500 uppercase text-xs mb-2">4. Электрика</h4>
-                <p class="text-[11px] italic text-gray-400">Коричневый(L), Синий(N), Желтый(Земля). На инверторах 4-й провод — сигнал!</p>
-            </div>
-            <button class="btn-safety" onclick="goS4()">Этапы ясны, переходим к тесту</button>
         </div>
+        <button class="btn-safety" onclick="next(4, 80, 'Testing')">Трасса готова. Проверяем</button>
     </div>
 
-    <!-- STAGE 4: LEAK TEST -->
-    <div id="s4" class="step-section space-y-6">
-        <h2 class="text-2xl font-black uppercase italic tracking-tighter text-red-500 underline decoration-red-500 underline-offset-8 decoration-4">04. Проверка герметичности</h2>
-        <div class="industrial-card text-center space-y-6">
-            <p class="text-[11px] font-bold text-gray-400 uppercase tracking-widest">Таймер выдержки (Мыло)</p>
-            <div id="timerDisp" class="text-7xl font-black text-red-500 tabular-nums leading-none">20:00</div>
-            <button class="btn-safety" id="tBtn" onclick="startTimer()">Запустить контроль</button>
-            <button class="w-full p-4 border-2 border-red-500 text-red-500 font-black rounded-lg text-xs uppercase" onclick="showLeakHelp()">🚨 ПОШЛИ ПУЗЫРЬКИ!</button>
+    <div id="s4" class="step-section space-y-4">
+        <h2 class="text-xl font-black uppercase italic text-red-500">04. Пуск и Наладка</h2>
+        <div class="industrial-card text-center">
+            <p class="text-[11px] uppercase text-gray-500 mb-4 tracking-widest">Процесс вакуумации (15 мин)</p>
+            <div id="timer" class="text-6xl font-black mb-4 tabular-nums">15:00</div>
+            <button id="tBtn" class="btn-safety" onclick="startTimer()">Запустить вакуум</button>
         </div>
-        <button id="finalBtn" class="btn-safety hidden" onclick="goS5()">Всё герметично. К экзамену!</button>
+        <div class="p-4 bg-yellow-500/10 border border-yellow-500/30 rounded-lg text-[10px] text-gray-400">
+            <b>ВНИМАНИЕ:</b> Не открывай краны внешнего блока, пока стрелка манометра не уйдет в "-1". Влага в системе — смерть компрессора через год.
+        </div>
+        <button id="nextToQuiz" class="btn-safety hidden" onclick="next(5, 95, 'Certification')">Вакуум в норме. Экзамен</button>
     </div>
 
-    <!-- STAGE 5: GAME / QUIZ -->
-    <div id="s5" class="step-section space-y-6">
-        <h2 class="text-2xl font-black uppercase italic tracking-tighter text-yellow-500 underline decoration-yellow-500 underline-offset-8 decoration-4">05. Финальный экзамен</h2>
-        <div id="quizBox" class="industrial-card space-y-6">
-            <p id="qText" class="text-lg font-bold italic leading-tight">...</p>
-            <div id="qOptions" class="space-y-3"></div>
-        </div>
-    </div>
-
-    <!-- MODAL LEAK HELP -->
-    <div class="modal" id="leakModal">
-        <div class="modal-content text-center">
-            <h2 class="text-red-500 font-black text-2xl uppercase mb-4 italic">ЧТО ДЕЛАТЬ? 🛑</h2>
-            <div class="text-left text-xs space-y-4 text-gray-300 font-medium">
-                <p>1. <b>НЕ ОТКРЫВАЙ ГАЗ!</b> Если ты уже выпустил фреон, закрой вентили немедленно.</p>
-                <p>2. Попробуй подтянуть гайку ключом еще на 1/4 оборота. <b>Внимание:</b> не сорви резьбу!</p>
-                <p>3. Если пузыри не исчезли — открути гайку, обрежь конец трубы и сделай <b>НОВУЮ ВАЛЬЦОВКУ</b>. Скорее всего, на меди была трещина.</p>
-                <p>4. Снова сделай вакуумацию перед пуском.</p>
+    <div id="s5" class="step-section space-y-4 text-center">
+        <h2 class="text-2xl font-black text-yellow-500 uppercase">Поздравляем!</h2>
+        <div class="industrial-card">
+            <p class="text-sm italic">Ты только что сэкономил около <b>350-500 BYN</b> на услугах монтажников. Твой кондиционер готов к работе.</p>
+            <div class="mt-6 p-4 border-2 border-dashed border-yellow-500 rounded">
+                <p class="text-[10px] uppercase font-bold text-gray-500">Статус:</p>
+                <p class="text-2xl font-black text-white">CLIMATE MASTER</p>
             </div>
-            <button class="btn-safety mt-6" onclick="closeLeakHelp()">Я всё исправил</button>
         </div>
+        <button class="btn-safety" onclick="location.reload()">Начать новый проект</button>
     </div>
 
     <script>
-        function updT(v) { document.getElementById('tVal').innerText = v + '°C'; }
-
-        function updP(val, rank) {
-            document.getElementById('pBar').style.width = val + '%';
-            document.getElementById('percentLabel').innerText = val + '%';
-            document.getElementById('rankLabel').innerText = rank;
+        function next(step, pct, label) {
+            document.querySelectorAll('.step-section').forEach(s => s.classList.remove('active'));
+            document.getElementById('s' + step).classList.add('active');
+            document.getElementById('pBar').style.width = pct + '%';
+            document.getElementById('percentLabel').innerText = pct + '%';
+            window.scrollTo(0, 0);
         }
 
-        function goS2() {
-            const area = document.getElementById('area').value;
-            if(!area) return alert("Введите площадь!");
-            document.getElementById('s1').classList.remove('active');
-            document.getElementById('s2').classList.add('active');
-            document.getElementById('resModel').innerText = area < 25 ? '9000 BTU' : '12000 BTU';
-            document.getElementById('smetaList').innerHTML = `
-                ● Медь 1/4 (жидкость): 3 метра<br>
-                ● Медь 3/8 (газ): 3 метра<br>
-                ● Кабель ПВС 4х1.5: 5 метров<br>
-                ● Дренаж 16мм: 4 метра<br>
-                ● Кронштейны 450мм: 1 пара
-            `;
-            updP(25, "Apprentice");
-            document.getElementById('stepTitle').innerText = "Stage 2: Estimate";
+        function calculate() {
+            const s = document.getElementById('area').value;
+            const h = document.getElementById('height').value;
+            const w = document.getElementById('wall').value;
+            if(!s) return alert("Введите площадь!");
+            
+            const btu = (s * h * 35 * w) * 3.41;
+            let model = "";
+            if(btu <= 7500) model = "7000 BTU (07)";
+            else if(btu <= 9500) model = "9000 BTU (09)";
+            else if(btu <= 12500) model = "12000 BTU (12)";
+            else model = "18000+ BTU";
+
+            document.getElementById('resBox').classList.remove('hidden');
+            document.getElementById('resText').innerText = "Твоя мощность: " + model;
         }
 
-        function goS3() {
-            document.getElementById('s2').classList.remove('active');
-            document.getElementById('s3').classList.add('active');
-            updP(50, "Technician");
-            document.getElementById('stepTitle').innerText = "Stage 3: Installation";
-        }
-
-        function goS4() {
-            document.getElementById('s3').classList.remove('active');
-            document.getElementById('s4').classList.add('active');
-            updP(75, "Engineer");
-            document.getElementById('stepTitle').innerText = "Stage 4: Leak Testing";
-        }
-
-        let timer;
         function startTimer() {
-            let t = 1200;
+            let t = 900;
             document.getElementById('tBtn').disabled = true;
-            document.getElementById('tBtn').innerText = "ИДЕТ ПРОВЕРКА...";
-            timer = setInterval(() => {
+            document.getElementById('tBtn').innerText = "ОТКАЧКА ВОЗДУХА...";
+            let itv = setInterval(() => {
                 let m = Math.floor(t/60), s = t%60;
-                document.getElementById('timerDisp').innerText = `${m}:${s < 10 ? '0' : ''}${s}`;
+                document.getElementById('timer').innerText = `${m}:${s < 10 ? '0' : ''}${s}`;
                 if(t-- <= 0) {
-                    clearInterval(timer);
-                    document.getElementById('timerDisp').innerText = "READY";
-                    document.getElementById('timerDisp').style.color = "#00ffaa";
-                    document.getElementById('finalBtn').classList.remove('hidden');
+                    clearInterval(itv);
+                    document.getElementById('timer').innerText = "ГОТОВО";
+                    document.getElementById('timer').style.color = "#4ade80";
+                    document.getElementById('nextToQuiz').classList.remove('hidden');
+                    confetti({ particleCount: 150, spread: 60 });
                 }
             }, 1000);
-        }
-
-        function showLeakHelp() { document.getElementById('leakModal').style.display = 'flex'; }
-        function closeLeakHelp() { document.getElementById('leakModal').style.display = 'none'; }
-
-        // QUIZ GAME
-        const quiz = [
-            {q: "Если медь 'щелкнула' при изгибе, это...", o: ["Нормально", "Залом (Смерть компрессора)", "Просто звук"], a: 1},
-            {q: "Зачем нужен вакуумный насос?", o: ["Для охлаждения", "Удалить воздух и влагу", "Для запаха"], a: 1}
-        ];
-        let curQ = 0;
-
-        function goS5() {
-            document.getElementById('s4').classList.remove('active');
-            document.getElementById('s5').classList.add('active');
-            renderQ();
-        }
-
-        function renderQ() {
-            const q = quiz[curQ];
-            document.getElementById('qText').innerText = q.q;
-            const box = document.getElementById('qOptions');
-            box.innerHTML = "";
-            q.o.forEach((opt, i) => {
-                const b = document.createElement('button');
-                b.className = "w-full p-4 border-2 border-[#222] bg-[#111] font-bold text-xs uppercase text-left rounded-lg";
-                b.innerText = opt;
-                b.onclick = () => {
-                    if(i === q.a) {
-                        b.style.borderColor = "#00ffaa";
-                        setTimeout(() => {
-                            curQ++;
-                            if(curQ < quiz.length) renderQ();
-                            else finish();
-                        }, 1000);
-                    } else { b.style.borderColor = "#ff4444"; alert("Ошибка! Попробуй еще раз."); }
-                };
-                box.appendChild(b);
-            });
-        }
-
-        function finish() {
-            updP(100, "Master of Climate");
-            confetti({ particleCount: 200, spread: 70, origin: { y: 0.6 }, colors: ['#facc15', '#ffffff'] });
-            document.getElementById('quizBox').innerHTML = `
-                <div class="text-center p-5">
-                    <h2 class="text-3xl font-black text-yellow-500 mb-4 uppercase">Master Status!</h2>
-                    <p class="text-xs italic text-gray-400">Теперь ты готов. Устанавливай с умом и экономь бюджет.</p>
-                    <button class="btn-safety mt-8" onclick="location.reload()">Начать сначала</button>
-                </div>
-            `;
         }
     </script>
 </body>
