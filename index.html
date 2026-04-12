@@ -3,238 +3,276 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CoolInstall v28.0 | Ставим сами как профи</title>
+    <title>CoolInstall v29.0 | Master of Climate BY</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --accent: #00f2ff; --bg: #030508; --card: rgba(255, 255, 255, 0.02); }
+        :root { --accent: #00f2ff; --bg: #05070a; --glass: rgba(255, 255, 255, 0.03); }
         body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: #fff; line-height: 1.5; -webkit-tap-highlight-color: transparent; scroll-behavior: smooth; }
         
-        .p-header { position: fixed; top: 0; left: 0; right: 0; background: rgba(5,7,10,0.95); backdrop-filter: blur(15px); z-index: 2000; padding: 12px 20px; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .p-fill { width: 0%; height: 4px; background: var(--accent); box-shadow: 0 0 15px var(--accent); transition: 0.8s ease-in-out; border-radius: 2px; margin-top: 8px; }
+        .glass { background: var(--glass); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.08); border-radius: 28px; }
+        .p-header { position: fixed; top: 0; left: 0; right: 0; background: rgba(5,7,10,0.9); backdrop-filter: blur(15px); z-index: 2000; padding: 15px 20px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .p-bar { width: 0%; height: 4px; background: var(--accent); box-shadow: 0 0 15px var(--accent); transition: 0.8s cubic-bezier(0.4, 0, 0.2, 1); border-radius: 2px; margin-top: 8px; }
 
-        .bento { background: var(--card); border: 1px solid rgba(255,255,255,0.08); border-radius: 24px; padding: 20px; transition: 0.3s; }
-        .bento:hover { border-color: rgba(255,255,255,0.15); }
-        
-        input, select { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 12px; color: white; width: 100%; outline: none; font-size: 14px; }
-        input:focus { border-color: var(--accent); }
+        .step-content { display: none; animation: slideUp 0.5s ease-out; }
+        .step-content.active { display: block; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; } }
 
-        .btn-action { background: var(--accent); color: #000; font-weight: 800; border-radius: 12px; padding: 16px; width: 100%; border: none; cursor: pointer; text-transform: uppercase; transition: 0.3s; }
-        .btn-action:active { transform: scale(0.97); }
+        input, select { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 14px; color: white; width: 100%; outline: none; font-size: 15px; transition: 0.3s; }
+        input:focus { border-color: var(--accent); background: rgba(255,255,255,0.1); }
 
-        /* Game Console */
-        .terminal { background: #000; border: 1px solid #222; padding: 15px; border-radius: 15px; font-family: 'Courier New', monospace; font-size: 11px; color: #0f0; min-height: 120px; box-shadow: inset 0 0 10px #000; }
-        .game-node { background: #111; border: 1px solid #333; padding: 12px; border-radius: 10px; font-size: 9px; font-weight: 800; text-align: center; cursor: pointer; }
-        .game-node.active { border-color: var(--accent); color: var(--accent); }
+        .btn-next { background: var(--accent); color: #000; font-weight: 800; border-radius: 16px; padding: 18px; width: 100%; border: none; cursor: pointer; text-transform: uppercase; margin-top: 15px; }
+        .btn-locked { background: #111; color: #444; cursor: not-allowed; }
 
-        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.98); z-index: 3000; display: none; align-items: center; justify-content: center; padding: 20px; }
-        
-        nav { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 400px; background: rgba(10,15,20,0.9); backdrop-filter: blur(20px); border-radius: 20px; height: 65px; display: flex; justify-content: space-around; align-items: center; z-index: 1000; border: 1px solid rgba(255,255,255,0.1); }
-        .nav-link { color: #444; transition: 0.3s; }
-        .nav-link.active { color: var(--accent); }
+        .temp-val { font-size: 3.5rem; font-weight: 800; color: var(--accent); text-align: center; }
+        .temp-slider { width: 100%; -webkit-appearance: none; height: 4px; background: #222; border-radius: 10px; margin-top: 10px; }
+        .temp-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 24px; height: 24px; background: #fff; border: 5px solid var(--accent); border-radius: 50%; cursor: pointer; }
+
+        .game-card { background: #0a0a0a; border: 1px solid #222; padding: 20px; border-radius: 20px; text-align: center; }
+        .tool-option { background: #111; border: 1px solid #333; padding: 15px; border-radius: 12px; font-size: 11px; font-weight: bold; cursor: pointer; transition: 0.2s; }
+        .tool-option:active { transform: scale(0.95); }
+        .tool-correct { border-color: #00ffaa; color: #00ffaa; box-shadow: 0 0 10px rgba(0,255,170,0.2); }
+        .tool-wrong { border-color: #ff0055; color: #ff0055; }
     </style>
 </head>
-<body class="pt-24 pb-40">
+<body class="pt-24 pb-40 px-6">
 
+    <!-- HEADER PROGRESS -->
     <div class="p-header">
         <div class="flex justify-between items-end">
-            <span class="text-[9px] font-bold uppercase text-gray-500 tracking-widest">Прогресс монтажа: <span id="statusTxt" class="text-accent">Ученик</span></span>
+            <div>
+                <p class="text-[9px] font-bold text-gray-500 uppercase tracking-widest">Этап: <span id="stepName" class="text-accent">Планирование</span></p>
+                <p id="rankDisplay" class="text-[10px] font-black italic mt-1">Новичок</p>
+            </div>
             <span id="percentTxt" class="text-xs font-black italic text-accent">0%</span>
         </div>
-        <div class="p-fill" id="pBar"></div>
+        <div class="p-bar" id="pBar"></div>
     </div>
 
-    <main class="max-w-xl mx-auto px-6 space-y-12">
+    <main class="max-w-xl mx-auto space-y-10">
 
-        <!-- 01. MEGA CALCULATOR -->
-        <section id="calc" class="space-y-6">
-            <h2 class="text-xl font-black uppercase italic tracking-tighter opacity-30">01. Выбор и Закупка</h2>
-            <div class="bento space-y-5">
-                <div class="grid grid-cols-2 gap-3">
-                    <div><label class="text-[9px] uppercase font-bold text-gray-500">Комната (м²)</label><input type="number" id="area" placeholder="Напр: 20" oninput="upd()"></div>
-                    <div><label class="text-[9px] uppercase font-bold text-gray-500">Трасса (метры)</label><input type="number" id="length" placeholder="Напр: 5" oninput="upd()"></div>
+        <!-- STEP 1: CALCULATOR -->
+        <div id="step1" class="step-content active space-y-8">
+            <h2 class="text-3xl font-black italic tracking-tighter uppercase leading-none">01. <br><span class="text-accent">Глубокий Анализ</span></h2>
+            <div class="glass p-6 space-y-6">
+                <div class="grid grid-cols-2 gap-4">
+                    <div><span class="text-[9px] font-bold text-gray-500 uppercase">Площадь (м²)</span><input type="number" id="area" placeholder="20"></div>
+                    <div><span class="text-[9px] font-bold text-gray-500 uppercase">Высота (м)</span><input type="number" id="height" value="2.7"></div>
                 </div>
-                <div class="grid grid-cols-2 gap-3">
-                    <select id="sun" onchange="upd()"><option value="1">Теневая сторона</option><option value="1.2">Солнечная сторона</option></select>
-                    <select id="people" onchange="upd()"><option value="0">1-2 человека</option><option value="300">3+ человека</option></select>
+                <div><span class="text-[9px] font-bold text-gray-500 uppercase">Стены</span>
+                    <select id="wallType"><option value="1">Кирпич/Бетон</option><option value="1.3">Дерево/Сруб</option><option value="0.9">Газоблок</option></select>
                 </div>
-                <button class="btn-action" onclick="runMegaCalc()">Рассчитать всё</button>
-
-                <div id="resBox" class="hidden space-y-6">
-                    <div class="p-5 rounded-xl bg-emerald-500/5 border border-emerald-500/20 text-center">
-                        <p class="text-[9px] font-bold uppercase text-emerald-400">Мощность кондиционера:</p>
-                        <h4 id="resB" class="text-2xl font-black italic">...</h4>
-                    </div>
-                    <div class="bento border-dashed border-gray-600 bg-white/5">
-                        <h3 class="text-[10px] font-bold uppercase mb-4 text-gray-400">Список в магазин (с запасом):</h3>
-                        <div id="smeta" class="text-[11px] space-y-2 italic font-medium text-gray-300"></div>
-                        <button onclick="copySmeta()" class="mt-4 w-full py-2 bg-white/5 rounded-lg text-[9px] font-bold uppercase">Скопировать в заметки</button>
-                    </div>
+                <div><span class="text-[9px] font-bold text-gray-500 uppercase">Окна</span>
+                    <select id="sunType"><option value="1">Теневая сторона</option><option value="1.2">Юг (Солнце)</option><option value="1.4">Панорама</option></select>
+                </div>
+                <div class="temp-val" id="tDisp">22°C</div>
+                <input type="range" min="16" max="28" value="22" id="tKnob" class="temp-slider" oninput="updT()">
+                
+                <button class="btn-next" onclick="calcSmeta()">Рассчитать смету BYN</button>
+                
+                <div id="smetaBox" class="hidden space-y-4">
+                    <div class="p-4 bg-emerald-500/10 border border-emerald-500/20 rounded-2xl text-[11px] italic" id="smetaResult"></div>
+                    <button class="btn-next" onclick="goToStep(2)">Далее: Юридический чеклист</button>
                 </div>
             </div>
-        </section>
+        </div>
 
-        <!-- 02. DETAILED STEPS -->
-        <section id="guide" class="space-y-6">
-            <h2 class="text-xl font-black uppercase italic tracking-tighter opacity-30">02. Пошаговый алгоритм</h2>
+        <!-- STEP 2: LEGAL -->
+        <div id="step2" class="step-content space-y-8">
+            <h2 class="text-3xl font-black italic tracking-tighter uppercase leading-none">02. <br><span class="text-accent">Согласование РБ</span></h2>
+            <div class="glass p-6 space-y-6">
+                <div class="p-4 bg-amber-500/10 border-l-4 border-amber-500 text-[11px] italic text-gray-300">
+                    В Беларуси установка на фасаде требует разрешения исполкома. Без этого — штраф до 30 базовых.
+                </div>
+                <ul class="space-y-4 text-xs font-medium italic text-gray-400">
+                    <li class="flex gap-3"><input type="checkbox" class="w-5 h-5 accent-accent" onchange="checkLegal()"> Позвонить в отдел архитектуры района.</li>
+                    <li class="flex gap-3"><input type="checkbox" class="w-5 h-5 accent-accent" onchange="checkLegal()"> Получить техпаспорт квартиры.</li>
+                    <li class="flex gap-3"><input type="checkbox" class="w-5 h-5 accent-accent" onchange="checkLegal()"> Сфотографировать фасад.</li>
+                </ul>
+                <button id="legalBtn" class="btn-next btn-locked" disabled onclick="goToStep(3)">Далее: Подготовка</button>
+            </div>
+        </div>
+
+        <!-- STEP 3: PREP -->
+        <div id="step3" class="step-content space-y-8">
+            <h2 class="text-3xl font-black italic tracking-tighter uppercase leading-none">03. <br><span class="text-accent">Инструмент и Стены</span></h2>
+            <div class="glass p-6 space-y-6">
+                <div class="p-4 bg-blue-500/5 border border-blue-500/20 rounded-2xl">
+                    <h4 class="text-xs font-black uppercase mb-2">Совет по аренде:</h4>
+                    <p class="text-[10px] italic text-gray-400">Вакуумный насос и Перфоратор SDS-Max в РБ стоят ~15-25 BYN в сутки. Не покупайте их ради одного раза.</p>
+                </div>
+                <div class="space-y-4">
+                    <p class="text-[10px] font-bold uppercase text-gray-500">Особенности твоей стены:</p>
+                    <div id="wallAdvice" class="text-xs italic text-accent leading-relaxed"></div>
+                </div>
+                <button class="btn-next" onclick="goToStep(4)">Далее: Технология монтажа</button>
+            </div>
+        </div>
+
+        <!-- STEP 4: ROADMAP -->
+        <div id="step4" class="step-content space-y-8">
+            <h2 class="text-3xl font-black italic tracking-tighter uppercase leading-none">04. <br><span class="text-accent">Техническая карта</span></h2>
             <div class="space-y-4">
-                <div class="bento border-l-4 border-accent">
-                    <p class="text-accent font-black text-[10px] uppercase mb-1">Этап 1: Внутренний блок</p>
-                    <p class="text-[11px] text-gray-400 italic leading-relaxed">Отступите <b>15 см от потолка</b>. Если меньше — кондей будет перегреваться. Используйте уровень: если блок висит криво, конденсат потечет на пол.</p>
+                <div class="glass p-5 border-l-4 border-accent">
+                    <h4 class="text-xs font-black uppercase">1. Электрика (Инвертор)</h4>
+                    <p class="text-[11px] mt-2 text-gray-400 italic">4 провода: 1(L), 2(N), 3(S-сигнал), G(земля). Ошибка в сигнальном проводе сожжет плату управления (ремонт ~300 BYN).</p>
                 </div>
-                <div class="bento border-l-4 border-accent">
-                    <p class="text-accent font-black text-[10px] uppercase mb-1">Этап 2: Дырка и Трасса</p>
-                    <p class="text-[11px] text-gray-400 italic leading-relaxed">Бурите под уклоном <b>вниз на улицу</b>. Медные трубы гните очень плавно (радиус сгиба как у яблока), иначе медь «заломится» и система умрет.</p>
+                <div class="glass p-5 border-l-4 border-accent">
+                    <h4 class="text-xs font-black uppercase">2. Изгиб труб</h4>
+                    <p class="text-[11px] mt-2 text-gray-400 italic">Радиус изгиба — не менее 10 см (как крупное яблоко). Если медь "щелкнет" — это залом. Фреон не пройдет, компрессор сгорит.</p>
                 </div>
-                <div class="bento border-l-4 border-emerald-500 bg-emerald-500/5">
-                    <p class="text-emerald-500 font-black text-[10px] uppercase mb-1">Этап 3: Электрика (Цвета)</p>
-                    <p class="text-[11px] text-gray-400 italic leading-relaxed">Обычно: <b>Коричневый</b> — Фаза (L), <b>Синий</b> — Ноль (N), <b>Желто-зеленый</b> — Земля. Просто повтори цвета одинаково на обоих блоках.</p>
-                </div>
+                <button class="btn-next" onclick="goToStep(5)">Далее: Тест герметичности</button>
             </div>
-        </section>
+        </div>
 
-        <!-- 03. LEAK TEST -->
-        <section id="leak" class="space-y-6">
-            <h2 class="text-xl font-black uppercase italic tracking-tighter text-rose-500">03. Проверка на герметичность</h2>
-            <div class="bento text-center space-y-4">
-                <p class="text-[10px] text-gray-400 italic">Нанеси густую мыльную пену на все гайки. Если появится хоть один пузырек — фреон выйдет за 2 дня.</p>
-                <div id="timerDisp" class="text-5xl font-black tracking-tighter text-rose-500 tabular-nums">20:00</div>
-                <button class="btn-action" id="tBtn" onclick="startTimer()">Запустить контроль (20 мин)</button>
+        <!-- STEP 5: LEAK TEST -->
+        <div id="step5" class="step-content space-y-8">
+            <h2 class="text-3xl font-black italic tracking-tighter uppercase leading-none text-rose-500">05. <br><span>Контроль пены</span></h2>
+            <div class="glass p-6 text-center space-y-6">
+                <p class="text-[11px] italic text-gray-400 leading-relaxed">Намажь гайки густым фейри. Ждем 15 минут. Если нет пузырей — ты гений вальцовки.</p>
+                <div id="timerDisp" class="text-6xl font-black tracking-tighter text-rose-500">15:00</div>
+                <button class="btn-next" id="tBtn" onclick="startLeakTimer()">Запустить таймер</button>
+                <button class="btn-next" style="background:#222; color:#fff" onclick="goToStep(6)">Пузырей нет. К финалу!</button>
             </div>
-        </section>
+        </div>
 
-        <!-- 04. NEW GAME -->
-        <section id="game" class="space-y-6">
-            <h2 class="text-xl font-black uppercase italic tracking-tighter text-accent">04. Финальный Симулятор: ПУСК</h2>
-            <div class="bento space-y-6 border-accent/20">
-                <div class="terminal" id="term">
-                    > СИСТЕМА ГОТОВА...<br>
-                    > ЖДУ КОМАНДЫ ДЛЯ ЗАПУСКА...
+        <!-- STEP 6: THE GAME -->
+        <div id="step6" class="step-content space-y-8">
+            <h2 class="text-3xl font-black italic tracking-tighter uppercase leading-none text-accent">06. <br><span>Экзамен Мастера</span></h2>
+            <div class="glass p-6 space-y-6">
+                <div class="game-card">
+                    <p class="text-[10px] font-bold text-gray-500 uppercase mb-4">Вопрос: Какой инструмент нужен для...</p>
+                    <h3 id="qText" class="text-lg font-black italic mb-6 leading-tight">...</h3>
+                    <div id="gameOptions" class="grid grid-cols-1 gap-3">
+                        <!-- JS Inject -->
+                    </div>
                 </div>
-                <div class="grid grid-cols-2 gap-3" id="gamePad">
-                    <div class="game-node" onclick="gAction('vac', this)">1. ВАКУУМАЦИЯ (УДАЛИТЬ ВОЗДУХ)</div>
-                    <div class="game-node" onclick="gAction('check', this)">2. КОНТРОЛЬ ПЕНОЙ</div>
-                    <div class="game-node" onclick="gAction('gas', this)">3. ВЫПУСТИТЬ ФРЕОН</div>
-                    <div class="game-node" onclick="gAction('start', this)">4. НАЖАТЬ "ON" НА ПУЛЬТЕ</div>
-                </div>
-                <button class="w-full py-2 text-[9px] font-bold text-gray-700 uppercase" onclick="resetGame()">Сбросить прогресс</button>
             </div>
-        </section>
+        </div>
 
     </main>
 
-    <nav>
-        <a href="#calc" class="nav-link active"><i class="fa-solid fa-calculator"></i></a>
-        <a href="#guide" class="nav-link"><i class="fa-solid fa-book"></i></a>
-        <a href="#leak" class="nav-link"><i class="fa-solid fa-vial"></i></a>
-        <a href="#game" class="nav-link"><i class="fa-solid fa-gamepad"></i></a>
-    </nav>
-
-    <!-- Error Modal -->
-    <div class="modal" id="gameErr">
-        <div class="modal-content bento border-rose-500 border-2 max-w-sm text-center">
-            <h2 class="text-rose-500 font-black text-xl mb-4 italic uppercase">КРИТИЧЕСКАЯ ПОЛОМКА! 🛑</h2>
-            <p id="errTxt" class="text-[11px] text-gray-400 italic mb-6 leading-relaxed"></p>
-            <button class="btn-action" style="background: #fff" onclick="resetGame()">Починить и начать заново</button>
-        </div>
-    </div>
-
     <script>
-        let stats = { calc:0, smeta:0, timer:0, game:0 };
+        function updT() { document.getElementById('tDisp').innerText = document.getElementById('tKnob').value + '°C'; }
+        
+        let state = JSON.parse(localStorage.getItem('med_pro_state')) || { step: 1, percent: 0 };
 
-        function upd() {
-            let total = stats.calc + stats.smeta + stats.timer + stats.game;
-            document.getElementById('pBar').style.width = total + '%';
-            document.getElementById('percentTxt').innerText = total + '%';
-            let s = "Ученик";
-            if(total > 30) s = "Подмастерье";
-            if(total > 70) s = "Инженер-новичок";
-            if(total >= 100) s = "Мастер DIY";
-            document.getElementById('statusTxt').innerText = s;
+        function save() { localStorage.setItem('med_pro_state', JSON.stringify(state)); }
+
+        function updHeader() {
+            document.getElementById('pBar').style.width = state.percent + '%';
+            document.getElementById('percentTxt').innerText = state.percent + '%';
+            const names = ["","Планирование", "Юридический блок", "Инвентарь", "Монтаж", "Тестирование", "Экзамен"];
+            document.getElementById('stepName').innerText = names[state.step];
+            document.getElementById('rankDisplay').innerText = state.percent > 90 ? "Мастер Климата" : state.percent > 50 ? "Инженер" : "Ученик";
         }
 
-        function runMegaCalc() {
-            const a = parseFloat(document.getElementById('area').value);
-            const l = parseFloat(document.getElementById('length').value);
-            const s = parseFloat(document.getElementById('sun').value);
-            const p = parseFloat(document.getElementById('people').value);
-
-            if(!a || !l) return alert("Введи площадь и длину!");
-
-            stats.calc = 25; stats.smeta = 25;
-            document.getElementById('resBox').classList.remove('hidden');
-            
-            let power = (a * 100 * s + p) / 1000;
-            let btu = power < 2.5 ? "7000 BTU (До 20 м²)" : power < 3.5 ? "9000 BTU (До 25 м²)" : "12000 BTU (До 35 м²)";
-            document.getElementById('resB').innerText = btu;
-
-            const smeta = document.getElementById('smeta');
-            smeta.innerHTML = `
-                <div class="flex justify-between border-b border-white/5 pb-2"><span>Труба медная 1/4" + 3/8":</span><span class="text-accent">${(l * 1.1).toFixed(1)} м</span></div>
-                <div class="flex justify-between border-b border-white/5 pb-2"><span>Утеплитель (2 вида):</span><span class="text-accent">${(l * 2.1).toFixed(1)} м</span></div>
-                <div class="flex justify-between border-b border-white/5 pb-2"><span>Кабель ПВС 4х1.5:</span><span class="text-accent">${l + 2} м</span></div>
-                <div class="flex justify-between border-b border-white/5 pb-2"><span>Лента обмоточная (PVC):</span><span class="text-accent">1 рулон</span></div>
-                <div class="flex justify-between"><span>Кронштейны + Анкера:</span><span class="text-accent">1 компл.</span></div>
+        function calcSmeta() {
+            const area = document.getElementById('area').value;
+            if(!area) return alert("Введите площадь!");
+            const power = (area / 10).toFixed(1);
+            document.getElementById('smetaBox').classList.remove('hidden');
+            document.getElementById('smetaResult').innerHTML = `
+                <b>Расчет:</b> Мощность ${power} кВт. Нужна "Девятка".<br><br>
+                <b>Смета (цены РБ):</b><br>
+                - Медь 1/4 + 3/8: ~45 BYN/м.п.<br>
+                - Кронштейны: ~35 BYN.<br>
+                - Кабель + Дренаж: ~15 BYN.<br>
+                <b>Итого материалы на 3м: ~185 BYN.</b>
             `;
-            upd();
+            state.percent = 15;
+            save(); updHeader();
         }
 
-        function copySmeta() {
-            navigator.clipboard.writeText("Моя смета:\n" + document.getElementById('smeta').innerText).then(() => alert("Список скопирован!"));
-        }
-
-        let timer;
-        function startTimer() {
-            if(timer) return;
-            let t = 1200; stats.timer = 25; upd();
-            document.getElementById('tBtn').innerText = "Проверка...";
-            timer = setInterval(() => {
-                let m = Math.floor(t/60), s = t%60;
-                document.getElementById('timerDisp').innerText = `${m}:${s<10?'0':''}${s}`;
-                if(t-- <= 0) { clearInterval(timer); document.getElementById('timerDisp').style.color="#0f0"; }
-            }, 1000);
-        }
-
-        // GAME ENGINE
-        let step = 0;
-        function gAction(type, el) {
-            if(el.classList.contains('active')) return;
-            const log = (m) => document.getElementById('term').innerHTML += `<br>> ${m}`;
-            
-            if(type === 'vac' && step === 0) { log("ВАКУУМ: Влага и воздух удалены из системы."); step++; el.classList.add('active'); }
-            else if(type === 'check' && step === 1) { log("ТЕСТ: Мыло не пузырится. Соединения надежны."); step++; el.classList.add('active'); }
-            else if(type === 'gas' && step === 2) { log("ГАЗ: Фреон заполнил систему. Давление в норме."); step++; el.classList.add('active'); }
-            else if(type === 'start' && step === 3) {
-                log("ПУСК: Компрессор запущен! Температура падает.");
-                el.classList.add('active');
-                stats.game = 25; upd();
-                confetti({ particleCount: 150, spread: 70, colors:['#00f2ff', '#ffffff'], origin: {y:0.8} });
-            } else {
-                const m = document.getElementById('gameErr');
-                const t = document.getElementById('errTxt');
-                m.style.display = 'flex';
-                if(type === 'gas') t.innerText = "КАТАСТРОФА! Ты выпустил фреон, но в трубах остался воздух. Влага мгновенно превратится в лед и убьет мотор через пару дней. Нужна была ВАКУУМАЦИЯ.";
-                else if(type === 'start') t.innerText = "ХЬЮСТОН, У НАС ПРОБЛЕМЫ! Ты включил кондей, но забыл открыть газ. Мотор работал 'всухую' и сгорел от перегрева за 30 секунд.";
-                else t.innerText = "НАРУШЕНА ТЕХНОЛОГИЯ! В монтаже нельзя прыгать через шаги. Соблюдай порядок, иначе потратишь деньги впустую.";
+        function checkLegal() {
+            const checks = document.querySelectorAll('#step2 input:checked').length;
+            if(checks === 3) {
+                document.getElementById('legalBtn').classList.remove('btn-locked');
+                document.getElementById('legalBtn').disabled = false;
             }
         }
 
-        function resetGame() {
-            step = 0; stats.game = 0;
-            document.getElementById('term').innerHTML = "> СИСТЕМА ГОТОВА...<br>> ЖДУ КОМАНДЫ ДЛЯ ЗАПУСКА...";
-            document.querySelectorAll('.game-node').forEach(n => n.classList.remove('active'));
-            document.getElementById('gameErr').style.display = 'none';
-            upd();
+        function goToStep(s) {
+            document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
+            document.getElementById('step'+s).classList.add('active');
+            state.step = s;
+            state.percent = Math.round((s-1) * 16.6);
+            if(s === 3) setWallAdvice();
+            save(); updHeader();
+            window.scrollTo(0,0);
+        }
+
+        function setWallAdvice() {
+            const wall = document.getElementById('wallType').value;
+            const adv = document.getElementById('wallAdvice');
+            if(wall == "1") adv.innerText = "Бетон: Нужен мощный перфоратор SDS-Max. Опасайтесь арматуры, используйте детектор.";
+            else if(wall == "1.3") adv.innerText = "Дерево: Обязательно используйте стальную гильзу (трубу) в проходе для пожаробезопасности.";
+            else adv.innerText = "Газоблок: Хватит обычного перфоратора. Используйте специальные дюбеля для ячеистого бетона.";
+        }
+
+        let timer;
+        function startLeakTimer() {
+            let time = 900;
+            document.getElementById('tBtn').disabled = true;
+            timer = setInterval(() => {
+                let m = Math.floor(time/60), s = time%60;
+                document.getElementById('timerDisp').innerText = `${m}:${s < 10 ? '0' : ''}${s}`;
+                if(time-- <= 0) { clearInterval(timer); document.getElementById('timerDisp').innerText="OK"; }
+            }, 1000);
+        }
+
+        // GAME LOGIC
+        const quiz = [
+            {q: "Чем отрезать медную трубу, чтобы не было стружки внутри?", o: ["Ножовка", "Труборез", "Болгарка"], a: 1},
+            {q: "Что нужно сделать перед запуском фреона?", o: ["Помыть блок", "Вакуумировать систему", "Помолиться"], a: 1},
+            {q: "Как проверить герметичность без спец-приборов?", o: ["На слух", "Зажигалкой", "Мыльная пена"], a: 2}
+        ];
+        let qIdx = 0;
+
+        function renderGame() {
+            const item = quiz[qIdx];
+            document.getElementById('qText').innerText = item.q;
+            const box = document.getElementById('gameOptions');
+            box.innerHTML = "";
+            item.o.forEach((opt, idx) => {
+                const b = document.createElement('div');
+                b.className = "tool-option";
+                b.innerText = opt;
+                b.onclick = () => {
+                    if(idx === item.a) {
+                        b.classList.add('tool-correct');
+                        setTimeout(() => {
+                            qIdx++;
+                            if(qIdx < quiz.length) renderGame();
+                            else finish();
+                        }, 1000);
+                    } else {
+                        b.classList.add('tool-wrong');
+                        alert("Ошибка! Компрессор сгорит. Попробуй еще раз.");
+                    }
+                };
+                box.appendChild(b);
+            });
+        }
+
+        function finish() {
+            state.percent = 100; save(); updHeader();
+            confetti({ particleCount: 200, spread: 70, origin: { y: 0.6 } });
+            document.getElementById('step6').innerHTML = `
+                <div class="glass p-10 text-center">
+                    <h2 class="text-4xl font-black text-accent italic mb-4">ПОЗДРАВЛЯЕМ!</h2>
+                    <p class="text-sm italic">Вы прошли полный курс и готовы к самостоятельному монтажу. Экономия бюджета: ~450 BYN.</p>
+                    <button class="btn-next" onclick="location.reload()">Начать сначала</button>
+                </div>`;
         }
 
         window.onload = () => {
-            document.querySelectorAll('.nav-link').forEach(l => l.onclick = () => {
-                document.querySelectorAll('.nav-link').forEach(a => a.classList.remove('active'));
-                l.classList.add('active');
-            });
-        }
+            updHeader();
+            if(state.step > 1) goToStep(state.step);
+            renderGame();
+        };
     </script>
 </body>
 </html>
