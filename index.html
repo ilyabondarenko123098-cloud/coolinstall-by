@@ -3,276 +3,257 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CoolInstall v29.0 | Master of Climate BY</title>
+    <title>CoolInstall v31.0 | Industrial Master</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --accent: #00f2ff; --bg: #05070a; --glass: rgba(255, 255, 255, 0.03); }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: #fff; line-height: 1.5; -webkit-tap-highlight-color: transparent; scroll-behavior: smooth; }
+        :root { --safety-yellow: #facc15; --bg-dark: #0a0a0a; --card-dark: #141414; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: #fff; line-height: 1.5; -webkit-tap-highlight-color: transparent; }
         
-        .glass { background: var(--glass); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.08); border-radius: 28px; }
-        .p-header { position: fixed; top: 0; left: 0; right: 0; background: rgba(5,7,10,0.9); backdrop-filter: blur(15px); z-index: 2000; padding: 15px 20px; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .p-bar { width: 0%; height: 4px; background: var(--accent); box-shadow: 0 0 15px var(--accent); transition: 0.8s cubic-bezier(0.4, 0, 0.2, 1); border-radius: 2px; margin-top: 8px; }
+        /* Индустриальный прогресс-бар */
+        .p-header { position: fixed; top: 0; left: 0; right: 0; background: #000; z-index: 2000; padding: 20px; border-bottom: 2px solid #222; }
+        .p-track { width: 100%; height: 8px; background: #1a1a1a; border-radius: 4px; margin-top: 10px; overflow: hidden; border: 1px solid #333; }
+        .p-bar { width: 0%; height: 100%; background: var(--safety-yellow); transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 0 15px rgba(250, 204, 21, 0.3); }
 
-        .step-content { display: none; animation: slideUp 0.5s ease-out; }
-        .step-content.active { display: block; }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; } }
+        .step-section { display: none; animation: fadeIn 0.4s ease; }
+        .step-section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
 
-        input, select { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 14px; color: white; width: 100%; outline: none; font-size: 15px; transition: 0.3s; }
-        input:focus { border-color: var(--accent); background: rgba(255,255,255,0.1); }
+        .industrial-card { background: var(--card-dark); border: 1px solid #222; border-radius: 12px; padding: 25px; margin-bottom: 20px; position: relative; overflow: hidden; }
+        .industrial-card::before { content: ''; position: absolute; left: 0; top: 0; width: 4px; height: 100%; background: var(--safety-yellow); }
 
-        .btn-next { background: var(--accent); color: #000; font-weight: 800; border-radius: 16px; padding: 18px; width: 100%; border: none; cursor: pointer; text-transform: uppercase; margin-top: 15px; }
-        .btn-locked { background: #111; color: #444; cursor: not-allowed; }
+        .btn-safety { background: var(--safety-yellow); color: #000; font-weight: 900; border-radius: 8px; padding: 18px; width: 100%; border: none; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: 0.2s; }
+        .btn-safety:active { background: #eab308; transform: translateY(2px); }
 
-        .temp-val { font-size: 3.5rem; font-weight: 800; color: var(--accent); text-align: center; }
-        .temp-slider { width: 100%; -webkit-appearance: none; height: 4px; background: #222; border-radius: 10px; margin-top: 10px; }
-        .temp-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 24px; height: 24px; background: #fff; border: 5px solid var(--accent); border-radius: 50%; cursor: pointer; }
+        input, select { background: #000; border: 2px solid #222; border-radius: 8px; padding: 14px; color: #fff; width: 100%; outline: none; font-weight: bold; }
+        input:focus { border-color: var(--safety-yellow); }
 
-        .game-card { background: #0a0a0a; border: 1px solid #222; padding: 20px; border-radius: 20px; text-align: center; }
-        .tool-option { background: #111; border: 1px solid #333; padding: 15px; border-radius: 12px; font-size: 11px; font-weight: bold; cursor: pointer; transition: 0.2s; }
-        .tool-option:active { transform: scale(0.95); }
-        .tool-correct { border-color: #00ffaa; color: #00ffaa; box-shadow: 0 0 10px rgba(0,255,170,0.2); }
-        .tool-wrong { border-color: #ff0055; color: #ff0055; }
+        .temp-display { font-size: 4.5rem; font-weight: 900; color: var(--safety-yellow); text-align: center; line-height: 1; margin: 15px 0; }
+        .slider-safety { width: 100%; -webkit-appearance: none; height: 10px; background: #1a1a1a; border-radius: 5px; outline: none; border: 1px solid #333; }
+        .slider-safety::-webkit-slider-thumb { -webkit-appearance: none; width: 30px; height: 30px; background: var(--safety-yellow); border-radius: 4px; cursor: pointer; }
+
+        /* Модалка ошибок */
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 3000; display: none; align-items: center; justify-content: center; padding: 20px; }
+        .modal-content { background: #111; border: 3px solid #ff4444; border-radius: 8px; padding: 30px; max-width: 450px; }
     </style>
 </head>
-<body class="pt-24 pb-40 px-6">
+<body class="pt-32 pb-40 px-6">
 
-    <!-- HEADER PROGRESS -->
+    <!-- PROGRESS HEADER -->
     <div class="p-header">
         <div class="flex justify-between items-end">
             <div>
-                <p class="text-[9px] font-bold text-gray-500 uppercase tracking-widest">Этап: <span id="stepName" class="text-accent">Планирование</span></p>
-                <p id="rankDisplay" class="text-[10px] font-black italic mt-1">Новичок</p>
+                <p class="text-[10px] font-black uppercase text-yellow-500 tracking-[3px]">Protocol: <span id="rankLabel">Novice</span></p>
+                <p id="stepTitle" class="text-xs font-bold mt-1 text-gray-400 italic">Stage 1: Planning</p>
             </div>
-            <span id="percentTxt" class="text-xs font-black italic text-accent">0%</span>
+            <span id="percentLabel" class="text-xl font-black text-yellow-500">0%</span>
         </div>
-        <div class="p-bar" id="pBar"></div>
+        <div class="p-track"><div class="p-bar" id="pBar"></div></div>
     </div>
 
-    <main class="max-w-xl mx-auto space-y-10">
-
-        <!-- STEP 1: CALCULATOR -->
-        <div id="step1" class="step-content active space-y-8">
-            <h2 class="text-3xl font-black italic tracking-tighter uppercase leading-none">01. <br><span class="text-accent">Глубокий Анализ</span></h2>
-            <div class="glass p-6 space-y-6">
-                <div class="grid grid-cols-2 gap-4">
-                    <div><span class="text-[9px] font-bold text-gray-500 uppercase">Площадь (м²)</span><input type="number" id="area" placeholder="20"></div>
-                    <div><span class="text-[9px] font-bold text-gray-500 uppercase">Высота (м)</span><input type="number" id="height" value="2.7"></div>
-                </div>
-                <div><span class="text-[9px] font-bold text-gray-500 uppercase">Стены</span>
-                    <select id="wallType"><option value="1">Кирпич/Бетон</option><option value="1.3">Дерево/Сруб</option><option value="0.9">Газоблок</option></select>
-                </div>
-                <div><span class="text-[9px] font-bold text-gray-500 uppercase">Окна</span>
-                    <select id="sunType"><option value="1">Теневая сторона</option><option value="1.2">Юг (Солнце)</option><option value="1.4">Панорама</option></select>
-                </div>
-                <div class="temp-val" id="tDisp">22°C</div>
-                <input type="range" min="16" max="28" value="22" id="tKnob" class="temp-slider" oninput="updT()">
-                
-                <button class="btn-next" onclick="calcSmeta()">Рассчитать смету BYN</button>
-                
-                <div id="smetaBox" class="hidden space-y-4">
-                    <div class="p-4 bg-emerald-500/10 border border-emerald-500/20 rounded-2xl text-[11px] italic" id="smetaResult"></div>
-                    <button class="btn-next" onclick="goToStep(2)">Далее: Юридический чеклист</button>
-                </div>
+    <!-- STAGE 1: CALC -->
+    <div id="s1" class="step-section active space-y-6">
+        <h2 class="text-2xl font-black uppercase italic tracking-tighter underline decoration-yellow-500 underline-offset-8 decoration-4">01. Расчет системы</h2>
+        <div class="industrial-card space-y-6">
+            <div class="grid grid-cols-2 gap-4">
+                <div><label class="text-[10px] font-bold text-gray-500 uppercase">Площадь м²</label><input type="number" id="area" placeholder="20"></div>
+                <div><label class="text-[10px] font-bold text-gray-500 uppercase">Потолок м</label><input type="number" id="height" value="2.7"></div>
             </div>
-        </div>
-
-        <!-- STEP 2: LEGAL -->
-        <div id="step2" class="step-content space-y-8">
-            <h2 class="text-3xl font-black italic tracking-tighter uppercase leading-none">02. <br><span class="text-accent">Согласование РБ</span></h2>
-            <div class="glass p-6 space-y-6">
-                <div class="p-4 bg-amber-500/10 border-l-4 border-amber-500 text-[11px] italic text-gray-300">
-                    В Беларуси установка на фасаде требует разрешения исполкома. Без этого — штраф до 30 базовых.
-                </div>
-                <ul class="space-y-4 text-xs font-medium italic text-gray-400">
-                    <li class="flex gap-3"><input type="checkbox" class="w-5 h-5 accent-accent" onchange="checkLegal()"> Позвонить в отдел архитектуры района.</li>
-                    <li class="flex gap-3"><input type="checkbox" class="w-5 h-5 accent-accent" onchange="checkLegal()"> Получить техпаспорт квартиры.</li>
-                    <li class="flex gap-3"><input type="checkbox" class="w-5 h-5 accent-accent" onchange="checkLegal()"> Сфотографировать фасад.</li>
-                </ul>
-                <button id="legalBtn" class="btn-next btn-locked" disabled onclick="goToStep(3)">Далее: Подготовка</button>
+            <div>
+                <label class="text-[10px] font-bold text-gray-500 uppercase">Материал стен дома</label>
+                <select id="wall"><option value="1">Бетон / Кирпич</option><option value="1.3">Дерево / Сруб</option><option value="0.9">Газосиликат</option></select>
             </div>
+            <div class="temp-display" id="tVal">22°C</div>
+            <input type="range" min="16" max="28" value="22" class="slider-safety" oninput="updT(this.value)">
+            <button class="btn-safety" onclick="goS2()">Рассчитать и начать закупку</button>
         </div>
+    </div>
 
-        <!-- STEP 3: PREP -->
-        <div id="step3" class="step-content space-y-8">
-            <h2 class="text-3xl font-black italic tracking-tighter uppercase leading-none">03. <br><span class="text-accent">Инструмент и Стены</span></h2>
-            <div class="glass p-6 space-y-6">
-                <div class="p-4 bg-blue-500/5 border border-blue-500/20 rounded-2xl">
-                    <h4 class="text-xs font-black uppercase mb-2">Совет по аренде:</h4>
-                    <p class="text-[10px] italic text-gray-400">Вакуумный насос и Перфоратор SDS-Max в РБ стоят ~15-25 BYN в сутки. Не покупайте их ради одного раза.</p>
-                </div>
-                <div class="space-y-4">
-                    <p class="text-[10px] font-bold uppercase text-gray-500">Особенности твоей стены:</p>
-                    <div id="wallAdvice" class="text-xs italic text-accent leading-relaxed"></div>
-                </div>
-                <button class="btn-next" onclick="goToStep(4)">Далее: Технология монтажа</button>
+    <!-- STAGE 2: ESTIMATE & BYN -->
+    <div id="s2" class="step-section space-y-6">
+        <h2 class="text-2xl font-black uppercase italic tracking-tighter underline decoration-yellow-500 underline-offset-8 decoration-4">02. Смета материалов</h2>
+        <div class="industrial-card space-y-4">
+            <div class="p-4 bg-yellow-500/10 border border-yellow-500/20 text-yellow-500 font-bold text-center rounded-lg">
+                Вам нужна модель: <span id="resModel" class="underline">...</span>
             </div>
-        </div>
-
-        <!-- STEP 4: ROADMAP -->
-        <div id="step4" class="step-content space-y-8">
-            <h2 class="text-3xl font-black italic tracking-tighter uppercase leading-none">04. <br><span class="text-accent">Техническая карта</span></h2>
-            <div class="space-y-4">
-                <div class="glass p-5 border-l-4 border-accent">
-                    <h4 class="text-xs font-black uppercase">1. Электрика (Инвертор)</h4>
-                    <p class="text-[11px] mt-2 text-gray-400 italic">4 провода: 1(L), 2(N), 3(S-сигнал), G(земля). Ошибка в сигнальном проводе сожжет плату управления (ремонт ~300 BYN).</p>
-                </div>
-                <div class="glass p-5 border-l-4 border-accent">
-                    <h4 class="text-xs font-black uppercase">2. Изгиб труб</h4>
-                    <p class="text-[11px] mt-2 text-gray-400 italic">Радиус изгиба — не менее 10 см (как крупное яблоко). Если медь "щелкнет" — это залом. Фреон не пройдет, компрессор сгорит.</p>
-                </div>
-                <button class="btn-next" onclick="goToStep(5)">Далее: Тест герметичности</button>
+            <div id="smetaList" class="text-xs space-y-2 font-mono">
+                <!-- JS Inject -->
             </div>
-        </div>
-
-        <!-- STEP 5: LEAK TEST -->
-        <div id="step5" class="step-content space-y-8">
-            <h2 class="text-3xl font-black italic tracking-tighter uppercase leading-none text-rose-500">05. <br><span>Контроль пены</span></h2>
-            <div class="glass p-6 text-center space-y-6">
-                <p class="text-[11px] italic text-gray-400 leading-relaxed">Намажь гайки густым фейри. Ждем 15 минут. Если нет пузырей — ты гений вальцовки.</p>
-                <div id="timerDisp" class="text-6xl font-black tracking-tighter text-rose-500">15:00</div>
-                <button class="btn-next" id="tBtn" onclick="startLeakTimer()">Запустить таймер</button>
-                <button class="btn-next" style="background:#222; color:#fff" onclick="goToStep(6)">Пузырей нет. К финалу!</button>
+            <div class="p-3 bg-blue-500/10 border-l-4 border-blue-500 text-[10px] italic text-blue-200">
+                <b>Совет РБ:</b> Согласуйте внешний блок в исполкоме (через "Одно окно"). Это бесплатно, но избавит от штрафов.
             </div>
+            <button class="btn-safety" onclick="goS3()">Я всё купил, готов к монтажу</button>
         </div>
+    </div>
 
-        <!-- STEP 6: THE GAME -->
-        <div id="step6" class="step-content space-y-8">
-            <h2 class="text-3xl font-black italic tracking-tighter uppercase leading-none text-accent">06. <br><span>Экзамен Мастера</span></h2>
-            <div class="glass p-6 space-y-6">
-                <div class="game-card">
-                    <p class="text-[10px] font-bold text-gray-500 uppercase mb-4">Вопрос: Какой инструмент нужен для...</p>
-                    <h3 id="qText" class="text-lg font-black italic mb-6 leading-tight">...</h3>
-                    <div id="gameOptions" class="grid grid-cols-1 gap-3">
-                        <!-- JS Inject -->
-                    </div>
-                </div>
+    <!-- STAGE 3: INSTALLATION ROADMAP -->
+    <div id="s3" class="step-section space-y-6">
+        <h2 class="text-2xl font-black uppercase italic tracking-tighter underline decoration-yellow-500 underline-offset-8 decoration-4">03. Инструкция: 7 шагов</h2>
+        <div class="space-y-4">
+            <div class="industrial-card">
+                <h4 class="font-black text-yellow-500 uppercase text-xs mb-2">1. Отступ</h4>
+                <p class="text-[11px] italic text-gray-400">Минимум 15 см от потолка. Используй уровень. Кривой блок = течь конденсата.</p>
             </div>
+            <div class="industrial-card">
+                <h4 class="font-black text-yellow-500 uppercase text-xs mb-2">2. Бурение</h4>
+                <p class="text-[11px] italic text-gray-400">Уклон отверстия 5 градусов НА УЛИЦУ. Бур 45-55мм.</p>
+            </div>
+            <div class="industrial-card">
+                <h4 class="font-black text-yellow-500 uppercase text-xs mb-2">3. Вальцовка</h4>
+                <p class="text-[11px] italic text-gray-400">Отрежь трубу труборезом. Сними фаску риммером. Вальцуй до зеркального блеска.</p>
+            </div>
+            <div class="industrial-card">
+                <h4 class="font-black text-yellow-500 uppercase text-xs mb-2">4. Электрика</h4>
+                <p class="text-[11px] italic text-gray-400">Коричневый(L), Синий(N), Желтый(Земля). На инверторах 4-й провод — сигнал!</p>
+            </div>
+            <button class="btn-safety" onclick="goS4()">Этапы ясны, переходим к тесту</button>
         </div>
+    </div>
 
-    </main>
+    <!-- STAGE 4: LEAK TEST -->
+    <div id="s4" class="step-section space-y-6">
+        <h2 class="text-2xl font-black uppercase italic tracking-tighter text-red-500 underline decoration-red-500 underline-offset-8 decoration-4">04. Проверка герметичности</h2>
+        <div class="industrial-card text-center space-y-6">
+            <p class="text-[11px] font-bold text-gray-400 uppercase tracking-widest">Таймер выдержки (Мыло)</p>
+            <div id="timerDisp" class="text-7xl font-black text-red-500 tabular-nums leading-none">20:00</div>
+            <button class="btn-safety" id="tBtn" onclick="startTimer()">Запустить контроль</button>
+            <button class="w-full p-4 border-2 border-red-500 text-red-500 font-black rounded-lg text-xs uppercase" onclick="showLeakHelp()">🚨 ПОШЛИ ПУЗЫРЬКИ!</button>
+        </div>
+        <button id="finalBtn" class="btn-safety hidden" onclick="goS5()">Всё герметично. К экзамену!</button>
+    </div>
+
+    <!-- STAGE 5: GAME / QUIZ -->
+    <div id="s5" class="step-section space-y-6">
+        <h2 class="text-2xl font-black uppercase italic tracking-tighter text-yellow-500 underline decoration-yellow-500 underline-offset-8 decoration-4">05. Финальный экзамен</h2>
+        <div id="quizBox" class="industrial-card space-y-6">
+            <p id="qText" class="text-lg font-bold italic leading-tight">...</p>
+            <div id="qOptions" class="space-y-3"></div>
+        </div>
+    </div>
+
+    <!-- MODAL LEAK HELP -->
+    <div class="modal" id="leakModal">
+        <div class="modal-content text-center">
+            <h2 class="text-red-500 font-black text-2xl uppercase mb-4 italic">ЧТО ДЕЛАТЬ? 🛑</h2>
+            <div class="text-left text-xs space-y-4 text-gray-300 font-medium">
+                <p>1. <b>НЕ ОТКРЫВАЙ ГАЗ!</b> Если ты уже выпустил фреон, закрой вентили немедленно.</p>
+                <p>2. Попробуй подтянуть гайку ключом еще на 1/4 оборота. <b>Внимание:</b> не сорви резьбу!</p>
+                <p>3. Если пузыри не исчезли — открути гайку, обрежь конец трубы и сделай <b>НОВУЮ ВАЛЬЦОВКУ</b>. Скорее всего, на меди была трещина.</p>
+                <p>4. Снова сделай вакуумацию перед пуском.</p>
+            </div>
+            <button class="btn-safety mt-6" onclick="closeLeakHelp()">Я всё исправил</button>
+        </div>
+    </div>
 
     <script>
-        function updT() { document.getElementById('tDisp').innerText = document.getElementById('tKnob').value + '°C'; }
-        
-        let state = JSON.parse(localStorage.getItem('med_pro_state')) || { step: 1, percent: 0 };
+        function updT(v) { document.getElementById('tVal').innerText = v + '°C'; }
 
-        function save() { localStorage.setItem('med_pro_state', JSON.stringify(state)); }
-
-        function updHeader() {
-            document.getElementById('pBar').style.width = state.percent + '%';
-            document.getElementById('percentTxt').innerText = state.percent + '%';
-            const names = ["","Планирование", "Юридический блок", "Инвентарь", "Монтаж", "Тестирование", "Экзамен"];
-            document.getElementById('stepName').innerText = names[state.step];
-            document.getElementById('rankDisplay').innerText = state.percent > 90 ? "Мастер Климата" : state.percent > 50 ? "Инженер" : "Ученик";
+        function updP(val, rank) {
+            document.getElementById('pBar').style.width = val + '%';
+            document.getElementById('percentLabel').innerText = val + '%';
+            document.getElementById('rankLabel').innerText = rank;
         }
 
-        function calcSmeta() {
+        function goS2() {
             const area = document.getElementById('area').value;
             if(!area) return alert("Введите площадь!");
-            const power = (area / 10).toFixed(1);
-            document.getElementById('smetaBox').classList.remove('hidden');
-            document.getElementById('smetaResult').innerHTML = `
-                <b>Расчет:</b> Мощность ${power} кВт. Нужна "Девятка".<br><br>
-                <b>Смета (цены РБ):</b><br>
-                - Медь 1/4 + 3/8: ~45 BYN/м.п.<br>
-                - Кронштейны: ~35 BYN.<br>
-                - Кабель + Дренаж: ~15 BYN.<br>
-                <b>Итого материалы на 3м: ~185 BYN.</b>
+            document.getElementById('s1').classList.remove('active');
+            document.getElementById('s2').classList.add('active');
+            document.getElementById('resModel').innerText = area < 25 ? '9000 BTU' : '12000 BTU';
+            document.getElementById('smetaList').innerHTML = `
+                ● Медь 1/4 (жидкость): 3 метра<br>
+                ● Медь 3/8 (газ): 3 метра<br>
+                ● Кабель ПВС 4х1.5: 5 метров<br>
+                ● Дренаж 16мм: 4 метра<br>
+                ● Кронштейны 450мм: 1 пара
             `;
-            state.percent = 15;
-            save(); updHeader();
+            updP(25, "Apprentice");
+            document.getElementById('stepTitle').innerText = "Stage 2: Estimate";
         }
 
-        function checkLegal() {
-            const checks = document.querySelectorAll('#step2 input:checked').length;
-            if(checks === 3) {
-                document.getElementById('legalBtn').classList.remove('btn-locked');
-                document.getElementById('legalBtn').disabled = false;
-            }
+        function goS3() {
+            document.getElementById('s2').classList.remove('active');
+            document.getElementById('s3').classList.add('active');
+            updP(50, "Technician");
+            document.getElementById('stepTitle').innerText = "Stage 3: Installation";
         }
 
-        function goToStep(s) {
-            document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
-            document.getElementById('step'+s).classList.add('active');
-            state.step = s;
-            state.percent = Math.round((s-1) * 16.6);
-            if(s === 3) setWallAdvice();
-            save(); updHeader();
-            window.scrollTo(0,0);
-        }
-
-        function setWallAdvice() {
-            const wall = document.getElementById('wallType').value;
-            const adv = document.getElementById('wallAdvice');
-            if(wall == "1") adv.innerText = "Бетон: Нужен мощный перфоратор SDS-Max. Опасайтесь арматуры, используйте детектор.";
-            else if(wall == "1.3") adv.innerText = "Дерево: Обязательно используйте стальную гильзу (трубу) в проходе для пожаробезопасности.";
-            else adv.innerText = "Газоблок: Хватит обычного перфоратора. Используйте специальные дюбеля для ячеистого бетона.";
+        function goS4() {
+            document.getElementById('s3').classList.remove('active');
+            document.getElementById('s4').classList.add('active');
+            updP(75, "Engineer");
+            document.getElementById('stepTitle').innerText = "Stage 4: Leak Testing";
         }
 
         let timer;
-        function startLeakTimer() {
-            let time = 900;
+        function startTimer() {
+            let t = 1200;
             document.getElementById('tBtn').disabled = true;
+            document.getElementById('tBtn').innerText = "ИДЕТ ПРОВЕРКА...";
             timer = setInterval(() => {
-                let m = Math.floor(time/60), s = time%60;
+                let m = Math.floor(t/60), s = t%60;
                 document.getElementById('timerDisp').innerText = `${m}:${s < 10 ? '0' : ''}${s}`;
-                if(time-- <= 0) { clearInterval(timer); document.getElementById('timerDisp').innerText="OK"; }
+                if(t-- <= 0) {
+                    clearInterval(timer);
+                    document.getElementById('timerDisp').innerText = "READY";
+                    document.getElementById('timerDisp').style.color = "#00ffaa";
+                    document.getElementById('finalBtn').classList.remove('hidden');
+                }
             }, 1000);
         }
 
-        // GAME LOGIC
-        const quiz = [
-            {q: "Чем отрезать медную трубу, чтобы не было стружки внутри?", o: ["Ножовка", "Труборез", "Болгарка"], a: 1},
-            {q: "Что нужно сделать перед запуском фреона?", o: ["Помыть блок", "Вакуумировать систему", "Помолиться"], a: 1},
-            {q: "Как проверить герметичность без спец-приборов?", o: ["На слух", "Зажигалкой", "Мыльная пена"], a: 2}
-        ];
-        let qIdx = 0;
+        function showLeakHelp() { document.getElementById('leakModal').style.display = 'flex'; }
+        function closeLeakHelp() { document.getElementById('leakModal').style.display = 'none'; }
 
-        function renderGame() {
-            const item = quiz[qIdx];
-            document.getElementById('qText').innerText = item.q;
-            const box = document.getElementById('gameOptions');
+        // QUIZ GAME
+        const quiz = [
+            {q: "Если медь 'щелкнула' при изгибе, это...", o: ["Нормально", "Залом (Смерть компрессора)", "Просто звук"], a: 1},
+            {q: "Зачем нужен вакуумный насос?", o: ["Для охлаждения", "Удалить воздух и влагу", "Для запаха"], a: 1}
+        ];
+        let curQ = 0;
+
+        function goS5() {
+            document.getElementById('s4').classList.remove('active');
+            document.getElementById('s5').classList.add('active');
+            renderQ();
+        }
+
+        function renderQ() {
+            const q = quiz[curQ];
+            document.getElementById('qText').innerText = q.q;
+            const box = document.getElementById('qOptions');
             box.innerHTML = "";
-            item.o.forEach((opt, idx) => {
-                const b = document.createElement('div');
-                b.className = "tool-option";
+            q.o.forEach((opt, i) => {
+                const b = document.createElement('button');
+                b.className = "w-full p-4 border-2 border-[#222] bg-[#111] font-bold text-xs uppercase text-left rounded-lg";
                 b.innerText = opt;
                 b.onclick = () => {
-                    if(idx === item.a) {
-                        b.classList.add('tool-correct');
+                    if(i === q.a) {
+                        b.style.borderColor = "#00ffaa";
                         setTimeout(() => {
-                            qIdx++;
-                            if(qIdx < quiz.length) renderGame();
+                            curQ++;
+                            if(curQ < quiz.length) renderQ();
                             else finish();
                         }, 1000);
-                    } else {
-                        b.classList.add('tool-wrong');
-                        alert("Ошибка! Компрессор сгорит. Попробуй еще раз.");
-                    }
+                    } else { b.style.borderColor = "#ff4444"; alert("Ошибка! Попробуй еще раз."); }
                 };
                 box.appendChild(b);
             });
         }
 
         function finish() {
-            state.percent = 100; save(); updHeader();
-            confetti({ particleCount: 200, spread: 70, origin: { y: 0.6 } });
-            document.getElementById('step6').innerHTML = `
-                <div class="glass p-10 text-center">
-                    <h2 class="text-4xl font-black text-accent italic mb-4">ПОЗДРАВЛЯЕМ!</h2>
-                    <p class="text-sm italic">Вы прошли полный курс и готовы к самостоятельному монтажу. Экономия бюджета: ~450 BYN.</p>
-                    <button class="btn-next" onclick="location.reload()">Начать сначала</button>
-                </div>`;
+            updP(100, "Master of Climate");
+            confetti({ particleCount: 200, spread: 70, origin: { y: 0.6 }, colors: ['#facc15', '#ffffff'] });
+            document.getElementById('quizBox').innerHTML = `
+                <div class="text-center p-5">
+                    <h2 class="text-3xl font-black text-yellow-500 mb-4 uppercase">Master Status!</h2>
+                    <p class="text-xs italic text-gray-400">Теперь ты готов. Устанавливай с умом и экономь бюджет.</p>
+                    <button class="btn-safety mt-8" onclick="location.reload()">Начать сначала</button>
+                </div>
+            `;
         }
-
-        window.onload = () => {
-            updHeader();
-            if(state.step > 1) goToStep(state.step);
-            renderGame();
-        };
     </script>
 </body>
 </html>
