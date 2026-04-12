@@ -3,233 +3,237 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CoolInstall | DIY Master Edition</title>
+    <title>CoolInstall v28.0 | Ставим сами как профи</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --accent: #00f2ff; --bg: #05070a; --card: rgba(255, 255, 255, 0.03); }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: #fff; line-height: 1.6; -webkit-tap-highlight-color: transparent; scroll-behavior: smooth; }
+        :root { --accent: #00f2ff; --bg: #030508; --card: rgba(255, 255, 255, 0.02); }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: #fff; line-height: 1.5; -webkit-tap-highlight-color: transparent; scroll-behavior: smooth; }
         
-        .p-header { position: fixed; top: 0; left: 0; right: 0; background: rgba(5,7,10,0.95); backdrop-filter: blur(15px); z-index: 2000; padding: 15px 20px; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .p-fill { width: 0%; height: 4px; background: var(--accent); box-shadow: 0 0 15px var(--accent); transition: 0.8s cubic-bezier(0.4, 0, 0.2, 1); border-radius: 2px; margin-top: 8px; }
+        .p-header { position: fixed; top: 0; left: 0; right: 0; background: rgba(5,7,10,0.95); backdrop-filter: blur(15px); z-index: 2000; padding: 12px 20px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .p-fill { width: 0%; height: 4px; background: var(--accent); box-shadow: 0 0 15px var(--accent); transition: 0.8s ease-in-out; border-radius: 2px; margin-top: 8px; }
 
-        .bento { background: var(--card); border: 1px solid rgba(255,255,255,0.08); border-radius: 24px; padding: 20px; }
-        .neon-text { color: var(--accent); text-shadow: 0 0 10px rgba(0, 242, 255, 0.4); }
+        .bento { background: var(--card); border: 1px solid rgba(255,255,255,0.08); border-radius: 24px; padding: 20px; transition: 0.3s; }
+        .bento:hover { border-color: rgba(255,255,255,0.15); }
         
-        input { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 14px; color: white; width: 100%; outline: none; transition: 0.3s; }
+        input, select { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 12px; color: white; width: 100%; outline: none; font-size: 14px; }
+        input:focus { border-color: var(--accent); }
+
+        .btn-action { background: var(--accent); color: #000; font-weight: 800; border-radius: 12px; padding: 16px; width: 100%; border: none; cursor: pointer; text-transform: uppercase; transition: 0.3s; }
+        .btn-action:active { transform: scale(0.97); }
+
+        /* Game Console */
+        .terminal { background: #000; border: 1px solid #222; padding: 15px; border-radius: 15px; font-family: 'Courier New', monospace; font-size: 11px; color: #0f0; min-height: 120px; box-shadow: inset 0 0 10px #000; }
+        .game-node { background: #111; border: 1px solid #333; padding: 12px; border-radius: 10px; font-size: 9px; font-weight: 800; text-align: center; cursor: pointer; }
+        .game-node.active { border-color: var(--accent); color: var(--accent); }
+
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.98); z-index: 3000; display: none; align-items: center; justify-content: center; padding: 20px; }
         
-        .temp-knob { text-align: center; padding: 15px; border-radius: 20px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.05); }
-        .temp-val { font-size: 3.5rem; font-weight: 800; color: var(--accent); letter-spacing: -2px; }
-        .temp-slider { width: 100%; -webkit-appearance: none; height: 4px; background: #222; border-radius: 10px; }
-        .temp-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 24px; height: 24px; background: #fff; border: 4px solid var(--accent); border-radius: 50%; cursor: pointer; }
-
-        .btn-main { background: var(--accent); color: #000; font-weight: 800; border-radius: 12px; padding: 16px; width: 100%; border: none; cursor: pointer; text-transform: uppercase; transition: 0.3s; }
-        
-        .terminal { background: #000; padding: 12px; border-radius: 12px; font-family: monospace; font-size: 10px; color: #00ffaa; min-height: 80px; border: 1px solid #111; overflow-y: auto; }
-        .game-btn { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 12px; font-size: 10px; font-weight: 900; color: #555; transition: 0.3s; }
-        .game-btn.active { color: var(--accent); border-color: var(--accent); background: rgba(0,242,255,0.05); }
-
-        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 3000; display: none; align-items: center; justify-content: center; padding: 20px; }
-        .modal-content { background: #0a0c10; border: 2px solid #ff0055; border-radius: 24px; padding: 30px; text-align: center; max-width: 400px; }
-
         nav { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 400px; background: rgba(10,15,20,0.9); backdrop-filter: blur(20px); border-radius: 20px; height: 65px; display: flex; justify-content: space-around; align-items: center; z-index: 1000; border: 1px solid rgba(255,255,255,0.1); }
-        .nav-link { color: #444; font-size: 1.2rem; }
-        .nav-link.active { color: var(--accent); transform: translateY(-3px); }
+        .nav-link { color: #444; transition: 0.3s; }
+        .nav-link.active { color: var(--accent); }
     </style>
 </head>
 <body class="pt-24 pb-40">
 
     <div class="p-header">
-        <div class="flex justify-between items-end px-1">
-            <span class="text-[10px] font-bold uppercase text-gray-500">Статус: <span id="statusTxt" class="text-accent">Новичок</span></span>
+        <div class="flex justify-between items-end">
+            <span class="text-[9px] font-bold uppercase text-gray-500 tracking-widest">Прогресс монтажа: <span id="statusTxt" class="text-accent">Ученик</span></span>
             <span id="percentTxt" class="text-xs font-black italic text-accent">0%</span>
         </div>
         <div class="p-fill" id="pBar"></div>
     </div>
 
-    <main class="max-w-xl mx-auto px-6 space-y-16">
+    <main class="max-w-xl mx-auto px-6 space-y-12">
 
-        <!-- 01. CALCULATOR -->
-        <section id="calc" class="space-y-8">
-            <h2 class="text-2xl font-black italic uppercase opacity-30 tracking-tighter">01. Подбор и Смета</h2>
-            <div class="bento space-y-6">
-                <div>
-                    <label class="text-[9px] font-black text-gray-500 uppercase mb-2 block tracking-widest">Площадь комнаты (м²)</label>
-                    <input type="number" id="area" placeholder="Напр: 20" oninput="upd()">
+        <!-- 01. MEGA CALCULATOR -->
+        <section id="calc" class="space-y-6">
+            <h2 class="text-xl font-black uppercase italic tracking-tighter opacity-30">01. Выбор и Закупка</h2>
+            <div class="bento space-y-5">
+                <div class="grid grid-cols-2 gap-3">
+                    <div><label class="text-[9px] uppercase font-bold text-gray-500">Комната (м²)</label><input type="number" id="area" placeholder="Напр: 20" oninput="upd()"></div>
+                    <div><label class="text-[9px] uppercase font-bold text-gray-500">Трасса (метры)</label><input type="number" id="length" placeholder="Напр: 5" oninput="upd()"></div>
                 </div>
-                <div>
-                    <label class="text-[9px] font-black text-gray-500 uppercase mb-2 block tracking-widest">Длина труб (метры)</label>
-                    <input type="number" id="length" placeholder="Расстояние между блоками" oninput="upd()">
+                <div class="grid grid-cols-2 gap-3">
+                    <select id="sun" onchange="upd()"><option value="1">Теневая сторона</option><option value="1.2">Солнечная сторона</option></select>
+                    <select id="people" onchange="upd()"><option value="0">1-2 человека</option><option value="300">3+ человека</option></select>
                 </div>
+                <button class="btn-action" onclick="runMegaCalc()">Рассчитать всё</button>
 
-                <div class="temp-knob">
-                    <div class="temp-val" id="tDisp">22°C</div>
-                    <input type="range" min="16" max="26" value="22" id="tKnob" class="temp-slider" oninput="updT()">
-                </div>
-
-                <button class="btn-main shadow-lg shadow-cyan-500/20" onclick="runCalc()">Рассчитать систему</button>
-
-                <div id="resBox" class="hidden space-y-6 animate-in fade-in duration-500">
-                    <div class="p-6 rounded-2xl bg-emerald-500/5 border border-emerald-500/20 text-center">
-                        <p class="text-[9px] font-black text-emerald-400 uppercase mb-1">Рекомендуем:</p>
+                <div id="resBox" class="hidden space-y-6">
+                    <div class="p-5 rounded-xl bg-emerald-500/5 border border-emerald-500/20 text-center">
+                        <p class="text-[9px] font-bold uppercase text-emerald-400">Мощность кондиционера:</p>
                         <h4 id="resB" class="text-2xl font-black italic">...</h4>
                     </div>
-                    <div class="bento border-dashed border-gray-700">
-                        <div id="smeta" class="text-[11px] space-y-3 font-medium italic text-gray-400"></div>
-                        <button onclick="copySmeta()" class="mt-4 w-full py-2 bg-white/5 rounded-lg text-[10px] font-bold uppercase tracking-widest">Скопировать список покупок</button>
+                    <div class="bento border-dashed border-gray-600 bg-white/5">
+                        <h3 class="text-[10px] font-bold uppercase mb-4 text-gray-400">Список в магазин (с запасом):</h3>
+                        <div id="smeta" class="text-[11px] space-y-2 italic font-medium text-gray-300"></div>
+                        <button onclick="copySmeta()" class="mt-4 w-full py-2 bg-white/5 rounded-lg text-[9px] font-bold uppercase">Скопировать в заметки</button>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- 02. ZONING -->
-        <section id="zoning" class="space-y-8">
-            <h2 class="text-2xl font-black italic uppercase opacity-30 tracking-tighter">02. Зонирование</h2>
-            <div class="bento border-l-4 border-amber-500">
-                <h4 class="font-black text-xs uppercase mb-3 text-amber-500">Золотые правила:</h4>
-                <p class="text-[11px] text-gray-400 italic mb-4 leading-relaxed">
-                    1. <b>Зазор от потолка:</b> Минимум 15 см. Если повесить вплотную, кондей не сможет засасывать воздух.<br><br>
-                    2. <b>Направление:</b> Не ставьте блок напротив кровати. Прямой поток холодного воздуха — это гарантированная простуда.
-                </p>
-            </div>
-        </section>
-
-        <!-- 03. STEPS -->
-        <section id="roadmap" class="space-y-8">
-            <h2 class="text-2xl font-black italic uppercase opacity-30 tracking-tighter">03. Инструкция</h2>
+        <!-- 02. DETAILED STEPS -->
+        <section id="guide" class="space-y-6">
+            <h2 class="text-xl font-black uppercase italic tracking-tighter opacity-30">02. Пошаговый алгоритм</h2>
             <div class="space-y-4">
-                <div class="bento">
-                    <p class="text-accent font-black text-[10px] uppercase mb-1">Шаг 1: Бурение</p>
-                    <p class="text-[11px] text-gray-400 italic leading-relaxed">Отверстие в стене должно смотреть под наклоном вниз на улицу. Иначе вода потечет внутрь комнаты.</p>
+                <div class="bento border-l-4 border-accent">
+                    <p class="text-accent font-black text-[10px] uppercase mb-1">Этап 1: Внутренний блок</p>
+                    <p class="text-[11px] text-gray-400 italic leading-relaxed">Отступите <b>15 см от потолка</b>. Если меньше — кондей будет перегреваться. Используйте уровень: если блок висит криво, конденсат потечет на пол.</p>
                 </div>
-                <div class="bento">
-                    <p class="text-accent font-black text-[10px] uppercase mb-1">Шаг 2: Вакуум (Аренда)</p>
-                    <p class="text-[11px] text-gray-400 italic leading-relaxed">Самый важный секрет: не покупайте насос за 200$. Возьмите его в аренду на день за 10-15$ в ближайшем сервисе.</p>
+                <div class="bento border-l-4 border-accent">
+                    <p class="text-accent font-black text-[10px] uppercase mb-1">Этап 2: Дырка и Трасса</p>
+                    <p class="text-[11px] text-gray-400 italic leading-relaxed">Бурите под уклоном <b>вниз на улицу</b>. Медные трубы гните очень плавно (радиус сгиба как у яблока), иначе медь «заломится» и система умрет.</p>
+                </div>
+                <div class="bento border-l-4 border-emerald-500 bg-emerald-500/5">
+                    <p class="text-emerald-500 font-black text-[10px] uppercase mb-1">Этап 3: Электрика (Цвета)</p>
+                    <p class="text-[11px] text-gray-400 italic leading-relaxed">Обычно: <b>Коричневый</b> — Фаза (L), <b>Синий</b> — Ноль (N), <b>Желто-зеленый</b> — Земля. Просто повтори цвета одинаково на обоих блоках.</p>
                 </div>
             </div>
         </section>
 
-        <!-- 04. GAME -->
-        <section id="game" class="space-y-8">
-            <h2 class="text-2xl font-black italic uppercase text-rose-500 tracking-tighter">04. Симулятор пуска</h2>
-            <div class="bento space-y-5 border-rose-500/20">
-                <p class="text-[10px] font-bold text-gray-500 uppercase text-center leading-tight">Проверь себя: сможешь запустить AC без поломки?</p>
-                <div class="terminal" id="term">Система: Ожидание ввода данных...</div>
-                
-                <div class="grid grid-cols-2 gap-3">
-                    <button class="game-btn" onclick="gameAction('vac', this)">ВАКУУМАЦИЯ</button>
-                    <button class="game-btn" onclick="gameAction('leak', this)">ПРОВЕРКА ПЕНОЙ</button>
-                    <button class="game-btn" onclick="gameAction('valves', this)">ОТКРЫТЬ КРАНЫ</button>
-                    <button class="game-btn" onclick="gameAction('power', this)">ВКЛ ПИТАНИЕ</button>
-                </div>
-                <button class="w-full py-2 text-[9px] font-bold text-gray-600 uppercase" onclick="resetGame()">Сброс симулятора</button>
+        <!-- 03. LEAK TEST -->
+        <section id="leak" class="space-y-6">
+            <h2 class="text-xl font-black uppercase italic tracking-tighter text-rose-500">03. Проверка на герметичность</h2>
+            <div class="bento text-center space-y-4">
+                <p class="text-[10px] text-gray-400 italic">Нанеси густую мыльную пену на все гайки. Если появится хоть один пузырек — фреон выйдет за 2 дня.</p>
+                <div id="timerDisp" class="text-5xl font-black tracking-tighter text-rose-500 tabular-nums">20:00</div>
+                <button class="btn-action" id="tBtn" onclick="startTimer()">Запустить контроль (20 мин)</button>
             </div>
         </section>
 
-        <footer class="text-center py-10 opacity-20 text-[9px] font-black uppercase tracking-[5px]">
-            Absolute DIY v27.0 | CIS Standard
-        </footer>
+        <!-- 04. NEW GAME -->
+        <section id="game" class="space-y-6">
+            <h2 class="text-xl font-black uppercase italic tracking-tighter text-accent">04. Финальный Симулятор: ПУСК</h2>
+            <div class="bento space-y-6 border-accent/20">
+                <div class="terminal" id="term">
+                    > СИСТЕМА ГОТОВА...<br>
+                    > ЖДУ КОМАНДЫ ДЛЯ ЗАПУСКА...
+                </div>
+                <div class="grid grid-cols-2 gap-3" id="gamePad">
+                    <div class="game-node" onclick="gAction('vac', this)">1. ВАКУУМАЦИЯ (УДАЛИТЬ ВОЗДУХ)</div>
+                    <div class="game-node" onclick="gAction('check', this)">2. КОНТРОЛЬ ПЕНОЙ</div>
+                    <div class="game-node" onclick="gAction('gas', this)">3. ВЫПУСТИТЬ ФРЕОН</div>
+                    <div class="game-node" onclick="gAction('start', this)">4. НАЖАТЬ "ON" НА ПУЛЬТЕ</div>
+                </div>
+                <button class="w-full py-2 text-[9px] font-bold text-gray-700 uppercase" onclick="resetGame()">Сбросить прогресс</button>
+            </div>
+        </section>
 
     </main>
 
-    <div class="modal" id="gameErr">
-        <div class="modal-content">
-            <h2 class="text-[#ff0055] font-black text-xl uppercase italic">ОШИБКА МОНТАЖА! 🛑</h2>
-            <p id="errTxt" class="text-[11px] text-gray-400 my-6 font-medium italic leading-relaxed"></p>
-            <button class="btn-main" style="background: #fff" onclick="resetGame()">Попробовать снова</button>
-        </div>
-    </div>
-
     <nav>
-        <a href="#calc" class="nav-link active"><i class="fa-solid fa-cart-shopping"></i></a>
-        <a href="#zoning" class="nav-link"><i class="fa-solid fa-house-chimney-check"></i></a>
-        <a href="#roadmap" class="nav-link"><i class="fa-solid fa-list-ol"></i></a>
+        <a href="#calc" class="nav-link active"><i class="fa-solid fa-calculator"></i></a>
+        <a href="#guide" class="nav-link"><i class="fa-solid fa-book"></i></a>
+        <a href="#leak" class="nav-link"><i class="fa-solid fa-vial"></i></a>
         <a href="#game" class="nav-link"><i class="fa-solid fa-gamepad"></i></a>
     </nav>
 
+    <!-- Error Modal -->
+    <div class="modal" id="gameErr">
+        <div class="modal-content bento border-rose-500 border-2 max-w-sm text-center">
+            <h2 class="text-rose-500 font-black text-xl mb-4 italic uppercase">КРИТИЧЕСКАЯ ПОЛОМКА! 🛑</h2>
+            <p id="errTxt" class="text-[11px] text-gray-400 italic mb-6 leading-relaxed"></p>
+            <button class="btn-action" style="background: #fff" onclick="resetGame()">Починить и начать заново</button>
+        </div>
+    </div>
+
     <script>
-        function updT() { document.getElementById('tDisp').innerText = document.getElementById('tKnob').value + '°C'; }
-        
-        let pStats = { calc:0, smeta:0, game:0 };
+        let stats = { calc:0, smeta:0, timer:0, game:0 };
 
         function upd() {
-            let total = pStats.calc + pStats.smeta + pStats.game;
+            let total = stats.calc + stats.smeta + stats.timer + stats.game;
             document.getElementById('pBar').style.width = total + '%';
             document.getElementById('percentTxt').innerText = total + '%';
-            let s = "Новичок";
-            if(total > 30) s = "Любитель";
-            if(total > 70) s = "Инженер-самоучка";
-            if(total >= 100) s = "DIY Эксперт";
+            let s = "Ученик";
+            if(total > 30) s = "Подмастерье";
+            if(total > 70) s = "Инженер-новичок";
+            if(total >= 100) s = "Мастер DIY";
             document.getElementById('statusTxt').innerText = s;
         }
 
-        function runCalc() {
-            const area = parseFloat(document.getElementById('area').value);
-            const len = parseFloat(document.getElementById('length').value);
-            if(!area || !len) return alert("Заполни площадь и длину трассы!");
+        function runMegaCalc() {
+            const a = parseFloat(document.getElementById('area').value);
+            const l = parseFloat(document.getElementById('length').value);
+            const s = parseFloat(document.getElementById('sun').value);
+            const p = parseFloat(document.getElementById('people').value);
 
-            pStats.calc = 30; pStats.smeta = 30;
+            if(!a || !l) return alert("Введи площадь и длину!");
+
+            stats.calc = 25; stats.smeta = 25;
             document.getElementById('resBox').classList.remove('hidden');
             
-            let btu = area < 21 ? "7000 BTU (Семерка)" : area < 27 ? "9000 BTU (Девятка)" : "12000 BTU (Двенадцатка)";
+            let power = (a * 100 * s + p) / 1000;
+            let btu = power < 2.5 ? "7000 BTU (До 20 м²)" : power < 3.5 ? "9000 BTU (До 25 м²)" : "12000 BTU (До 35 м²)";
             document.getElementById('resB').innerText = btu;
 
             const smeta = document.getElementById('smeta');
             smeta.innerHTML = `
-                <div class="flex justify-between border-b border-white/5 pb-2"><span>Труба медь 1/4:</span><span class="text-accent">${(len * 1.05).toFixed(1)} м</span></div>
-                <div class="flex justify-between border-b border-white/5 pb-2"><span>Труба медь 3/8:</span><span class="text-accent">${(len * 1.05).toFixed(1)} м</span></div>
-                <div class="flex justify-between border-b border-white/5 pb-2"><span>Кабель 4х1.5:</span><span class="text-accent">${len + 2} м</span></div>
-                <div class="flex justify-between"><span>Дренаж 16мм:</span><span class="text-accent">${len + 1.5} м</span></div>
+                <div class="flex justify-between border-b border-white/5 pb-2"><span>Труба медная 1/4" + 3/8":</span><span class="text-accent">${(l * 1.1).toFixed(1)} м</span></div>
+                <div class="flex justify-between border-b border-white/5 pb-2"><span>Утеплитель (2 вида):</span><span class="text-accent">${(l * 2.1).toFixed(1)} м</span></div>
+                <div class="flex justify-between border-b border-white/5 pb-2"><span>Кабель ПВС 4х1.5:</span><span class="text-accent">${l + 2} м</span></div>
+                <div class="flex justify-between border-b border-white/5 pb-2"><span>Лента обмоточная (PVC):</span><span class="text-accent">1 рулон</span></div>
+                <div class="flex justify-between"><span>Кронштейны + Анкера:</span><span class="text-accent">1 компл.</span></div>
             `;
             upd();
         }
 
         function copySmeta() {
-            const text = document.getElementById('smeta').innerText;
-            navigator.clipboard.writeText("Мой список для магазина:\n" + text).then(() => alert("Список скопирован!"));
+            navigator.clipboard.writeText("Моя смета:\n" + document.getElementById('smeta').innerText).then(() => alert("Список скопирован!"));
         }
 
-        let gStep = 0;
-        function gameAction(type, el) {
+        let timer;
+        function startTimer() {
+            if(timer) return;
+            let t = 1200; stats.timer = 25; upd();
+            document.getElementById('tBtn').innerText = "Проверка...";
+            timer = setInterval(() => {
+                let m = Math.floor(t/60), s = t%60;
+                document.getElementById('timerDisp').innerText = `${m}:${s<10?'0':''}${s}`;
+                if(t-- <= 0) { clearInterval(timer); document.getElementById('timerDisp').style.color="#0f0"; }
+            }, 1000);
+        }
+
+        // GAME ENGINE
+        let step = 0;
+        function gAction(type, el) {
             if(el.classList.contains('active')) return;
-            if(type === 'vac' && gStep === 0) { log("Воздух удален. Система чистая."); step(el); }
-            else if(type === 'leak' && gStep === 1) { log("Тест пены пройден. Утечек нет."); step(el); }
-            else if(type === 'valves' && gStep === 2) { log("Газ выпущен в трассу."); step(el); }
-            else if(type === 'power' && gStep === 3) {
-                log("СИСТЕМА ЗАПУЩЕНА! ПОШЛА ПРОХЛАДА!");
+            const log = (m) => document.getElementById('term').innerHTML += `<br>> ${m}`;
+            
+            if(type === 'vac' && step === 0) { log("ВАКУУМ: Влага и воздух удалены из системы."); step++; el.classList.add('active'); }
+            else if(type === 'check' && step === 1) { log("ТЕСТ: Мыло не пузырится. Соединения надежны."); step++; el.classList.add('active'); }
+            else if(type === 'gas' && step === 2) { log("ГАЗ: Фреон заполнил систему. Давление в норме."); step++; el.classList.add('active'); }
+            else if(type === 'start' && step === 3) {
+                log("ПУСК: Компрессор запущен! Температура падает.");
                 el.classList.add('active');
-                pStats.game = 40; upd();
-                confetti({ particleCount: 150, spread: 70, origin: {y:0.7}, colors:['#00f2ff', '#ffffff']});
-            } else { err(type); }
-        }
-
-        function log(m) { document.getElementById('term').innerHTML += `<br>> ${m}`; }
-        function step(el) { el.classList.add('active'); gStep++; }
-        
-        function err(t) {
-            const m = document.getElementById('gameErr');
-            const txt = document.getElementById('errTxt');
-            m.style.display = 'flex';
-            if(t === 'valves') txt.innerText = "ОШИБКА: Ты открыл фреон, но не удалил воздух из труб! Влага внутри превратится в лед, и через месяц компрессор заклинит.";
-            else if(t === 'power') txt.innerText = "КРИТИЧЕСКАЯ ОШИБКА: Ты включил питание при закрытых кранах! Компрессор сгорит от перегрузки за 1 минуту.";
-            else txt.innerText = "НАРУШЕН ПОРЯДОК: Сначала подготовка и проверка, и только потом запуск газа и электричества.";
+                stats.game = 25; upd();
+                confetti({ particleCount: 150, spread: 70, colors:['#00f2ff', '#ffffff'], origin: {y:0.8} });
+            } else {
+                const m = document.getElementById('gameErr');
+                const t = document.getElementById('errTxt');
+                m.style.display = 'flex';
+                if(type === 'gas') t.innerText = "КАТАСТРОФА! Ты выпустил фреон, но в трубах остался воздух. Влага мгновенно превратится в лед и убьет мотор через пару дней. Нужна была ВАКУУМАЦИЯ.";
+                else if(type === 'start') t.innerText = "ХЬЮСТОН, У НАС ПРОБЛЕМЫ! Ты включил кондей, но забыл открыть газ. Мотор работал 'всухую' и сгорел от перегрева за 30 секунд.";
+                else t.innerText = "НАРУШЕНА ТЕХНОЛОГИЯ! В монтаже нельзя прыгать через шаги. Соблюдай порядок, иначе потратишь деньги впустую.";
+            }
         }
 
         function resetGame() {
-            gStep = 0; pStats.game = 0;
-            document.getElementById('term').innerText = "Система: Ожидание ввода данных...";
-            document.querySelectorAll('.game-btn').forEach(b => b.classList.remove('active'));
+            step = 0; stats.game = 0;
+            document.getElementById('term').innerHTML = "> СИСТЕМА ГОТОВА...<br>> ЖДУ КОМАНДЫ ДЛЯ ЗАПУСКА...";
+            document.querySelectorAll('.game-node').forEach(n => n.classList.remove('active'));
             document.getElementById('gameErr').style.display = 'none';
             upd();
         }
 
         window.onload = () => {
-           document.querySelectorAll('.nav-link').forEach(l => l.onclick = () => {
-               document.querySelectorAll('.nav-link').forEach(a => a.classList.remove('active'));
-               l.classList.add('active');
-           });
+            document.querySelectorAll('.nav-link').forEach(l => l.onclick = () => {
+                document.querySelectorAll('.nav-link').forEach(a => a.classList.remove('active'));
+                l.classList.add('active');
+            });
         }
     </script>
 </body>
