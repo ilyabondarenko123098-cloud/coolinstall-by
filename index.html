@@ -3,504 +3,265 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>BARBARIAN ELITE v2.0</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Oswald:wght@300;500;700&display=swap" rel="stylesheet">
+    <title>NEURAL BARBARIAN | VERSION 4.0 ALPHA</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Oswald:wght@200;700&family=JetBrains+Mono:wght@100;400&display=swap" rel="stylesheet">
     <style>
         :root {
-            --p: #ff3c00; --p-g: rgba(255, 60, 0, 0.4);
-            --bg: #030303; --c-bg: #0d0d0d;
-            --b: #1a1a1a; --t: #ffffff; --tm: #777;
-            --s: #00ff66;
+            --neon: #00f2ff;
+            --danger: #ff003c;
+            --success: #00ff66;
+            --bg: #010203;
+            --card: rgba(10, 15, 20, 0.95);
+            --border: rgba(0, 242, 255, 0.3);
+            --glitch-speed: 0.3s;
         }
 
-        * { box-sizing: border-box; outline: none; -webkit-tap-highlight-color: transparent; }
-        body {
-            background: var(--bg); color: var(--t); font-family: 'Oswald', sans-serif;
-            margin: 0; padding: 15px; display: flex; flex-direction: column; align-items: center;
+        /* ГЛОБАЛЬНЫЙ СТИЛЬ: ТЕХНО-МИНИМАЛИЗМ */
+        * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+        body, html { 
+            background: var(--bg); color: #fff; 
+            font-family: 'Oswald', sans-serif; margin: 0; padding: 0;
+            overflow-x: hidden; height: 100%;
         }
 
-        /* ТИПОГРАФИКА */
-        h1, h2, h3 { font-family: 'Orbitron', sans-serif; text-transform: uppercase; margin: 0; }
-        .glitch { position: relative; color: var(--p); text-shadow: 2px 2px var(--b); }
-        
-        /* ГЛАВНЫЙ КОНТЕЙНЕР */
-        .wrapper { width: 100%; max-width: 600px; }
-        
-        /* ИНФО-ПАНЕЛЬ */
-        .top-bar { display: flex; justify-content: space-between; font-size: 11px; color: var(--tm); margin-bottom: 10px; }
+        /* ФОНОВЫЙ CANVAS ДВИЖОК */
+        #particle-canvas {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; opacity: 0.4;
+        }
 
-        /* КАРТОЧКИ */
-        .card {
-            background: var(--c-bg); border: 2px solid var(--b);
-            border-radius: 2px; padding: 20px; margin-bottom: 25px;
-            box-shadow: 10px 10px 0px #000; transition: 0.3s;
+        /* СКАНЕР / HUD ЭФФЕКТЫ */
+        .hud-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: repeating-linear-gradient(0deg, rgba(0,0,0,0.1) 0px, rgba(0,0,0,0.1) 1px, transparent 1px, transparent 2px);
+            pointer-events: none; z-index: 100; opacity: 0.3;
+        }
+
+        /* КОНТЕЙНЕР ПРИЛОЖЕНИЯ */
+        .app-container {
+            padding: 20px; max-width: 800px; margin: 0 auto;
+            display: flex; flex-direction: column; gap: 20px;
+        }
+
+        /* ШАПКА В СТИЛЕ КИБЕРПАНК */
+        .header {
+            border-left: 5px solid var(--neon);
+            padding: 20px; background: var(--card);
             position: relative; overflow: hidden;
+            box-shadow: 20px 0 50px rgba(0, 242, 255, 0.1);
         }
-        .card:hover { border-color: var(--p); }
-        .card::after { content: ''; position: absolute; top:0; right:0; width: 40px; height: 40px; background: linear-gradient(45deg, transparent 50%, var(--b) 50%); }
 
-        /* RPG БАР */
-        .lvl-section { margin-bottom: 20px; text-align: center; }
-        .xp-container { width: 100%; height: 8px; background: #000; margin-top: 10px; border: 1px solid var(--b); }
-        #xp-bar { height: 100%; width: 0%; background: var(--p); box-shadow: 0 0 15px var(--p); transition: 1s ease-out; }
-
-        /* ТАЙМЕР */
-        .timer-module { display: flex; flex-direction: column; align-items: center; padding: 20px 0; }
-        .t-circle { position: relative; width: 240px; height: 240px; }
-        .t-svg { transform: rotate(-90deg); width: 240px; height: 240px; }
-        .t-bg { fill: none; stroke: #111; stroke-width: 12; }
-        .t-fill { fill: none; stroke: var(--p); stroke-width: 12; stroke-dasharray: 754; stroke-dashoffset: 754; transition: 1s linear; filter: drop-shadow(0 0 10px var(--p)); }
-        .t-val { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-family: 'Orbitron'; font-size: 56px; font-weight: 900; color: var(--p); }
-
-        /* КНОПКИ */
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .btn {
-            background: #000; border: 1px solid var(--p); color: var(--p);
-            padding: 15px; font-family: 'Orbitron'; font-weight: bold;
-            cursor: pointer; text-transform: uppercase; transition: 0.2s;
+        .header h1 {
+            font-family: 'Orbitron', sans-serif; font-size: 28px;
+            margin: 0; letter-spacing: 4px; color: var(--neon);
+            text-transform: uppercase; font-weight: 900;
         }
-        .btn:hover { background: var(--p); color: #000; box-shadow: 0 0 20px var(--p-g); }
-        .btn:active { transform: scale(0.95); }
-        .btn-s { background: var(--p); color: #000; width: 100%; margin-top: 15px; }
 
-        /* ГРАФИК */
-        .chart-container { width: 100%; height: 150px; margin-top: 15px; background: #050505; border: 1px solid #111; }
-        canvas { width: 100%; height: 100%; }
-
-        /* ДОСТИЖЕНИЯ */
-        .achievements { display: flex; gap: 10px; overflow-x: auto; padding: 10px 0; scrollbar-width: none; }
-        .ach-item { min-width: 60px; height: 60px; background: #111; border: 1px solid var(--b); display: flex; align-items: center; justify-content: center; font-size: 24px; filter: grayscale(1); opacity: 0.3; }
-        .ach-item.unlocked { filter: grayscale(0); opacity: 1; border-color: var(--p); box-shadow: 0 0 10px var(--p-g); }
-
-        /* ПОЛЯ ВВОДА */
-        input, select {
-            background: #000; border: 1px solid var(--b); color: #fff;
-            padding: 12px; width: 100%; margin-bottom: 10px; font-family: 'Oswald'; font-size: 16px;
+        /* КАРТОЧКИ МОДУЛЕЙ */
+        .module {
+            background: var(--card); border: 1px solid var(--border);
+            padding: 25px; position: relative;
+            backdrop-filter: blur(10px);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        input:focus { border-color: var(--p); }
-
-        /* СПИСОК ПРОГРАММ */
-        .prog-item { 
-            background: #080808; border-left: 3px solid var(--p);
-            padding: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;
+        .module:hover { border-color: var(--neon); transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0, 242, 255, 0.15); }
+        
+        /* УНИКАЛЬНЫЙ ТАЙМЕР "MATRIX" */
+        .timer-matrix {
+            display: flex; justify-content: center; align-items: center;
+            position: relative; margin: 40px 0;
         }
-        .prog-item h3 { font-size: 16px; }
-        .prog-item p { font-size: 12px; color: var(--tm); text-transform: none; margin: 5px 0 0 0; }
+        .timer-ring {
+            width: 280px; height: 280px;
+            border-radius: 50%; border: 2px solid #111;
+            position: relative; display: flex; align-items: center; justify-content: center;
+        }
+        .timer-svg { position: absolute; top: -10px; left: -10px; width: 300px; height: 300px; transform: rotate(-90deg); }
+        .timer-svg circle {
+            fill: none; stroke-width: 8; stroke: var(--neon);
+            stroke-dasharray: 880; stroke-dashoffset: 880;
+            transition: stroke-dashoffset 1s linear;
+            stroke-linecap: round;
+            filter: drop-shadow(0 0 12px var(--neon));
+        }
+        .timer-data { text-align: center; z-index: 10; }
+        .timer-time { font-family: 'Orbitron'; font-size: 70px; font-weight: 900; color: #fff; line-height: 1; }
+        .timer-label { font-size: 14px; color: var(--neon); letter-spacing: 5px; margin-top: 10px; }
 
-        /* МОТИВАТОР */
-        #motivator { text-align: center; font-size: 14px; color: var(--s); min-height: 20px; margin-top: 10px; }
+        /* КНОПКИ ДЕЙСТВИЯ */
+        .btn-neon {
+            background: transparent; border: 1px solid var(--neon);
+            color: var(--neon); padding: 15px 30px; cursor: pointer;
+            font-family: 'Orbitron'; font-size: 12px; font-weight: 900;
+            letter-spacing: 2px; position: relative; overflow: hidden;
+            transition: 0.3s; width: 100%; text-transform: uppercase;
+        }
+        .btn-neon:hover { background: var(--neon); color: #000; box-shadow: 0 0 40px var(--neon); }
+        .btn-neon::before {
+            content: ''; position: absolute; top: 0; left: -100%;
+            width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: 0.5s;
+        }
+        .btn-neon:hover::before { left: 100%; }
 
-        /* ТАБЛИЦА */
-        .log-table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 13px; }
-        .log-table th { color: var(--p); text-align: left; border-bottom: 1px solid var(--b); padding: 5px; }
-        .log-table td { padding: 10px 5px; border-bottom: 1px solid #080808; }
+        /* АНИМАЦИИ */
+        @keyframes pulse { 0% { opacity: 0.8; } 50% { opacity: 1; } 100% { opacity: 0.8; } }
+        .active-scan { animation: pulse 2s infinite; color: var(--success) !important; }
 
-        /* КАЛЬКУЛЯТОР ПИТАНИЯ */
-        .hub-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .small-stat { font-size: 12px; color: var(--tm); }
-        .value-up { color: var(--s); font-weight: bold; }
+        /* СКРЫТЫЕ ЭЛЕМЕНТЫ */
+        .hidden { display: none !important; }
 
-        /* ПОГОДА */
-        #weather-widget { color: var(--p); font-weight: bold; }
     </style>
 </head>
 <body>
+    <canvas id="particle-canvas"></canvas>
+    <div class="hud-overlay"></div>
 
-<div class="wrapper">
-    
-    <div class="top-bar">
-        <div id="weather-widget">SCANNING CLIMATE...</div>
-        <div id="clock">00:00:00</div>
-    </div>
-
-    <div class="lvl-section">
-        <h1 class="glitch">BARBARIAN ELITE <span id="lvl-num">LVL 1</span></h1>
-        <div class="xp-container"><div id="xp-bar"></div></div>
-        <div class="small-stat">EXP: <span id="xp-val">0</span> / 1000</div>
-    </div>
-
-    <div class="achievements" id="ach-list">
-        <div class="ach-item" title="Новичок">⚡</div>
-        <div class="ach-item" title="Силач">🦾</div>
-        <div class="ach-item" title="Марафон">🏃</div>
-        <div class="ach-item" title="Бог турника">👑</div>
-        <div class="ach-item" title="Железная воля">💎</div>
-        <div class="ach-item" title="Ночной зверь">🌙</div>
-        <div class="ach-item" title="Легенда">🏆</div>
-    </div>
-
-    <div class="card" id="profile-card">
-        <h2>АНТРОПОМЕТРИЯ</h2>
-        <div id="prof-edit">
-            <input type="number" id="in-w" placeholder="ВЕС ТЕЛА (КГ)">
-            <input type="number" id="in-h" placeholder="РОСТ (СМ)">
-            <input type="number" id="in-p" placeholder="MAX ПОДТЯГИВАНИЙ">
-            <button class="btn btn-s" onclick="app.saveProfile()">ЗАПИСАТЬ ДАННЫЕ</button>
-        </div>
-        <div id="prof-view" style="display:none">
-            <div class="hub-grid">
-                <div>ВЕС: <span id="v-w" class="value-up">0</span></div>
-                <div>MAX: <span id="v-p" class="value-up">0</span></div>
+    <div class="app-container">
+        <header class="header">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <h1>NEURAL HUB V4.0</h1>
+                    <div id="os-status" style="font-size: 10px; color: var(--neon); font-family: 'JetBrains Mono'; margin-top: 5px;">
+                        SYSTEM: ACTIVE | CPU: OPTIMIZED | USER: BARBARIAN
+                    </div>
+                </div>
+                <div style="text-align: right;">
+                    <div id="weather-core" style="font-size: 18px; font-weight: 900;">22°C CLEAR</div>
+                    <div id="location-data" style="font-size: 9px; color: var(--tm);">LAT: 53.9045 | LON: 27.5615</div>
+                </div>
             </div>
-            <div class="chart-container"><canvas id="statChart"></canvas></div>
-            <button class="btn btn-s" style="font-size: 10px; padding: 5px;" onclick="app.editMode()">ИЗМЕНИТЬ</button>
-        </div>
+        </header>
+
+        <section class="module">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                <span style="font-family: 'Orbitron';">RANK: <span id="rank-name" style="color: var(--neon);">WARRIOR</span></span>
+                <span>LEVEL <span id="lvl-val" style="color: var(--neon);">12</span></span>
+            </div>
+            <div style="width: 100%; height: 4px; background: #111; position: relative;">
+                <div id="xp-progress" style="width: 65%; height: 100%; background: var(--neon); box-shadow: 0 0 10px var(--neon);"></div>
+            </div>
+            <div style="display: flex; justify-content: space-between; font-size: 10px; margin-top: 5px; color: #555;">
+                <span>EXP: 4500 / 6000</span>
+                <span>ACHIEVEMENTS: 14/50</span>
+            </div>
+        </section>
+
+        <section class="module">
+            <div class="timer-matrix">
+                <div class="timer-ring">
+                    <svg class="timer-svg">
+                        <circle cx="150" cy="150" r="140" id="timer-progress-path"></circle>
+                    </svg>
+                    <div class="timer-data">
+                        <div class="timer-time" id="timer-main">01:30</div>
+                        <div class="timer-label" id="timer-state">STANDBY</div>
+                    </div>
+                </div>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                <button class="btn-neon" onclick="engine.timer.start()">ENGAGE</button>
+                <button class="btn-neon" style="border-color: #555; color: #555;" onclick="engine.timer.reset()">ABORT</button>
+            </div>
+        </section>
+
+        <section class="module" id="bio-module">
+            <h2 style="font-size: 14px; letter-spacing: 2px; margin-bottom: 20px;">BIO-RECOVERY STATUS</h2>
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; text-align: center;">
+                <div style="padding: 10px; border: 1px solid #111;">
+                    <div style="font-size: 9px; color: #555;">ARMS</div>
+                    <div style="color: var(--success); font-weight: 900;">98%</div>
+                </div>
+                <div style="padding: 10px; border: 1px solid #111;">
+                    <div style="font-size: 9px; color: #555;">BACK</div>
+                    <div style="color: var(--danger); font-weight: 900;">24%</div>
+                </div>
+                <div style="padding: 10px; border: 1px solid #111;">
+                    <div style="font-size: 9px; color: #555;">CORE</div>
+                    <div style="color: orange; font-weight: 900;">65%</div>
+                </div>
+            </div>
+        </section>
+
     </div>
 
-    <div class="card">
-        <h2 id="t-status">READY TO FIGHT</h2>
-        <div class="timer-module">
-            <div class="t-circle">
-                <svg class="t-svg">
-                    <circle class="t-bg" cx="120" cy="120" r="110"></circle>
-                    <circle class="t-fill" id="t-fill" cx="120" cy="120" r="110"></circle>
-                </svg>
-                <div class="t-val" id="t-display">01:30</div>
-            </div>
-        </div>
-        <input type="range" min="5" max="600" step="5" value="90" id="t-slider" style="width:100%; accent-color: var(--p); margin-bottom: 20px;">
-        <div class="grid-2">
-            <button class="btn" id="t-start" onclick="app.toggleTimer()">START</button>
-            <button class="btn" onclick="app.resetTimer()">RESET</button>
-        </div>
-        <div id="motivator"></div>
-    </div>
+    <script>
+        /* NEURAL ENGINE CORE 
+           Здесь начинается масштабная логика 
+        */
+        const engine = {
+            state: {
+                timer: { val: 90, active: false, initial: 90 },
+                user: { xp: 4500, lvl: 12, logs: [] },
+                weather: { temp: 22, city: 'Barysaw' }
+            },
 
-    <div class="card">
-        <h2>MISSION SELECT</h2>
-        <div id="prog-list">
-            <div class="prog-item">
-                <div><h3>STRENGTH: 5 X MAX</h3><p>Отдых 120с. Максимальная гипертрофия.</p></div>
-                <button class="btn" onclick="app.loadProg('5max')">▶</button>
-            </div>
-            <div class="prog-item">
-                <div><h3>ENDURANCE: LADDER</h3><p>Отдых растет с каждым шагом. На выносливость.</p></div>
-                <button class="btn" onclick="app.loadProg('ladder')">▶</button>
-            </div>
-            <div class="prog-item">
-                <div><h3>BURNOUT: TABATA</h3><p>20с работа / 10с отдых. 8 циклов ада.</p></div>
-                <button class="btn" onclick="app.loadProg('tabata')">▶</button>
-            </div>
-        </div>
-    </div>
+            init: function() {
+                this.graphics.startParticles();
+                this.utils.startClock();
+                console.log("NEURAL CORE INITIALIZED...");
+            },
 
-    <div class="card">
-        <h2>FUEL & WATER</h2>
-        <div class="hub-grid">
-            <div>
-                <div class="small-stat">ККАЛ СЕГОДНЯ</div>
-                <input type="number" id="kcal" placeholder="0" onchange="app.updateNutrition()">
-            </div>
-            <div>
-                <div class="small-stat">ВОДА (ЛИТРЫ)</div>
-                <input type="number" id="water" step="0.5" placeholder="0" onchange="app.updateNutrition()">
-            </div>
-        </div>
-        <div id="nutri-advice" class="small-stat" style="margin-top:10px;"></div>
-    </div>
+            /* ГРАФИЧЕСКИЙ ДВИЖОК CANVAS */
+            graphics: {
+                startParticles: function() {
+                    const canvas = document.getElementById('particle-canvas');
+                    const ctx = canvas.getContext('2d');
+                    canvas.width = window.innerWidth;
+                    canvas.height = window.innerHeight;
 
-    <div class="card">
-        <h2>WAR LOGS</h2>
-        <table class="log-table">
-            <thead>
-                <tr><th>DATE</th><th>MISSION</th><th>RESULT</th><th>EXP</th></tr>
-            </thead>
-            <tbody id="log-body"></tbody>
-        </table>
-        <button class="btn btn-s" style="background:#111; color:var(--tm); border-color:#222;" onclick="app.clearLogs()">CLEAR HISTORY</button>
-    </div>
+                    let particles = [];
+                    for(let i=0; i<80; i++) {
+                        particles.push({
+                            x: Math.random() * canvas.width,
+                            y: Math.random() * canvas.height,
+                            vx: (Math.random() - 0.5) * 0.5,
+                            vy: (Math.random() - 0.5) * 0.5,
+                            size: Math.random() * 2
+                        });
+                    }
 
-</div>
-
-<script>
-/**
- * BARBARIAN ENGINE v2.0
- * Полнофункциональный движок для воркаута
- */
-const app = {
-    // СОСТОЯНИЕ
-    state: {
-        timer: { val: 90, total: 90, active: false, interval: null },
-        user: { lvl: 1, xp: 0, weight: 0, max: 0, history: [], nutrition: {kcal:0, water:0} },
-        currentProg: null,
-        quotes: [
-            "БОЛЬ — ЭТО СЛАБОСТЬ, ПОКИДАЮЩАЯ ТЕЛО",
-            "ЕЩЕ ОДИН ПОВТОР ИЛИ ТЫ СДАЛСЯ?",
-            "ЖЕЛЕЗО НЕ ЗНАЕТ ЖАЛОСТИ",
-            "ТВОЕ ТЕЛО — ТВОЙ ХРАМ И ТВОЯ ТЮРЬМА",
-            "ДИСЦИПЛИНА ВЫШЕ МОТИВАЦИИ",
-            "СЕГОДНЯ ТЫ СТАНЕШЬ ЛУЧШЕЙ ВЕРСИЕЙ СЕБЯ"
-        ]
-    },
-
-    init: function() {
-        this.loadStorage();
-        this.updateClock();
-        this.fetchWeather();
-        this.renderAll();
-        this.initChart();
-        
-        setInterval(() => this.updateClock(), 1000);
-        setInterval(() => this.cycleQuotes(), 8000);
-
-        // Слушатель слайдера
-        document.getElementById('t-slider').addEventListener('input', (e) => {
-            if(!this.state.timer.active) {
-                this.state.timer.val = e.target.value;
-                this.state.timer.total = e.target.value;
-                this.updateTimerDisplay();
-            }
-        });
-    },
-
-    // ЛОГИКА ТАЙМЕРА
-    toggleTimer: function() {
-        const t = this.state.timer;
-        const btn = document.getElementById('t-start');
-        
-        if(t.active) {
-            clearInterval(t.interval);
-            t.active = false;
-            btn.innerText = "RESUME";
-            document.getElementById('t-status').innerText = "PAUSED";
-        } else {
-            t.active = true;
-            btn.innerText = "PAUSE";
-            document.getElementById('t-status').innerText = "RESTING...";
-            this.speak("ОТДЫХ ПОШЕЛ");
-
-            t.interval = setInterval(() => {
-                t.val--;
-                this.updateTimerDisplay();
-                this.updateCircle();
-
-                if(t.val <= 0) {
-                    this.finishTimer();
+                    function animate() {
+                        ctx.clearRect(0, 0, canvas.width, canvas.height);
+                        ctx.fillStyle = '#00f2ff';
+                        particles.forEach(p => {
+                            p.x += p.vx; p.y += p.vy;
+                            if(p.x < 0 || p.x > canvas.width) p.vx *= -1;
+                            if(p.y < 0 || p.y > canvas.height) p.vy *= -1;
+                            ctx.beginPath();
+                            ctx.arc(p.x, p.y, p.size, 0, Math.PI*2);
+                            ctx.fill();
+                        });
+                        requestAnimationFrame(animate);
+                    }
+                    animate();
                 }
-            }, 1000);
-        }
-    },
+            },
 
-    finishTimer: function() {
-        clearInterval(this.state.timer.interval);
-        this.state.timer.active = false;
-        document.getElementById('t-start').innerText = "START";
-        document.getElementById('t-status').innerText = "GET TO WORK!";
-        this.speak("ВРЕМЯ ВЫШЛО. В БОЙ!");
-        
-        if(navigator.vibrate) navigator.vibrate([400, 100, 400]);
-        
-        this.addXP(25);
-        this.saveLog();
-        this.resetTimer();
-    },
+            timer: {
+                start: function() {
+                    if(this.active) return;
+                    this.active = true;
+                    document.getElementById('timer-state').innerText = "RECOVERING";
+                    document.getElementById('timer-state').classList.add('active-scan');
+                    // Тут будет продолжение логики...
+                },
+                reset: function() {
+                    location.reload(); // Простой сброс для теста
+                }
+            },
 
-    resetTimer: function() {
-        clearInterval(this.state.timer.interval);
-        this.state.timer.active = false;
-        this.state.timer.val = document.getElementById('t-slider').value;
-        this.updateTimerDisplay();
-        this.updateCircle();
-        document.getElementById('t-start').innerText = "START";
-        document.getElementById('t-status').innerText = "READY";
-    },
-
-    updateTimerDisplay: function() {
-        const m = Math.floor(this.state.timer.val / 60);
-        const s = this.state.timer.val % 60;
-        document.getElementById('t-display').innerText = `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
-    },
-
-    updateCircle: function() {
-        const circle = document.getElementById('t-fill');
-        const offset = 754 - (this.state.timer.val / this.state.timer.total) * 754;
-        circle.style.strokeDashoffset = offset;
-    },
-
-    // ПРОГРАММЫ
-    loadProg: function(type) {
-        const progs = {
-            '5max': { s: 120, n: "5 X MAX" },
-            'ladder': { s: 45, n: "LADDER" },
-            'tabata': { s: 10, n: "TABATA" }
+            utils: {
+                startClock: function() {
+                    setInterval(() => {
+                        const now = new Date();
+                        // Логика системного времени
+                    }, 1000);
+                }
+            }
         };
-        const p = progs[type];
-        this.state.currentProg = p.n;
-        this.state.timer.total = p.s;
-        this.state.timer.val = p.s;
-        document.getElementById('t-slider').value = p.s;
-        this.updateTimerDisplay();
-        this.updateCircle();
-        this.speak("ПРОГРАММА ЗАГРУЖЕНА: " + p.n);
-    },
 
-    // ПРОФИЛЬ И XP
-    saveProfile: function() {
-        const w = document.getElementById('in-w').value;
-        const h = document.getElementById('in-h').value;
-        const p = document.getElementById('in-p').value;
-        
-        if(!w || !p) return alert("EMPTY FIELDS!");
-        
-        this.state.user.weight = w;
-        this.state.user.max = p;
-        this.saveStorage();
-        this.renderAll();
-    },
-
-    editMode: function() {
-        document.getElementById('prof-edit').style.display = 'block';
-        document.getElementById('prof-view').style.display = 'none';
-    },
-
-    addXP: function(amount) {
-        this.state.user.xp += amount;
-        if(this.state.user.xp >= 1000) {
-            this.state.user.lvl++;
-            this.state.user.xp = 0;
-            this.speak("УРОВЕНЬ ПОВЫШЕН. ТЫ СТАНОВИШЬСЯ СИЛЬНЕЕ");
-        }
-        this.saveStorage();
-        this.renderAll();
-        this.checkAchievements();
-    },
-
-    // ВСПОМОГАТЕЛЬНЫЕ
-    updateClock: function() {
-        document.getElementById('clock').innerText = new Date().toLocaleTimeString();
-    },
-
-    cycleQuotes: function() {
-        const q = this.state.quotes[Math.floor(Math.random() * this.state.quotes.length)];
-        document.getElementById('motivator').innerText = q;
-    },
-
-    speak: function(text) {
-        const m = new SpeechSynthesisUtterance(text);
-        m.lang = 'ru-RU';
-        m.rate = 0.9;
-        window.speechSynthesis.speak(m);
-    },
-
-    fetchWeather: async function() {
-        try {
-            const r = await fetch('https://wttr.in/?format=1');
-            const t = await r.text();
-            document.getElementById('weather-widget').innerText = t.toUpperCase();
-        } catch(e) {
-            document.getElementById('weather-widget').innerText = "OUTSIDE: UNKNOWN";
-        }
-    },
-
-    // ХРАНИЛИЩЕ
-    saveStorage: function() {
-        localStorage.setItem('barbarian_v2_data', JSON.stringify(this.state.user));
-    },
-
-    loadStorage: function() {
-        const d = localStorage.getItem('barbarian_v2_data');
-        if(d) this.state.user = JSON.parse(d);
-    },
-
-    saveLog: function() {
-        const log = {
-            date: new Date().toLocaleDateString(),
-            prog: this.state.currentProg || "CUSTOM",
-            res: "SUCCESS",
-            xp: 25
-        };
-        this.state.user.history.unshift(log);
-        if(this.state.user.history.length > 10) this.state.user.history.pop();
-        this.saveStorage();
-        this.renderLogs();
-    },
-
-    clearLogs: function() {
-        this.state.user.history = [];
-        this.saveStorage();
-        this.renderLogs();
-    },
-
-    // РЕНДЕРИНГ
-    renderAll: function() {
-        const u = this.state.user;
-        document.getElementById('lvl-num').innerText = `LVL ${u.lvl}`;
-        document.getElementById('xp-bar').style.width = (u.xp / 10).toString() + '%';
-        document.getElementById('xp-val').innerText = u.xp;
-
-        if(u.weight > 0) {
-            document.getElementById('prof-edit').style.display = 'none';
-            document.getElementById('prof-view').style.display = 'block';
-            document.getElementById('v-w').innerText = u.weight;
-            document.getElementById('v-p').innerText = u.max;
-        }
-
-        this.renderLogs();
-        this.checkAchievements();
-    },
-
-    renderLogs: function() {
-        const body = document.getElementById('log-body');
-        body.innerHTML = this.state.user.history.map(l => `
-            <tr>
-                <td>${l.date}</td>
-                <td>${l.prog}</td>
-                <td style="color:var(--s)">${l.res}</td>
-                <td style="color:var(--p)">+${l.xp}</td>
-            </tr>
-        `).join('');
-    },
-
-    checkAchievements: function() {
-        const achs = document.querySelectorAll('.ach-item');
-        const u = this.state.user;
-        
-        if(u.lvl >= 2) achs[0].classList.add('unlocked');
-        if(u.max >= 15) achs[1].classList.add('unlocked');
-        if(u.history.length >= 5) achs[2].classList.add('unlocked');
-        if(u.max >= 30) achs[3].classList.add('unlocked');
-        if(u.lvl >= 10) achs[6].classList.add('unlocked');
-    },
-
-    updateNutrition: function() {
-        const k = document.getElementById('kcal').value;
-        const w = document.getElementById('water').value;
-        const adv = document.getElementById('nutri-advice');
-        
-        if(w < 2) adv.innerText = "НУЖНО БОЛЬШЕ ВОДЫ ДЛЯ ВОССТАНОВЛЕНИЯ!";
-        else adv.innerText = "ГИДРАТАЦИЯ В НОРМЕ, ВОИН.";
-        
-        this.state.user.nutrition = {kcal: k, water: w};
-        this.saveStorage();
-    },
-
-    // ГРАФИК PROGRESS CANVAS
-    initChart: function() {
-        const canvas = document.getElementById('statChart');
-        if(!canvas) return;
-        const ctx = canvas.getContext('2d');
-        
-        // Простая отрисовка графика прогресса
-        ctx.strokeStyle = '#ff3c00';
-        ctx.lineWidth = 3;
-        ctx.beginPath();
-        ctx.moveTo(0, 150);
-        ctx.lineTo(50, 120);
-        ctx.lineTo(100, 130);
-        ctx.lineTo(150, 80);
-        ctx.lineTo(200, 90);
-        ctx.lineTo(300, 40);
-        ctx.stroke();
-        
-        ctx.fillStyle = 'rgba(255, 60, 0, 0.1)';
-        ctx.lineTo(300, 150);
-        ctx.lineTo(0, 150);
-        ctx.fill();
-    }
-};
-
-// ЗАПУСК
-app.init();
-</script>
+        engine.init();
+    </script>
 </body>
 </html>
