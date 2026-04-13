@@ -5,122 +5,71 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>BARBARIAN WORKOUT HUB</title>
     <style>
-        /* --- BRUTAL DESIGN --- */
         :root {
-            --bg: #05070a; /* Почти черный */
-            --block-bg: #111418; /* Грубый камень */
-            --accent: #ff3c00; /* Ярко-оранжевый неон */
+            --bg: #05070a;
+            --block-bg: #111418;
+            --accent: #ff3c00;
             --accent-glow: rgba(255, 60, 0, 0.6);
-            --text: #e2e8f0; /* Холодный серый */
+            --text: #e2e8f0;
             --text-muted: #64748b;
-            --border: #2d3748; /* Грубый металл */
+            --border: #2d3748;
         }
 
         * { box-sizing: border-box; }
-
         body {
             background-color: var(--bg);
             color: var(--text);
-            font-family: 'Oswald', sans-serif; /* Рекомендую добавить этот шрифт через Google Fonts, если есть интернет, если нет - будет обычный угловатый */
+            font-family: 'Oswald', sans-serif;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            margin: 0;
-            padding: 20px;
-            padding-bottom: 80px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            margin: 0; padding: 20px; padding-bottom: 80px;
+            display: flex; flex-direction: column; align-items: center;
         }
 
-        h1, h2, h3 { margin-top: 0; font-weight: 900; }
-        h1 { font-size: 32px; color: var(--accent); text-shadow: 0 0 15px var(--accent-glow); margin-bottom: 25px; border-bottom: 4px solid var(--accent); padding-bottom: 10px; }
-        h2 { font-size: 18px; color: var(--text); margin-bottom: 15px; }
+        h1 { font-size: 28px; color: var(--accent); text-shadow: 0 0 15px var(--accent-glow); border-bottom: 4px solid var(--accent); padding-bottom: 10px; margin-bottom: 20px; }
         
-        /* Основные блоки - «Грубый Камень» */
         .brutal-card {
             background-color: var(--block-bg);
             border: 3px solid var(--border);
-            border-radius: 4px; /* Угловатый дизайн */
+            border-radius: 4px;
             padding: 20px;
             width: 100%;
             max-width: 450px;
-            margin-bottom: 25px;
-            position: relative;
-        }
-        
-        /* Эффект свечения для блока профиля и таймера */
-        .brutal-card::before {
-            content: '';
-            position: absolute;
-            top: -5px; left: -5px; right: -5px; bottom: -5px;
-            border: 2px solid var(--accent-glow);
-            filter: blur(5px);
-            opacity: 0.3;
-            z-index: -1;
+            margin-bottom: 20px;
         }
 
-        /* Профиль */
-        .input-group { display: flex; gap: 10px; margin-bottom: 15px; }
-        input[type="number"] {
-            background: #000;
-            border: 2px solid var(--border);
-            color: white;
-            padding: 15px;
-            border-radius: 2px;
-            width: 100%;
-            font-size: 18px;
-            font-weight: bold;
-            outline: none;
-            transition: 0.2s;
+        /* ИНСТРУКЦИЯ */
+        #instruction-box {
+            display: none;
+            border-color: var(--accent);
+            background: rgba(255, 60, 0, 0.1);
         }
-        input[type="number"]:focus { border-color: var(--accent); box-shadow: 0 0 10px var(--accent-glow); }
+        .instr-step { margin-bottom: 10px; font-size: 14px; text-transform: none; border-left: 2px solid var(--accent); padding-left: 10px; }
+
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+        .stat-box { background: rgba(0,0,0,0.4); padding: 10px; border: 1px solid var(--border); text-align: center; }
+        .stat-value { font-size: 24px; font-weight: 900; color: var(--accent); }
+
+        /* ТАЙМЕР */
+        .timer-container { display: flex; flex-direction: column; align-items: center; position: relative; }
+        .svg-timer { width: 180px; height: 180px; transform: rotate(-90deg); }
+        .circle-bg { fill: none; stroke: var(--border); stroke-width: 10; }
+        .circle-progress { fill: none; stroke: var(--accent); stroke-width: 10; stroke-dasharray: 565; stroke-dashoffset: 0; transition: stroke-dashoffset 1s linear; }
+        .time-display { position: absolute; top: 70px; font-size: 40px; font-weight: 900; color: var(--accent); }
+        
+        .slider { -webkit-appearance: none; width: 100%; height: 10px; background: var(--border); margin: 20px 0; }
+        .slider::-webkit-slider-thumb { -webkit-appearance: none; width: 25px; height: 25px; background: var(--accent); cursor: pointer; }
 
         .btn {
-            background: var(--accent);
-            color: #000;
-            border: none;
-            padding: 18px;
-            border-radius: 2px;
-            font-weight: 900;
-            font-size: 18px;
-            cursor: pointer;
-            width: 100%;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            transition: 0.1s;
+            background: var(--accent); color: #000; border: none; padding: 15px;
+            font-weight: 900; font-size: 16px; cursor: pointer; width: 100%;
+            text-transform: uppercase; margin-bottom: 10px;
         }
-        .btn:active { transform: translateY(3px); filter: brightness(0.8); }
-        .btn-outline { background: transparent; border: 3px solid var(--accent); color: var(--accent); font-size: 16px; }
+        .btn-outline { background: transparent; border: 2px solid var(--accent); color: var(--accent); }
 
-        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
-        .stat-box { background: rgba(0,0,0,0.4); padding: 15px; border: 1px solid var(--border); text-align: center; }
-        .stat-value { font-size: 36px; font-weight: 900; color: var(--accent); text-shadow: 0 0 10px var(--accent-glow); }
-        .stat-label { font-size: 12px; color: var(--text-muted); }
-
-        /* Таймер-крутилка */
-        .timer-container { display: flex; flex-direction: column; align-items: center; position: relative; margin-top: 10px; }
-        .svg-timer { width: 220px; height: 220px; transform: rotate(-90deg); }
-        .circle-bg { fill: none; stroke: var(--border); stroke-width: 12; }
-        .circle-progress { fill: none; stroke: var(--accent); stroke-width: 12; stroke-linecap: square; stroke-dasharray: 628; stroke-dashoffset: 0; transition: stroke-dashoffset 1s linear; filter: drop-shadow(0 0 10px var(--accent)); }
-        .time-display { position: absolute; top: 90px; font-size: 52px; font-weight: 900; letter-spacing: 3px; color: var(--accent); text-shadow: 0 0 15px var(--accent-glow); }
+        .workout-item { background: rgba(0,0,0,0.4); padding: 15px; border: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .play-btn { background: var(--accent); border: none; width: 45px; height: 45px; cursor: pointer; font-size: 20px; }
         
-        /* Ползунок времени (брутальный) */
-        .slider { -webkit-appearance: none; width: 100%; height: 12px; border-radius: 2px; background: var(--border); outline: none; margin: 30px 0; border: 2px solid #000; }
-        .slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 30px; height: 30px; border-radius: 2px; background: var(--accent); cursor: pointer; box-shadow: 0 0 15px var(--accent-glow); }
-        
-        .timer-controls { display: flex; gap: 15px; width: 100%; }
-
-        /* Библиотека тренировок */
-        .workout-list { display: flex; flex-direction: column; gap: 15px; }
-        .workout-item { background: rgba(0,0,0,0.4); padding: 20px; border: 2px solid var(--border); display: flex; justify-content: space-between; align-items: center; transition: 0.2s; }
-        .workout-item:hover { border-color: var(--accent); background: rgba(255, 60, 0, 0.05); }
-        .workout-info h3 { margin: 0 0 5px 0; font-size: 18px; color: var(--text); }
-        .workout-info p { margin: 0; font-size: 12px; color: var(--text-muted); text-transform: none; }
-        
-        /* Кнопка запуска тренировки */
-        .play-btn { background: var(--accent); border: none; width: 50px; height: 50px; border-radius: 2px; display: flex; justify-content: center; align-items: center; cursor: pointer; color: #000; font-size: 24px; box-shadow: 0 0 10px var(--accent-glow); transition: 0.2s; }
-        .play-btn:active { transform: scale(0.9); box-shadow: 0 0 2px var(--accent-glow); }
-
+        #set-counter { font-size: 20px; color: var(--accent); margin-bottom: 10px; display: block; text-align: center; }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700;900&display=swap" rel="stylesheet">
 </head>
@@ -130,159 +79,140 @@
 
     <div class="brutal-card" id="profile-card">
         <div id="setup-form">
-            <h2>Твои показатели</h2>
-            <div class="input-group">
-                <input type="number" id="weight" placeholder="Вес (кг)">
-                <input type="number" id="height" placeholder="Рост (см)">
-            </div>
-            <input type="number" id="max-pullups" placeholder="Макс. подтягивания">
-            <input type="number" id="max-dips" placeholder="Макс. брусья">
-            <input type="number" id="max-pushups" placeholder="Макс. отжимания">
-            <button class="btn" onclick="saveProfile()">Сохранить базу</button>
+            <input type="number" id="weight" placeholder="ВЕС (КГ)">
+            <input type="number" id="max-pullups" placeholder="МАКС ПОДТЯГИВАНИЯ">
+            <button class="btn" onclick="saveProfile()">СОХРАНИТЬ БАЗУ</button>
         </div>
-
         <div id="display-stats" style="display:none;">
-            <h2>Твой профиль</h2>
             <div class="stats-grid">
-                <div class="stat-box"><div class="stat-label">Подтягивания</div><div class="stat-value" id="view-pullups">0</div></div>
-                <div class="stat-box"><div class="stat-label">Брусья</div><div class="stat-value" id="view-dips">0</div></div>
-                <div class="stat-box"><div class="stat-label">Отжимания</div><div class="stat-value" id="view-pushups">0</div></div>
-                <div class="stat-box"><div class="stat-label">Вес (кг)</div><div class="stat-value" id="view-weight">0</div></div>
+                <div class="stat-box">ВЕС: <span class="stat-value" id="view-weight">0</span></div>
+                <div class="stat-box">MAX: <span class="stat-value" id="view-pullups">0</span></div>
             </div>
-            <button class="btn btn-outline" onclick="showForm()">Обновить рекорды</button>
+            <button class="btn btn-outline" onclick="showForm()">ОБНОВИТЬ</button>
         </div>
     </div>
 
+    <div class="brutal-card" id="instruction-box">
+        <h2 id="instr-title" style="color: var(--accent);">ВЫБЕРИ ТРЕНИРОВКУ</h2>
+        <div id="instr-steps"></div>
+        <span id="set-counter">ПОДХОД: 1</span>
+        <button class="btn" onclick="nextSet()">ПОДХОД ВЫПОЛНЕН</button>
+    </div>
+
     <div class="brutal-card">
-        <h2>Таймер отдыха</h2>
         <div class="timer-container">
-            <svg class="svg-timer">
-                <circle class="circle-bg" cx="110" cy="110" r="100"></circle>
-                <circle class="circle-progress" id="progress-circle" cx="110" cy="110" r="100"></circle>
-            </svg>
+            <svg class="svg-timer"><circle class="circle-bg" cx="90" cy="90" r="80"></circle><circle class="circle-progress" id="progress-circle" cx="90" cy="90" r="80"></circle></svg>
             <div class="time-display" id="time-display">01:00</div>
         </div>
-        
-        <input type="range" min="10" max="300" step="10" value="60" class="slider" id="time-slider" oninput="updateTimeFromSlider()">
-        
-        <div class="timer-controls">
-            <button class="btn" id="start-btn" onclick="toggleTimer()">Старт</button>
-            <button class="btn btn-outline" onclick="resetTimer()">Сброс</button>
+        <input type="range" min="10" max="300" step="5" value="60" class="slider" id="time-slider" oninput="updateTimeFromSlider()">
+        <div style="display: flex; gap: 10px;">
+            <button class="btn" id="start-btn" onclick="toggleTimer()">СТАРТ</button>
+            <button class="btn btn-outline" onclick="resetTimer()">СБРОС</button>
         </div>
     </div>
 
     <div class="brutal-card">
-        <h2>Программы</h2>
-        <div class="workout-list">
-            <div class="workout-item">
-                <div class="workout-info">
-                    <h3>Классика 5xMAX</h3>
-                    <p>Отдых 90 сек между сетами. База: Турник, Брусья, Пол.</p>
-                </div>
-                <button class="play-btn" onclick="startClassic5x5()">▶</button>
-            </div>
-            <div class="workout-item">
-                <div class="workout-info">
-                    <h3>Лесенка 1-10-1</h3>
-                    <p>Быстрый отдых 30 сек. Работаем на выносливость.</p>
-                </div>
-                <button class="play-btn" onclick="startLadder()">▶</button>
-            </div>
-            <div class="workout-item">
-                <div class="workout-info">
-                    <h3>Протокол Табата</h3>
-                    <p>20 сек жесткой работы / 10 сек отдых. 8 раундов.</p>
-                </div>
-                <button class="play-btn" onclick="startTabata()">▶</button>
-            </div>
+        <h2>ПРОГРАММЫ</h2>
+        <div class="workout-item">
+            <div><h3>5 x MAX</h3><p>Классика на силу</p></div>
+            <button class="play-btn" onclick="initWorkout('5max')">▶</button>
+        </div>
+        <div class="workout-item">
+            <div><h3>ЛЕСЕНКА</h3><p>На выносливость</p></div>
+            <button class="play-btn" onclick="initWorkout('ladder')">▶</button>
+        </div>
+        <div class="workout-item">
+            <div><h3>ТАБАТА</h3><p>20/10 взрыв</p></div>
+            <button class="play-btn" onclick="initWorkout('tabata')">▶</button>
         </div>
     </div>
 
     <script>
-        // --- Логика Профиля (LocalStorage) ---
-        function saveProfile() {
-            const data = {
-                weight: document.getElementById('weight').value,
-                height: document.getElementById('height').value,
-                pullups: document.getElementById('max-pullups').value,
-                dips: document.getElementById('max-dips').value,
-                pushups: document.getElementById('max-pushups').value
-            };
-            localStorage.setItem('workoutData', JSON.stringify(data));
-            renderProfile();
-        }
-
-        function renderProfile() {
-            const saved = localStorage.getItem('workoutData');
-            if (saved) {
-                const data = JSON.parse(saved);
-                document.getElementById('view-weight').innerText = data.weight || '-';
-                document.getElementById('view-pullups').innerText = data.pullups || '-';
-                document.getElementById('view-dips').innerText = data.dips || '-';
-                document.getElementById('view-pushups').innerText = data.pushups || '-';
-                
-                document.getElementById('setup-form').style.display = 'none';
-                document.getElementById('display-stats').style.display = 'block';
-            }
-        }
-
-        function showForm() {
-            document.getElementById('setup-form').style.display = 'block';
-            document.getElementById('display-stats').style.display = 'none';
-        }
-
-        // --- Логика Таймера ---
+        let currentSet = 1;
         let timerInterval;
-        let totalTime = 60; 
         let timeRemaining = 60;
+        let totalTime = 60;
         let isRunning = false;
 
-        const timeDisplay = document.getElementById('time-display');
-        const progressCircle = document.getElementById('progress-circle');
-        const timeSlider = document.getElementById('time-slider');
-        const startBtn = document.getElementById('start-btn');
-        
-        const circleCircumference = 2 * Math.PI * 100; // Радиус 100
+        const programs = {
+            '5max': {
+                title: "5 x МАКСИМУМ",
+                steps: ["Сделай 5 подходов подтягиваний/брусьев.", "В каждом подходе — до отказа.", "Отдых между сетами: 90-120 сек."],
+                time: 90
+            },
+            'ladder': {
+                title: "ЛЕСЕНКА (1-10)",
+                steps: ["1 подтягивание — отдых 15с.", "2 подтягивания — отдых 30с.", "Прибавляй по одному, пока не упадешь."],
+                time: 15
+            },
+            'tabata': {
+                title: "ТАБАТА (ВЗРЫВ)",
+                steps: ["20 сек — РАБОТА (макс темп).", "10 сек — ОТДЫХ.", "Всего 8 раундов. Не жалей себя."],
+                time: 10
+            }
+        };
 
-        function formatTime(seconds) {
-            const m = Math.floor(seconds / 60).toString().padStart(2, '0');
-            const s = (seconds % 60).toString().padStart(2, '0');
-            return `${m}:${s}`;
+        function initWorkout(type) {
+            const p = programs[type];
+            document.getElementById('instruction-box').style.display = 'block';
+            document.getElementById('instr-title').innerText = p.title;
+            const stepsDiv = document.getElementById('instr-steps');
+            stepsDiv.innerHTML = p.steps.map(s => `<div class="instr-step">${s}</div>`).join('');
+            
+            currentSet = 1;
+            updateSetDisplay();
+            setQuickTimer(p.time);
+            window.scrollTo(0, 0);
+        }
+
+        function nextSet() {
+            currentSet++;
+            updateSetDisplay();
+            toggleTimer(); // Автозапуск таймера отдыха после нажатия
+        }
+
+        function updateSetDisplay() {
+            document.getElementById('set-counter').innerText = `ПОДХОД: ${currentSet}`;
+        }
+
+        function setQuickTimer(s) {
+            resetTimer();
+            totalTime = s;
+            timeRemaining = s;
+            document.getElementById('time-display').innerText = formatTime(s);
+            document.getElementById('time-slider').value = s;
+        }
+
+        function formatTime(s) {
+            return `${Math.floor(s/60).toString().padStart(2,'0')}:${(s%60).toString().padStart(2,'0')}`;
         }
 
         function updateTimeFromSlider() {
-            if (!isRunning) {
-                totalTime = parseInt(timeSlider.value);
+            if(!isRunning) {
+                totalTime = parseInt(document.getElementById('time-slider').value);
                 timeRemaining = totalTime;
-                timeDisplay.innerText = formatTime(timeRemaining);
-                progressCircle.style.strokeDashoffset = 0;
+                document.getElementById('time-display').innerText = formatTime(timeRemaining);
             }
         }
 
         function toggleTimer() {
-            if (isRunning) {
-                // ПАУЗА
+            const btn = document.getElementById('start-btn');
+            const circle = document.getElementById('progress-circle');
+            const circ = 2 * Math.PI * 80;
+
+            if(isRunning) {
                 clearInterval(timerInterval);
-                startBtn.innerText = 'Продолжить';
-                startBtn.classList.remove('btn-outline');
+                btn.innerText = "СТАРТ";
             } else {
-                // СТАРТ
-                if (timeRemaining <= 0) resetTimer(); 
-                
-                startBtn.innerText = 'Пауза';
-                startBtn.classList.add('btn-outline');
-                
+                btn.innerText = "ПАУЗА";
                 timerInterval = setInterval(() => {
                     timeRemaining--;
-                    timeDisplay.innerText = formatTime(timeRemaining);
-                    
-                    const offset = circleCircumference - (timeRemaining / totalTime) * circleCircumference;
-                    progressCircle.style.strokeDashoffset = offset;
+                    document.getElementById('time-display').innerText = formatTime(timeRemaining);
+                    circle.style.strokeDashoffset = circ - (timeRemaining/totalTime) * circ;
 
-                    if (timeRemaining <= 0) {
+                    if(timeRemaining <= 0) {
                         clearInterval(timerInterval);
-                        navigator.vibrate([300, 100, 300, 100, 500]); // Сильная вибрация
-                        alert('ОТДЫХ ОКОНЧЕН! НА СНАРЯД!');
+                        alert("ВРЕМЯ ВЫШЛО! РАБОТАЙ!");
                         resetTimer();
                     }
                 }, 1000);
@@ -293,41 +223,36 @@
         function resetTimer() {
             clearInterval(timerInterval);
             isRunning = false;
-            startBtn.innerText = 'Старт';
-            startBtn.classList.remove('btn-outline');
+            document.getElementById('start-btn').innerText = "СТАРТ";
+            document.getElementById('progress-circle').style.strokeDashoffset = 0;
             updateTimeFromSlider();
         }
 
-        // --- Логика Кнопок Тренировок (ИСПРАВЛЕНО) ---
-        function setQuickTimer(seconds) {
-            resetTimer(); // Сначала полностью сбрасываем старый таймер
-            totalTime = seconds;
-            timeRemaining = totalTime;
-            timeDisplay.innerText = formatTime(timeRemaining);
-            timeSlider.value = totalTime; // Обновляем положение ползунка
-            progressCircle.style.strokeDashoffset = 0; // Сбрасываем кольцо
+        function saveProfile() {
+            const data = { weight: document.getElementById('weight').value, max: document.getElementById('max-pullups').value };
+            localStorage.setItem('workoutData', JSON.stringify(data));
+            renderProfile();
         }
 
-        function startTabata() {
-            setQuickTimer(20); // 20 секунд работа
-            alert("ТАБАТА: 20 СЕК РАБОТА. Нажимай Старт!");
+        function renderProfile() {
+            const saved = localStorage.getItem('workoutData');
+            if(saved) {
+                const data = JSON.parse(saved);
+                document.getElementById('view-weight').innerText = data.weight;
+                document.getElementById('view-pullups').innerText = data.max;
+                document.getElementById('setup-form').style.display = 'none';
+                document.getElementById('display-stats').style.display = 'block';
+            }
         }
 
-        function startClassic5x5() {
-            setQuickTimer(90); // 1.5 минуты отдых
-            alert("5xMAX: Отдых 1:30. Нажимай Старт!");
+        function showForm() {
+            document.getElementById('setup-form').style.display = 'block';
+            document.getElementById('display-stats').style.display = 'none';
         }
 
-        function startLadder() {
-            setQuickTimer(30); // Короткий отдых
-            alert("ЛЕСЕНКА: Отдых 30 сек. Нажимай Старт!");
-        }
-
-        // Запуск при открытии страницы
         window.onload = () => {
             renderProfile();
-            progressCircle.style.strokeDasharray = circleCircumference;
-            updateTimeFromSlider();
+            document.getElementById('progress-circle').style.strokeDasharray = 2 * Math.PI * 80;
         };
     </script>
 </body>
