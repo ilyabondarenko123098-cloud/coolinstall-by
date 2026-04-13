@@ -3,415 +3,504 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>BARBARIAN ULTIMATE HUB</title>
-    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Orbitron:wght@400;900&display=swap" rel="stylesheet">
+    <title>BARBARIAN ELITE v2.0</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Oswald:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #ff3c00;
-            --primary-glow: rgba(255, 60, 0, 0.5);
-            --bg: #050505;
-            --card-bg: #111;
-            --border: #222;
-            --text: #eee;
-            --success: #00ff66;
+            --p: #ff3c00; --p-g: rgba(255, 60, 0, 0.4);
+            --bg: #030303; --c-bg: #0d0d0d;
+            --b: #1a1a1a; --t: #ffffff; --tm: #777;
+            --s: #00ff66;
         }
 
-        /* ОСНОВНОЙ СТИЛЬ */
+        * { box-sizing: border-box; outline: none; -webkit-tap-highlight-color: transparent; }
         body {
-            background-color: var(--bg);
-            color: var(--text);
-            font-family: 'Oswald', sans-serif;
-            margin: 0; padding: 15px;
-            display: flex; flex-direction: column; align-items: center;
-            overflow-x: hidden;
+            background: var(--bg); color: var(--t); font-family: 'Oswald', sans-serif;
+            margin: 0; padding: 15px; display: flex; flex-direction: column; align-items: center;
         }
 
-        h1, h2 { font-family: 'Orbitron', sans-serif; text-transform: uppercase; letter-spacing: 2px; }
-
-        .header {
-            width: 100%; max-width: 500px;
-            text-align: center; margin-bottom: 20px;
-            border-bottom: 2px solid var(--primary);
-            padding-bottom: 10px;
-            box-shadow: 0 10px 20px -10px var(--primary-glow);
-        }
-
-        /* ПОГОДА И ИНФО */
-        .top-info {
-            display: flex; justify-content: space-between;
-            width: 100%; max-width: 500px; margin-bottom: 15px;
-            font-size: 12px; color: #888;
-        }
+        /* ТИПОГРАФИКА */
+        h1, h2, h3 { font-family: 'Orbitron', sans-serif; text-transform: uppercase; margin: 0; }
+        .glitch { position: relative; color: var(--p); text-shadow: 2px 2px var(--b); }
+        
+        /* ГЛАВНЫЙ КОНТЕЙНЕР */
+        .wrapper { width: 100%; max-width: 600px; }
+        
+        /* ИНФО-ПАНЕЛЬ */
+        .top-bar { display: flex; justify-content: space-between; font-size: 11px; color: var(--tm); margin-bottom: 10px; }
 
         /* КАРТОЧКИ */
         .card {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            width: 100%; max-width: 500px;
-            padding: 20px; margin-bottom: 20px;
+            background: var(--c-bg); border: 2px solid var(--b);
+            border-radius: 2px; padding: 20px; margin-bottom: 25px;
+            box-shadow: 10px 10px 0px #000; transition: 0.3s;
             position: relative; overflow: hidden;
         }
+        .card:hover { border-color: var(--p); }
+        .card::after { content: ''; position: absolute; top:0; right:0; width: 40px; height: 40px; background: linear-gradient(45deg, transparent 50%, var(--b) 50%); }
 
-        .card::before {
-            content: ''; position: absolute; top: 0; left: 0;
-            width: 4px; height: 100%; background: var(--primary);
-        }
+        /* RPG БАР */
+        .lvl-section { margin-bottom: 20px; text-align: center; }
+        .xp-container { width: 100%; height: 8px; background: #000; margin-top: 10px; border: 1px solid var(--b); }
+        #xp-bar { height: 100%; width: 0%; background: var(--p); box-shadow: 0 0 15px var(--p); transition: 1s ease-out; }
 
-        /* RPG СИСТЕМА */
-        .rpg-bar {
-            width: 100%; height: 10px; background: #222;
-            margin: 10px 0; border-radius: 5px; overflow: hidden;
-        }
-        #exp-fill { height: 100%; width: 0%; background: var(--primary); transition: 0.5s; box-shadow: 0 0 10px var(--primary); }
+        /* ТАЙМЕР */
+        .timer-module { display: flex; flex-direction: column; align-items: center; padding: 20px 0; }
+        .t-circle { position: relative; width: 240px; height: 240px; }
+        .t-svg { transform: rotate(-90deg); width: 240px; height: 240px; }
+        .t-bg { fill: none; stroke: #111; stroke-width: 12; }
+        .t-fill { fill: none; stroke: var(--p); stroke-width: 12; stroke-dasharray: 754; stroke-dashoffset: 754; transition: 1s linear; filter: drop-shadow(0 0 10px var(--p)); }
+        .t-val { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-family: 'Orbitron'; font-size: 56px; font-weight: 900; color: var(--p); }
 
-        /* ТАЙМЕР - ЦЕНТРАЛЬНЫЙ ЭЛЕМЕНТ */
-        .timer-wrap {
-            position: relative; width: 220px; height: 220px;
-            margin: 20px auto;
-        }
-        .timer-svg { transform: rotate(-90deg); width: 220px; height: 220px; }
-        .timer-circle-bg { fill: none; stroke: #1a1a1a; stroke-width: 10; }
-        .timer-circle-prod { fill: none; stroke: var(--primary); stroke-width: 10; stroke-dasharray: 628; stroke-dashoffset: 628; transition: 1s linear; }
-        .timer-text {
-            position: absolute; top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 48px; font-family: 'Orbitron'; font-weight: 900;
-            color: var(--primary); text-shadow: 0 0 15px var(--primary-glow);
-        }
-
-        /* УПРАВЛЕНИЕ */
-        .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        /* КНОПКИ */
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         .btn {
-            background: #1a1a1a; border: 1px solid var(--primary);
-            color: var(--primary); padding: 15px; font-weight: bold;
-            text-transform: uppercase; cursor: pointer; transition: 0.2s;
-            font-family: 'Orbitron'; font-size: 14px;
+            background: #000; border: 1px solid var(--p); color: var(--p);
+            padding: 15px; font-family: 'Orbitron'; font-weight: bold;
+            cursor: pointer; text-transform: uppercase; transition: 0.2s;
         }
-        .btn:active { background: var(--primary); color: #000; }
-        .btn.active { background: var(--primary); color: #000; box-shadow: 0 0 20px var(--primary-glow); }
+        .btn:hover { background: var(--p); color: #000; box-shadow: 0 0 20px var(--p-g); }
+        .btn:active { transform: scale(0.95); }
+        .btn-s { background: var(--p); color: #000; width: 100%; margin-top: 15px; }
 
-        /* ИНСТРУКЦИИ И МОТИВАЦИЯ */
-        .instr-content { background: #000; padding: 15px; border: 1px dashed var(--border); margin-top: 15px; }
-        .motivator { font-style: italic; color: var(--success); text-align: center; margin-top: 10px; }
+        /* ГРАФИК */
+        .chart-container { width: 100%; height: 150px; margin-top: 15px; background: #050505; border: 1px solid #111; }
+        canvas { width: 100%; height: 100%; }
 
-        /* ВВОД ДАННЫХ */
-        input {
-            background: #000; border: 1px solid var(--border);
-            color: #fff; padding: 10px; width: 100%; margin-bottom: 10px;
-            font-family: 'Oswald';
+        /* ДОСТИЖЕНИЯ */
+        .achievements { display: flex; gap: 10px; overflow-x: auto; padding: 10px 0; scrollbar-width: none; }
+        .ach-item { min-width: 60px; height: 60px; background: #111; border: 1px solid var(--b); display: flex; align-items: center; justify-content: center; font-size: 24px; filter: grayscale(1); opacity: 0.3; }
+        .ach-item.unlocked { filter: grayscale(0); opacity: 1; border-color: var(--p); box-shadow: 0 0 10px var(--p-g); }
+
+        /* ПОЛЯ ВВОДА */
+        input, select {
+            background: #000; border: 1px solid var(--b); color: #fff;
+            padding: 12px; width: 100%; margin-bottom: 10px; font-family: 'Oswald'; font-size: 16px;
         }
+        input:focus { border-color: var(--p); }
 
-        /* ТАБЛИЦА ИСТОРИИ */
-        table { width: 100%; border-collapse: collapse; font-size: 12px; }
-        th { text-align: left; color: var(--primary); padding-bottom: 5px; }
-        td { border-bottom: 1px solid #222; padding: 8px 0; }
+        /* СПИСОК ПРОГРАММ */
+        .prog-item { 
+            background: #080808; border-left: 3px solid var(--p);
+            padding: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;
+        }
+        .prog-item h3 { font-size: 16px; }
+        .prog-item p { font-size: 12px; color: var(--tm); text-transform: none; margin: 5px 0 0 0; }
 
-        /* АНИМАЦИИ */
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
-        .working { animation: pulse 1s infinite; color: var(--success) !important; }
+        /* МОТИВАТОР */
+        #motivator { text-align: center; font-size: 14px; color: var(--s); min-height: 20px; margin-top: 10px; }
 
+        /* ТАБЛИЦА */
+        .log-table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 13px; }
+        .log-table th { color: var(--p); text-align: left; border-bottom: 1px solid var(--b); padding: 5px; }
+        .log-table td { padding: 10px 5px; border-bottom: 1px solid #080808; }
+
+        /* КАЛЬКУЛЯТОР ПИТАНИЯ */
+        .hub-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .small-stat { font-size: 12px; color: var(--tm); }
+        .value-up { color: var(--s); font-weight: bold; }
+
+        /* ПОГОДА */
+        #weather-widget { color: var(--p); font-weight: bold; }
     </style>
 </head>
 <body>
 
-    <div class="top-info">
-        <div id="weather">ЗАГРУЗКА ПОГОДЫ...</div>
-        <div id="date">01.01.2024</div>
+<div class="wrapper">
+    
+    <div class="top-bar">
+        <div id="weather-widget">SCANNING CLIMATE...</div>
+        <div id="clock">00:00:00</div>
     </div>
 
-    <div class="header">
-        <h1>BARBARIAN HUB <span id="lvl-display" style="font-size: 14px; color: var(--primary);">LVL 1</span></h1>
-        <div class="rpg-bar"><div id="exp-fill"></div></div>
+    <div class="lvl-section">
+        <h1 class="glitch">BARBARIAN ELITE <span id="lvl-num">LVL 1</span></h1>
+        <div class="xp-container"><div id="xp-bar"></div></div>
+        <div class="small-stat">EXP: <span id="xp-val">0</span> / 1000</div>
+    </div>
+
+    <div class="achievements" id="ach-list">
+        <div class="ach-item" title="Новичок">⚡</div>
+        <div class="ach-item" title="Силач">🦾</div>
+        <div class="ach-item" title="Марафон">🏃</div>
+        <div class="ach-item" title="Бог турника">👑</div>
+        <div class="ach-item" title="Железная воля">💎</div>
+        <div class="ach-item" title="Ночной зверь">🌙</div>
+        <div class="ach-item" title="Легенда">🏆</div>
     </div>
 
     <div class="card" id="profile-card">
-        <div id="profile-setup">
-            <h2>РЕГИСТРАЦИЯ ВОИНА</h2>
-            <input type="number" id="weight" placeholder="ТВОЙ ВЕС (КГ)">
-            <input type="number" id="pullups-max" placeholder="MAX ПОДТЯГИВАНИЙ">
-            <input type="number" id="pushups-max" placeholder="MAX ОТЖИМАНИЙ">
-            <button class="btn" style="width: 100%;" onclick="saveProfile()">АКТИВИРОВАТЬ</button>
+        <h2>АНТРОПОМЕТРИЯ</h2>
+        <div id="prof-edit">
+            <input type="number" id="in-w" placeholder="ВЕС ТЕЛА (КГ)">
+            <input type="number" id="in-h" placeholder="РОСТ (СМ)">
+            <input type="number" id="in-p" placeholder="MAX ПОДТЯГИВАНИЙ">
+            <button class="btn btn-s" onclick="app.saveProfile()">ЗАПИСАТЬ ДАННЫЕ</button>
         </div>
-        <div id="profile-stats" style="display: none;">
-            <div style="display: flex; justify-content: space-around;">
-                <div style="text-align: center;">ВЕС<br><span id="s-weight" class="timer-text" style="position:static; font-size: 24px;">0</span></div>
-                <div style="text-align: center;">MAX<br><span id="s-max" class="timer-text" style="position:static; font-size: 24px;">0</span></div>
+        <div id="prof-view" style="display:none">
+            <div class="hub-grid">
+                <div>ВЕС: <span id="v-w" class="value-up">0</span></div>
+                <div>MAX: <span id="v-p" class="value-up">0</span></div>
             </div>
-            <button class="btn" style="width: 100%; margin-top: 15px; font-size: 10px;" onclick="editProfile()">РЕДАКТИРОВАТЬ</button>
+            <div class="chart-container"><canvas id="statChart"></canvas></div>
+            <button class="btn btn-s" style="font-size: 10px; padding: 5px;" onclick="app.editMode()">ИЗМЕНИТЬ</button>
         </div>
     </div>
 
     <div class="card">
-        <h2>ВЫБОР ОРУЖИЯ</h2>
-        <div class="btn-grid">
-            <button class="btn" id="btn-5max" onclick="setProgram('5max')">5 X MAX</button>
-            <button class="btn" id="btn-ladder" onclick="setProgram('ladder')">ЛЕСЕНКА</button>
-            <button class="btn" id="btn-tabata" onclick="setProgram('tabata')">ТАБАТА</button>
-            <button class="btn" id="btn-custom" onclick="setProgram('custom')">СВОЯ</button>
+        <h2 id="t-status">READY TO FIGHT</h2>
+        <div class="timer-module">
+            <div class="t-circle">
+                <svg class="t-svg">
+                    <circle class="t-bg" cx="120" cy="120" r="110"></circle>
+                    <circle class="t-fill" id="t-fill" cx="120" cy="120" r="110"></circle>
+                </svg>
+                <div class="t-val" id="t-display">01:30</div>
+            </div>
         </div>
-
-        <div id="prog-details" class="instr-content" style="display: none;">
-            <h3 id="prog-title" style="color: var(--primary); margin: 0;"></h3>
-            <p id="prog-desc" style="font-size: 13px; text-transform: none; color: #aaa;"></p>
-            <div id="workout-steps"></div>
+        <input type="range" min="5" max="600" step="5" value="90" id="t-slider" style="width:100%; accent-color: var(--p); margin-bottom: 20px;">
+        <div class="grid-2">
+            <button class="btn" id="t-start" onclick="app.toggleTimer()">START</button>
+            <button class="btn" onclick="app.resetTimer()">RESET</button>
         </div>
-    </div>
-
-    <div class="card" style="text-align: center;">
-        <h2 id="timer-status">ОТДЫХ</h2>
-        <div class="timer-wrap">
-            <svg class="timer-svg">
-                <circle class="timer-circle-bg" cx="110" cy="110" r="100"></circle>
-                <circle class="timer-circle-prod" id="progress" cx="110" cy="110" r="100"></circle>
-            </svg>
-            <div class="timer-text" id="display">01:30</div>
-        </div>
-        <div class="btn-grid">
-            <button class="btn" onclick="startTimer()">СТАРТ</button>
-            <button class="btn btn-outline" onclick="resetTimer()">СБРОС</button>
-        </div>
-        <div class="motivator" id="quote">«ЛИБО ТЫ, ЛИБО СНАРЯД»</div>
+        <div id="motivator"></div>
     </div>
 
     <div class="card">
-        <h2>ЖУРНАЛ СЛАВЫ</h2>
-        <table id="history-table">
+        <h2>MISSION SELECT</h2>
+        <div id="prog-list">
+            <div class="prog-item">
+                <div><h3>STRENGTH: 5 X MAX</h3><p>Отдых 120с. Максимальная гипертрофия.</p></div>
+                <button class="btn" onclick="app.loadProg('5max')">▶</button>
+            </div>
+            <div class="prog-item">
+                <div><h3>ENDURANCE: LADDER</h3><p>Отдых растет с каждым шагом. На выносливость.</p></div>
+                <button class="btn" onclick="app.loadProg('ladder')">▶</button>
+            </div>
+            <div class="prog-item">
+                <div><h3>BURNOUT: TABATA</h3><p>20с работа / 10с отдых. 8 циклов ада.</p></div>
+                <button class="btn" onclick="app.loadProg('tabata')">▶</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>FUEL & WATER</h2>
+        <div class="hub-grid">
+            <div>
+                <div class="small-stat">ККАЛ СЕГОДНЯ</div>
+                <input type="number" id="kcal" placeholder="0" onchange="app.updateNutrition()">
+            </div>
+            <div>
+                <div class="small-stat">ВОДА (ЛИТРЫ)</div>
+                <input type="number" id="water" step="0.5" placeholder="0" onchange="app.updateNutrition()">
+            </div>
+        </div>
+        <div id="nutri-advice" class="small-stat" style="margin-top:10px;"></div>
+    </div>
+
+    <div class="card">
+        <h2>WAR LOGS</h2>
+        <table class="log-table">
             <thead>
-                <tr>
-                    <th>ДАТА</th>
-                    <th>ПРОГРАММА</th>
-                    <th>SET</th>
-                    <th>EXP</th>
-                </tr>
+                <tr><th>DATE</th><th>MISSION</th><th>RESULT</th><th>EXP</th></tr>
             </thead>
-            <tbody id="history-body">
-                </tbody>
+            <tbody id="log-body"></tbody>
         </table>
+        <button class="btn btn-s" style="background:#111; color:var(--tm); border-color:#222;" onclick="app.clearLogs()">CLEAR HISTORY</button>
     </div>
 
-    <script>
-        // --- ДАННЫЕ И СОСТОЯНИЕ ---
-        let state = {
-            lvl: 1,
-            exp: 0,
-            currentProg: null,
-            time: 90,
-            timerActive: false,
-            interval: null,
-            setsDone: 0
-        };
+</div>
 
-        const programs = {
-            '5max': { t: "5 X MAX", d: "5 подходов на максимум. Отдых 120с.", s: 120, exp: 50 },
-            'ladder': { t: "ЛЕСЕНКА", d: "1, 2, 3... до упора. Отдых = кол-во повторов x 5с.", s: 30, exp: 30 },
-            'tabata': { t: "ТАБАТА", d: "20с работа / 10с отдых. 8 раундов.", s: 10, exp: 100 },
-            'custom': { t: "СВОЯ ТРЕНИРОВКА", d: "Настрой таймер под себя.", s: 60, exp: 20 }
-        };
+<script>
+/**
+ * BARBARIAN ENGINE v2.0
+ * Полнофункциональный движок для воркаута
+ */
+const app = {
+    // СОСТОЯНИЕ
+    state: {
+        timer: { val: 90, total: 90, active: false, interval: null },
+        user: { lvl: 1, xp: 0, weight: 0, max: 0, history: [], nutrition: {kcal:0, water:0} },
+        currentProg: null,
+        quotes: [
+            "БОЛЬ — ЭТО СЛАБОСТЬ, ПОКИДАЮЩАЯ ТЕЛО",
+            "ЕЩЕ ОДИН ПОВТОР ИЛИ ТЫ СДАЛСЯ?",
+            "ЖЕЛЕЗО НЕ ЗНАЕТ ЖАЛОСТИ",
+            "ТВОЕ ТЕЛО — ТВОЙ ХРАМ И ТВОЯ ТЮРЬМА",
+            "ДИСЦИПЛИНА ВЫШЕ МОТИВАЦИИ",
+            "СЕГОДНЯ ТЫ СТАНЕШЬ ЛУЧШЕЙ ВЕРСИЕЙ СЕБЯ"
+        ]
+    },
 
-        const quotes = [
-            "БОЛЬ — ЭТО СЛАБОСТЬ, ПОКИДАЮЩАЯ ТЕЛО.",
-            "ТВОИ МЫШЦЫ НЕ ЗНАЮТ СЧЕТА, ОНИ ЗНАЮТ ТОЛЬКО БОЛЬ.",
-            "ЕЩЕ ОДИН ПОВТОР, ВОИН!",
-            "СЕГОДНЯ ЛУЧШЕ, ЧЕМ ВЧЕРА.",
-            "ЖЕЛЕЗО НЕ ВРЕТ."
-        ];
+    init: function() {
+        this.loadStorage();
+        this.updateClock();
+        this.fetchWeather();
+        this.renderAll();
+        this.initChart();
+        
+        setInterval(() => this.updateClock(), 1000);
+        setInterval(() => this.cycleQuotes(), 8000);
 
-        // --- ИНИЦИАЛИЗАЦИЯ ---
-        window.onload = () => {
-            loadData();
-            updateWeather();
-            setInterval(updateClock, 1000);
-            updateQuotes();
-        };
-
-        function updateClock() {
-            document.getElementById('date').innerText = new Date().toLocaleTimeString();
-        }
-
-        async function updateWeather() {
-            try {
-                const res = await fetch('https://wttr.in/?format=3');
-                const text = await res.text();
-                document.getElementById('weather').innerText = text.toUpperCase();
-            } catch (e) {
-                document.getElementById('weather').innerText = "ВЫХОДИ НА УЛИЦУ И ПРОВЕРЬ";
+        // Слушатель слайдера
+        document.getElementById('t-slider').addEventListener('input', (e) => {
+            if(!this.state.timer.active) {
+                this.state.timer.val = e.target.value;
+                this.state.timer.total = e.target.value;
+                this.updateTimerDisplay();
             }
-        }
+        });
+    },
 
-        // --- ПРОФИЛЬ ---
-        function saveProfile() {
-            const w = document.getElementById('weight').value;
-            const m = document.getElementById('pullups-max').value;
-            if(!w || !m) return alert("ВВЕДИ ДАННЫЕ!");
-            
-            localStorage.setItem('bb_profile', JSON.stringify({weight: w, max: m}));
-            showProfileStats(w, m);
-        }
+    // ЛОГИКА ТАЙМЕРА
+    toggleTimer: function() {
+        const t = this.state.timer;
+        const btn = document.getElementById('t-start');
+        
+        if(t.active) {
+            clearInterval(t.interval);
+            t.active = false;
+            btn.innerText = "RESUME";
+            document.getElementById('t-status').innerText = "PAUSED";
+        } else {
+            t.active = true;
+            btn.innerText = "PAUSE";
+            document.getElementById('t-status').innerText = "RESTING...";
+            this.speak("ОТДЫХ ПОШЕЛ");
 
-        function showProfileStats(w, m) {
-            document.getElementById('profile-setup').style.display = 'none';
-            document.getElementById('profile-stats').style.display = 'block';
-            document.getElementById('s-weight').innerText = w;
-            document.getElementById('s-max').innerText = m;
-        }
+            t.interval = setInterval(() => {
+                t.val--;
+                this.updateTimerDisplay();
+                this.updateCircle();
 
-        function editProfile() {
-            document.getElementById('profile-setup').style.display = 'block';
-            document.getElementById('profile-stats').style.display = 'none';
-        }
-
-        // --- ТРЕНИРОВКА ---
-        function setProgram(key) {
-            state.currentProg = key;
-            const p = programs[key];
-            
-            // UI
-            document.querySelectorAll('.btn').forEach(b => b.classList.remove('active'));
-            document.getElementById('btn-' + key).classList.add('active');
-            
-            document.getElementById('prog-details').style.display = 'block';
-            document.getElementById('prog-title').innerText = p.t;
-            document.getElementById('prog-desc').innerText = p.d;
-            
-            state.time = p.s;
-            resetTimer();
-        }
-
-        // --- ТАЙМЕР ---
-        function startTimer() {
-            if(state.timerActive) {
-                clearInterval(state.interval);
-                state.timerActive = false;
-                document.getElementById('timer-status').innerText = "ПАУЗА";
-                return;
-            }
-
-            state.timerActive = true;
-            document.getElementById('timer-status').innerText = "ОТДЫХАЙ";
-            document.getElementById('timer-status').classList.add('working');
-
-            const circle = document.getElementById('progress');
-            const circumference = 628;
-            let startT = state.time;
-
-            state.interval = setInterval(() => {
-                state.time--;
-                updateDisplay();
-                
-                let offset = circumference - (state.time / startT) * circumference;
-                circle.style.strokeDashoffset = offset;
-
-                if(state.time <= 0) {
-                    finishTimer();
+                if(t.val <= 0) {
+                    this.finishTimer();
                 }
             }, 1000);
         }
+    },
 
-        function finishTimer() {
-            clearInterval(state.interval);
-            state.timerActive = false;
-            document.getElementById('timer-status').innerText = "В БОЙ!";
-            document.getElementById('timer-status').classList.remove('working');
-            
-            // Вибрация и звук
-            if (navigator.vibrate) navigator.vibrate([500, 200, 500]);
-            speak("ВРЕМЯ ВЫШЛО. НА СНАРЯД!");
-            
-            addExp();
-            saveHistory();
-            resetTimer();
+    finishTimer: function() {
+        clearInterval(this.state.timer.interval);
+        this.state.timer.active = false;
+        document.getElementById('t-start').innerText = "START";
+        document.getElementById('t-status').innerText = "GET TO WORK!";
+        this.speak("ВРЕМЯ ВЫШЛО. В БОЙ!");
+        
+        if(navigator.vibrate) navigator.vibrate([400, 100, 400]);
+        
+        this.addXP(25);
+        this.saveLog();
+        this.resetTimer();
+    },
+
+    resetTimer: function() {
+        clearInterval(this.state.timer.interval);
+        this.state.timer.active = false;
+        this.state.timer.val = document.getElementById('t-slider').value;
+        this.updateTimerDisplay();
+        this.updateCircle();
+        document.getElementById('t-start').innerText = "START";
+        document.getElementById('t-status').innerText = "READY";
+    },
+
+    updateTimerDisplay: function() {
+        const m = Math.floor(this.state.timer.val / 60);
+        const s = this.state.timer.val % 60;
+        document.getElementById('t-display').innerText = `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+    },
+
+    updateCircle: function() {
+        const circle = document.getElementById('t-fill');
+        const offset = 754 - (this.state.timer.val / this.state.timer.total) * 754;
+        circle.style.strokeDashoffset = offset;
+    },
+
+    // ПРОГРАММЫ
+    loadProg: function(type) {
+        const progs = {
+            '5max': { s: 120, n: "5 X MAX" },
+            'ladder': { s: 45, n: "LADDER" },
+            'tabata': { s: 10, n: "TABATA" }
+        };
+        const p = progs[type];
+        this.state.currentProg = p.n;
+        this.state.timer.total = p.s;
+        this.state.timer.val = p.s;
+        document.getElementById('t-slider').value = p.s;
+        this.updateTimerDisplay();
+        this.updateCircle();
+        this.speak("ПРОГРАММА ЗАГРУЖЕНА: " + p.n);
+    },
+
+    // ПРОФИЛЬ И XP
+    saveProfile: function() {
+        const w = document.getElementById('in-w').value;
+        const h = document.getElementById('in-h').value;
+        const p = document.getElementById('in-p').value;
+        
+        if(!w || !p) return alert("EMPTY FIELDS!");
+        
+        this.state.user.weight = w;
+        this.state.user.max = p;
+        this.saveStorage();
+        this.renderAll();
+    },
+
+    editMode: function() {
+        document.getElementById('prof-edit').style.display = 'block';
+        document.getElementById('prof-view').style.display = 'none';
+    },
+
+    addXP: function(amount) {
+        this.state.user.xp += amount;
+        if(this.state.user.xp >= 1000) {
+            this.state.user.lvl++;
+            this.state.user.xp = 0;
+            this.speak("УРОВЕНЬ ПОВЫШЕН. ТЫ СТАНОВИШЬСЯ СИЛЬНЕЕ");
+        }
+        this.saveStorage();
+        this.renderAll();
+        this.checkAchievements();
+    },
+
+    // ВСПОМОГАТЕЛЬНЫЕ
+    updateClock: function() {
+        document.getElementById('clock').innerText = new Date().toLocaleTimeString();
+    },
+
+    cycleQuotes: function() {
+        const q = this.state.quotes[Math.floor(Math.random() * this.state.quotes.length)];
+        document.getElementById('motivator').innerText = q;
+    },
+
+    speak: function(text) {
+        const m = new SpeechSynthesisUtterance(text);
+        m.lang = 'ru-RU';
+        m.rate = 0.9;
+        window.speechSynthesis.speak(m);
+    },
+
+    fetchWeather: async function() {
+        try {
+            const r = await fetch('https://wttr.in/?format=1');
+            const t = await r.text();
+            document.getElementById('weather-widget').innerText = t.toUpperCase();
+        } catch(e) {
+            document.getElementById('weather-widget').innerText = "OUTSIDE: UNKNOWN";
+        }
+    },
+
+    // ХРАНИЛИЩЕ
+    saveStorage: function() {
+        localStorage.setItem('barbarian_v2_data', JSON.stringify(this.state.user));
+    },
+
+    loadStorage: function() {
+        const d = localStorage.getItem('barbarian_v2_data');
+        if(d) this.state.user = JSON.parse(d);
+    },
+
+    saveLog: function() {
+        const log = {
+            date: new Date().toLocaleDateString(),
+            prog: this.state.currentProg || "CUSTOM",
+            res: "SUCCESS",
+            xp: 25
+        };
+        this.state.user.history.unshift(log);
+        if(this.state.user.history.length > 10) this.state.user.history.pop();
+        this.saveStorage();
+        this.renderLogs();
+    },
+
+    clearLogs: function() {
+        this.state.user.history = [];
+        this.saveStorage();
+        this.renderLogs();
+    },
+
+    // РЕНДЕРИНГ
+    renderAll: function() {
+        const u = this.state.user;
+        document.getElementById('lvl-num').innerText = `LVL ${u.lvl}`;
+        document.getElementById('xp-bar').style.width = (u.xp / 10).toString() + '%';
+        document.getElementById('xp-val').innerText = u.xp;
+
+        if(u.weight > 0) {
+            document.getElementById('prof-edit').style.display = 'none';
+            document.getElementById('prof-view').style.display = 'block';
+            document.getElementById('v-w').innerText = u.weight;
+            document.getElementById('v-p').innerText = u.max;
         }
 
-        function resetTimer() {
-            clearInterval(state.interval);
-            state.timerActive = false;
-            state.time = state.currentProg ? programs[state.currentProg].s : 90;
-            updateDisplay();
-            document.getElementById('progress').style.strokeDashoffset = 628;
-            document.getElementById('timer-status').innerText = "ГОТОВ";
-        }
+        this.renderLogs();
+        this.checkAchievements();
+    },
 
-        function updateDisplay() {
-            const m = Math.floor(state.time / 60);
-            const s = state.time % 60;
-            document.getElementById('display').innerText = `${m}:${s < 10 ? '0'+s : s}`;
-        }
+    renderLogs: function() {
+        const body = document.getElementById('log-body');
+        body.innerHTML = this.state.user.history.map(l => `
+            <tr>
+                <td>${l.date}</td>
+                <td>${l.prog}</td>
+                <td style="color:var(--s)">${l.res}</td>
+                <td style="color:var(--p)">+${l.xp}</td>
+            </tr>
+        `).join('');
+    },
 
-        // --- RPG СИСТЕМА ---
-        function addExp() {
-            let gain = state.currentProg ? programs[state.currentProg].exp : 10;
-            state.exp += gain;
-            
-            if(state.exp >= 100) {
-                state.lvl++;
-                state.exp = 0;
-                speak("НОВЫЙ УРОВЕНЬ ДОСТИГНУТ!");
-            }
-            
-            updateRPG();
-            localStorage.setItem('bb_rpg', JSON.stringify({lvl: state.lvl, exp: state.exp}));
-        }
+    checkAchievements: function() {
+        const achs = document.querySelectorAll('.ach-item');
+        const u = this.state.user;
+        
+        if(u.lvl >= 2) achs[0].classList.add('unlocked');
+        if(u.max >= 15) achs[1].classList.add('unlocked');
+        if(u.history.length >= 5) achs[2].classList.add('unlocked');
+        if(u.max >= 30) achs[3].classList.add('unlocked');
+        if(u.lvl >= 10) achs[6].classList.add('unlocked');
+    },
 
-        function updateRPG() {
-            document.getElementById('lvl-display').innerText = `LVL ${state.lvl}`;
-            document.getElementById('exp-fill').style.width = state.exp + '%';
-        }
+    updateNutrition: function() {
+        const k = document.getElementById('kcal').value;
+        const w = document.getElementById('water').value;
+        const adv = document.getElementById('nutri-advice');
+        
+        if(w < 2) adv.innerText = "НУЖНО БОЛЬШЕ ВОДЫ ДЛЯ ВОССТАНОВЛЕНИЯ!";
+        else adv.innerText = "ГИДРАТАЦИЯ В НОРМЕ, ВОИН.";
+        
+        this.state.user.nutrition = {kcal: k, water: w};
+        this.saveStorage();
+    },
 
-        // --- ИСТОРИЯ ---
-        function saveHistory() {
-            const row = {
-                date: new Date().toLocaleDateString(),
-                prog: state.currentProg || 'BATTLE',
-                exp: state.currentProg ? programs[state.currentProg].exp : 10
-            };
-            
-            let history = JSON.parse(localStorage.getItem('bb_history') || '[]');
-            history.unshift(row);
-            if(history.length > 5) history.pop();
-            localStorage.setItem('bb_history', JSON.stringify(history));
-            renderHistory();
-        }
+    // ГРАФИК PROGRESS CANVAS
+    initChart: function() {
+        const canvas = document.getElementById('statChart');
+        if(!canvas) return;
+        const ctx = canvas.getContext('2d');
+        
+        // Простая отрисовка графика прогресса
+        ctx.strokeStyle = '#ff3c00';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(0, 150);
+        ctx.lineTo(50, 120);
+        ctx.lineTo(100, 130);
+        ctx.lineTo(150, 80);
+        ctx.lineTo(200, 90);
+        ctx.lineTo(300, 40);
+        ctx.stroke();
+        
+        ctx.fillStyle = 'rgba(255, 60, 0, 0.1)';
+        ctx.lineTo(300, 150);
+        ctx.lineTo(0, 150);
+        ctx.fill();
+    }
+};
 
-        function renderHistory() {
-            const history = JSON.parse(localStorage.getItem('bb_history') || '[]');
-            const body = document.getElementById('history-body');
-            body.innerHTML = history.map(h => `
-                <tr>
-                    <td>${h.date}</td>
-                    <td>${h.prog.toUpperCase()}</td>
-                    <td>1</td>
-                    <td style="color:var(--primary)">+${h.exp}</td>
-                </tr>
-            `).join('');
-        }
-
-        // --- ДОП ФУНКЦИИ ---
-        function speak(text) {
-            const msg = new SpeechSynthesisUtterance();
-            msg.text = text;
-            msg.lang = 'ru-RU';
-            window.speechSynthesis.speak(msg);
-        }
-
-        function updateQuotes() {
-            setInterval(() => {
-                document.getElementById('quote').innerText = quotes[Math.floor(Math.random() * quotes.length)];
-            }, 10000);
-        }
-
-        function loadData() {
-            const prof = JSON.parse(localStorage.getItem('bb_profile'));
-            if(prof) showProfileStats(prof.weight, prof.max);
-            
-            const rpg = JSON.parse(localStorage.getItem('bb_rpg'));
-            if(rpg) { state.lvl = rpg.lvl; state.exp = rpg.exp; updateRPG(); }
-            
-            renderHistory();
-        }
-
-        function updateTimeFromSlider() {
-            // Реализация кастомного времени через слайдер
-        }
-    </script>
+// ЗАПУСК
+app.init();
+</script>
 </body>
 </html>
