@@ -3,116 +3,281 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Батин Контроль 1.0</title>
+    <title>Workout Hub</title>
     <style>
-        :root { --dark: #1e272e; --accent: #00d2d3; --warning: #ff9f43; --danger: #ee5253; --text: #f5f6fa; }
+        :root {
+            --bg: #0f172a;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --accent: #00e5ff; /* Неоновый синий */
+            --accent-glow: rgba(0, 229, 255, 0.5);
+            --text: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            padding-bottom: 60px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1, h2, h3 { margin-top: 0; }
+        h1 { font-size: 24px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; text-shadow: 0 0 10px var(--accent-glow); }
         
-        body { font-family: -apple-system, sans-serif; background: var(--dark); color: var(--text); margin: 0; padding: 0; }
+        .glass-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 24px;
+            padding: 24px;
+            width: 100%;
+            max-width: 450px;
+            margin-bottom: 24px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+        }
+
+        /* Профиль */
+        .input-group { display: flex; gap: 10px; margin-bottom: 15px; }
+        input[type="number"] {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            padding: 14px;
+            border-radius: 12px;
+            width: 100%;
+            font-size: 16px;
+            outline: none;
+            transition: 0.3s;
+        }
+        input[type="number"]:focus { border-color: var(--accent); }
+
+        .btn {
+            background: var(--accent);
+            color: #000;
+            border: none;
+            padding: 16px;
+            border-radius: 12px;
+            font-weight: 800;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            text-transform: uppercase;
+            box-shadow: 0 0 15px var(--accent-glow);
+            transition: 0.2s;
+        }
+        .btn:active { transform: scale(0.98); box-shadow: 0 0 5px var(--accent-glow); }
+        .btn-outline { background: transparent; border: 2px solid var(--accent); color: var(--accent); box-shadow: none; }
+
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+        .stat-box { background: rgba(0,0,0,0.2); padding: 15px; border-radius: 12px; text-align: center; }
+        .stat-value { font-size: 28px; font-weight: bold; color: var(--accent); margin-top: 5px; }
+        .stat-label { font-size: 12px; color: var(--text-muted); text-transform: uppercase; }
+
+        /* Таймер-крутилка */
+        .timer-container { display: flex; flex-direction: column; align-items: center; position: relative; }
+        .svg-timer { width: 200px; height: 200px; transform: rotate(-90deg); }
+        .circle-bg { fill: none; stroke: rgba(255,255,255,0.1); stroke-width: 8; }
+        .circle-progress { fill: none; stroke: var(--accent); stroke-width: 8; stroke-linecap: round; stroke-dasharray: 565; stroke-dashoffset: 0; transition: stroke-dashoffset 1s linear; filter: drop-shadow(0 0 8px var(--accent)); }
+        .time-display { position: absolute; top: 80px; font-size: 42px; font-weight: bold; letter-spacing: 2px; }
         
-        header { background: #2f3640; padding: 30px 20px; text-align: center; border-bottom: 4px solid var(--accent); }
-        .container { padding: 20px; max-width: 600px; margin: auto; }
+        /* Ползунок времени */
+        .slider { -webkit-appearance: none; width: 100%; height: 6px; border-radius: 5px; background: rgba(255,255,255,0.2); outline: none; margin: 25px 0; }
+        .slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 24px; height: 24px; border-radius: 50%; background: var(--accent); cursor: pointer; box-shadow: 0 0 10px var(--accent); }
+        
+        .timer-controls { display: flex; gap: 10px; width: 100%; }
 
-        .step-card { background: #353b48; border-radius: 15px; padding: 20px; margin-bottom: 20px; display: none; animation: fadeIn 0.5s; }
-        .step-card.active { display: block; }
+        /* Библиотека тренировок */
+        .workout-list { display: flex; flex-direction: column; gap: 15px; }
+        .workout-item { background: rgba(0,0,0,0.2); padding: 15px; border-radius: 12px; border-left: 4px solid var(--accent); display: flex; justify-content: space-between; align-items: center; }
+        .workout-info h3 { margin: 0 0 5px 0; font-size: 16px; }
+        .workout-info p { margin: 0; font-size: 12px; color: var(--text-muted); }
+        .play-btn { background: var(--accent); border: none; width: 40px; height: 40px; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; color: #000; font-size: 18px; }
 
-        h2 { color: var(--accent); margin-top: 0; font-size: 1.4rem; }
-        p { line-height: 1.5; color: #dcdde1; }
-
-        .note { background: rgba(255, 159, 67, 0.1); border-left: 4px solid var(--warning); padding: 10px; margin: 15px 0; font-size: 0.9rem; }
-        .danger { background: rgba(238, 82, 83, 0.1); border-left: 4px solid var(--danger); padding: 10px; margin: 15px 0; font-weight: bold; }
-
-        .btn { background: var(--accent); color: var(--dark); border: none; width: 100%; padding: 18px; border-radius: 10px; font-size: 1.1rem; font-weight: bold; cursor: pointer; margin-top: 10px; }
-        .btn-outline { background: transparent; border: 2px solid #718093; color: #718093; margin-top: 10px; }
-
-        .progress-bar { display: flex; gap: 5px; margin-bottom: 20px; }
-        .dot { height: 6px; flex: 1; background: #718093; border-radius: 10px; }
-        .dot.active { background: var(--accent); }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
-<header>
-    <h1 style="margin:0">ПАПА, СТАВИМ ТУТ! 🛠️</h1>
-    <p style="font-size: 0.9rem; opacity: 0.7">Интерактивный пошаговый план</p>
-</header>
+    <h1>Workout Hub</h1>
 
-<div class="container">
-    <div class="progress-bar" id="dots">
-        <div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
-    </div>
-
-    <div class="step-card active" id="step1">
-        <h2>Шаг 1: Механика и гайки</h2>
-        <p>Сначала вешаем блоки и тянем трассу. Самое главное сейчас — <b>вальцовка</b>.</p>
-        <div class="note">Трубку режь только труборезом! Ножовкой нельзя — опилки убьют компрессор.</div>
-        <div class="danger">Заусенцы внутри трубки убирай риммером, держа трубку дыркой вниз!</div>
-        <button class="btn" onclick="nextStep(2)">Гайки затянул, иду дальше →</button>
-    </div>
-
-    <div class="step-card" id="step2">
-        <h2>Шаг 2: Провода (Электрика)</h2>
-        <p>Соединяем блоки кабелем. Тут всё просто, если не спешить.</p>
-        <div style="background: #2f3640; padding: 15px; border-radius: 8px; border: 1px dashed var(--accent)">
-            <b>Как соединять:</b><br>
-            1. Открой крышку на обоих блоках.<br>
-            2. Подключай по цветам: 1 к 1, 2 к 2 и так далее.<br>
-            3. Землю (желто-зеленый) — на корпус.
+    <div class="glass-card" id="profile-card">
+        <div id="setup-form">
+            <h2>Твои показатели</h2>
+            <div class="input-group">
+                <input type="number" id="weight" placeholder="Вес (кг)">
+                <input type="number" id="height" placeholder="Рост (см)">
+            </div>
+            <input type="number" id="max-pullups" placeholder="Макс. подтягивания">
+            <input type="number" id="max-dips" placeholder="Макс. брусья">
+            <input type="number" id="max-pushups" placeholder="Макс. отжимания">
+            <button class="btn" onclick="saveProfile()">Сохранить базу</button>
         </div>
-        <div class="note">Сфотографируй клеммы на внутреннем блоке, чтобы не забыть цвета у наружного.</div>
-        <button class="btn" onclick="nextStep(3)">Провода на месте →</button>
-        <button class="btn btn-outline" onclick="nextStep(1)">Назад</button>
+
+        <div id="display-stats" style="display:none;">
+            <h2>Твой профиль</h2>
+            <div class="stats-grid">
+                <div class="stat-box"><div class="stat-label">Подтягивания</div><div class="stat-value" id="view-pullups">0</div></div>
+                <div class="stat-box"><div class="stat-label">Брусья</div><div class="stat-value" id="view-dips">0</div></div>
+                <div class="stat-box"><div class="stat-label">Отжимания</div><div class="stat-value" id="view-pushups">0</div></div>
+                <div class="stat-box"><div class="stat-label">Вес (кг)</div><div class="stat-value" id="view-weight">0</div></div>
+            </div>
+            <button class="btn btn-outline" onclick="showForm()">Обновить рекорды</button>
+        </div>
     </div>
 
-    <div class="step-card" id="step3">
-        <h2>Шаг 3: Вакуумирование</h2>
-        <p>Выкачиваем воздух. Это самый ответственный момент.</p>
-        <ol style="padding-left: 20px;">
-            <li>Шланг на сервисный порт (толстая трубка).</li>
-            <li>Второй шланг на насос.</li>
-            <li>Включай насос, открывай кран на манометре.</li>
-        </ol>
-        <div class="danger">Жди 15 минут. Потом сначала закрой кран, и только потом выключай насос!</div>
-        <button class="btn" onclick="nextStep(4)">Вакуум готов →</button>
-        <button class="btn btn-outline" onclick="nextStep(2)">Назад</button>
-    </div>
-
-    <div class="step-card" id="step4">
-        <h2>Шаг 4: Запуск фреона</h2>
-        <p>Вакуум держит? Стрелка не ползет вверх? Значит, дырок нет. Запускаем газ.</p>
-        <p>1. Шестигранником открой тонкую трубку на пол-оборота и сразу закрой.</p>
-        <p>2. Помажь гайки мыльной пеной — если не пузырится, всё супер.</p>
-        <p>3. Открывай оба крана до самого конца.</p>
-        <button class="btn" onclick="nextStep(5)">Всё открыл, готов включать →</button>
-    </div>
-
-    <div class="step-card" id="step5">
-        <h2 style="color: var(--warning)">ФИНАЛ: Первый запуск</h2>
-        <p>Включай кондиционер в розетку. Ставь режим <b>Cool</b> и температуру <b>16°C</b>.</p>
-        <div class="note">Через 5-10 минут из внутреннего блока должен пойти ледяной воздух.</div>
-        <p>Пап, если всё работает — ты официально мастер по кондиционерам! 🧊</p>
-        <button class="btn" onclick="location.reload()">Начать сначала</button>
-    </div>
-</div>
-
-<script>
-    function nextStep(step) {
-        // Скрываем все карты
-        document.querySelectorAll('.step-card').forEach(card => card.classList.remove('active'));
-        // Показываем нужную
-        document.getElementById('step' + step).classList.add('active');
+    <div class="glass-card">
+        <h2>Таймер отдыха</h2>
+        <div class="timer-container">
+            <svg class="svg-timer">
+                <circle class="circle-bg" cx="100" cy="100" r="90"></circle>
+                <circle class="circle-progress" id="progress-circle" cx="100" cy="100" r="90"></circle>
+            </svg>
+            <div class="time-display" id="time-display">01:00</div>
+        </div>
         
-        // Обновляем прогресс-бар
-        const dots = document.querySelectorAll('.dot');
-        dots.forEach((dot, index) => {
-            if (index < step) dot.classList.add('active');
-            else dot.classList.remove('active');
-        });
+        <input type="range" min="10" max="300" step="10" value="60" class="slider" id="time-slider" oninput="updateTimeFromSlider()">
         
-        window.scrollTo(0, 0);
-    }
-</script>
+        <div class="timer-controls">
+            <button class="btn" id="start-btn" onclick="toggleTimer()">Старт</button>
+            <button class="btn btn-outline" onclick="resetTimer()">Сброс</button>
+        </div>
+    </div>
 
+    <div class="glass-card">
+        <h2>Программы</h2>
+        <div class="workout-list">
+            <div class="workout-item">
+                <div class="workout-info">
+                    <h3>Классика 5xMAX</h3>
+                    <p>База: Турник, Брусья, Пол</p>
+                </div>
+                <button class="play-btn">▶</button>
+            </div>
+            <div class="workout-item">
+                <div class="workout-info">
+                    <h3>Лесенка 1-10-1</h3>
+                    <p>Выносливость и объем</p>
+                </div>
+                <button class="play-btn">▶</button>
+            </div>
+            <div class="workout-item">
+                <div class="workout-info">
+                    <h3>Протокол Табата</h3>
+                    <p>20 сек работа / 10 сек отдых</p>
+                </div>
+                <button class="play-btn">▶</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- Логика Профиля ---
+        function saveProfile() {
+            const data = {
+                weight: document.getElementById('weight').value,
+                height: document.getElementById('height').value,
+                pullups: document.getElementById('max-pullups').value,
+                dips: document.getElementById('max-dips').value,
+                pushups: document.getElementById('max-pushups').value
+            };
+            localStorage.setItem('workoutData', JSON.stringify(data));
+            renderProfile();
+        }
+
+        function renderProfile() {
+            const saved = localStorage.getItem('workoutData');
+            if (saved) {
+                const data = JSON.parse(saved);
+                document.getElementById('view-weight').innerText = data.weight || '-';
+                document.getElementById('view-pullups').innerText = data.pullups || '-';
+                document.getElementById('view-dips').innerText = data.dips || '-';
+                document.getElementById('view-pushups').innerText = data.pushups || '-';
+                
+                document.getElementById('setup-form').style.display = 'none';
+                document.getElementById('display-stats').style.display = 'block';
+            }
+        }
+
+        function showForm() {
+            document.getElementById('setup-form').style.display = 'block';
+            document.getElementById('display-stats').style.display = 'none';
+        }
+
+        // --- Логика Таймера ---
+        let timerInterval;
+        let totalTime = 60; 
+        let timeRemaining = 60;
+        let isRunning = false;
+
+        const timeDisplay = document.getElementById('time-display');
+        const progressCircle = document.getElementById('progress-circle');
+        const timeSlider = document.getElementById('time-slider');
+        const startBtn = document.getElementById('start-btn');
+        
+        const circleCircumference = 2 * Math.PI * 90; // Радиус 90
+
+        function formatTime(seconds) {
+            const m = Math.floor(seconds / 60).toString().padStart(2, '0');
+            const s = (seconds % 60).toString().padStart(2, '0');
+            return `${m}:${s}`;
+        }
+
+        function updateTimeFromSlider() {
+            if (!isRunning) {
+                totalTime = parseInt(timeSlider.value);
+                timeRemaining = totalTime;
+                timeDisplay.innerText = formatTime(timeRemaining);
+                progressCircle.style.strokeDashoffset = 0;
+            }
+        }
+
+        function toggleTimer() {
+            if (isRunning) {
+                clearInterval(timerInterval);
+                startBtn.innerText = 'Продолжить';
+                startBtn.classList.remove('btn-outline');
+            } else {
+                startBtn.innerText = 'Пауза';
+                startBtn.classList.add('btn-outline');
+                timerInterval = setInterval(() => {
+                    timeRemaining--;
+                    timeDisplay.innerText = formatTime(timeRemaining);
+                    
+                    const offset = circleCircumference - (timeRemaining / totalTime) * circleCircumference;
+                    progressCircle.style.strokeDashoffset = offset;
+
+                    if (timeRemaining <= 0) {
+                        clearInterval(timerInterval);
+                        navigator.vibrate([200, 100, 200, 100, 500]); // Вибрация на телефоне
+                        alert('Отдых окончен! На снаряд!');
+                        resetTimer();
+                    }
+                }, 1000);
+            }
+            isRunning = !isRunning;
+        }
+
+        function resetTimer() {
+            clearInterval(timerInterval);
+            isRunning = false;
+            startBtn.innerText = 'Старт';
+            startBtn.classList.remove('btn-outline');
+            updateTimeFromSlider();
+        }
+
+        // Запуск при открытии страницы
+        window.onload = () => {
+            renderProfile();
+            progressCircle.style.strokeDasharray = circleCircumference;
+            updateTimeFromSlider();
+        };
+    </script>
 </body>
 </html>
