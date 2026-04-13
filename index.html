@@ -3,257 +3,415 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>BARBARIAN WORKOUT HUB</title>
+    <title>BARBARIAN ULTIMATE HUB</title>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Orbitron:wght@400;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #05070a;
-            --block-bg: #111418;
-            --accent: #ff3c00;
-            --accent-glow: rgba(255, 60, 0, 0.6);
-            --text: #e2e8f0;
-            --text-muted: #64748b;
-            --border: #2d3748;
+            --primary: #ff3c00;
+            --primary-glow: rgba(255, 60, 0, 0.5);
+            --bg: #050505;
+            --card-bg: #111;
+            --border: #222;
+            --text: #eee;
+            --success: #00ff66;
         }
 
-        * { box-sizing: border-box; }
+        /* ОСНОВНОЙ СТИЛЬ */
         body {
             background-color: var(--bg);
             color: var(--text);
             font-family: 'Oswald', sans-serif;
-            text-transform: uppercase;
-            margin: 0; padding: 20px; padding-bottom: 80px;
+            margin: 0; padding: 15px;
             display: flex; flex-direction: column; align-items: center;
+            overflow-x: hidden;
         }
 
-        h1 { font-size: 28px; color: var(--accent); text-shadow: 0 0 15px var(--accent-glow); border-bottom: 4px solid var(--accent); padding-bottom: 10px; margin-bottom: 20px; }
-        
-        .brutal-card {
-            background-color: var(--block-bg);
-            border: 3px solid var(--border);
-            border-radius: 4px;
-            padding: 20px;
-            width: 100%;
-            max-width: 450px;
-            margin-bottom: 20px;
+        h1, h2 { font-family: 'Orbitron', sans-serif; text-transform: uppercase; letter-spacing: 2px; }
+
+        .header {
+            width: 100%; max-width: 500px;
+            text-align: center; margin-bottom: 20px;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 10px;
+            box-shadow: 0 10px 20px -10px var(--primary-glow);
         }
 
-        /* ИНСТРУКЦИЯ */
-        #instruction-box {
-            display: none;
-            border-color: var(--accent);
-            background: rgba(255, 60, 0, 0.1);
+        /* ПОГОДА И ИНФО */
+        .top-info {
+            display: flex; justify-content: space-between;
+            width: 100%; max-width: 500px; margin-bottom: 15px;
+            font-size: 12px; color: #888;
         }
-        .instr-step { margin-bottom: 10px; font-size: 14px; text-transform: none; border-left: 2px solid var(--accent); padding-left: 10px; }
 
-        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
-        .stat-box { background: rgba(0,0,0,0.4); padding: 10px; border: 1px solid var(--border); text-align: center; }
-        .stat-value { font-size: 24px; font-weight: 900; color: var(--accent); }
+        /* КАРТОЧКИ */
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            width: 100%; max-width: 500px;
+            padding: 20px; margin-bottom: 20px;
+            position: relative; overflow: hidden;
+        }
 
-        /* ТАЙМЕР */
-        .timer-container { display: flex; flex-direction: column; align-items: center; position: relative; }
-        .svg-timer { width: 180px; height: 180px; transform: rotate(-90deg); }
-        .circle-bg { fill: none; stroke: var(--border); stroke-width: 10; }
-        .circle-progress { fill: none; stroke: var(--accent); stroke-width: 10; stroke-dasharray: 565; stroke-dashoffset: 0; transition: stroke-dashoffset 1s linear; }
-        .time-display { position: absolute; top: 70px; font-size: 40px; font-weight: 900; color: var(--accent); }
-        
-        .slider { -webkit-appearance: none; width: 100%; height: 10px; background: var(--border); margin: 20px 0; }
-        .slider::-webkit-slider-thumb { -webkit-appearance: none; width: 25px; height: 25px; background: var(--accent); cursor: pointer; }
+        .card::before {
+            content: ''; position: absolute; top: 0; left: 0;
+            width: 4px; height: 100%; background: var(--primary);
+        }
 
+        /* RPG СИСТЕМА */
+        .rpg-bar {
+            width: 100%; height: 10px; background: #222;
+            margin: 10px 0; border-radius: 5px; overflow: hidden;
+        }
+        #exp-fill { height: 100%; width: 0%; background: var(--primary); transition: 0.5s; box-shadow: 0 0 10px var(--primary); }
+
+        /* ТАЙМЕР - ЦЕНТРАЛЬНЫЙ ЭЛЕМЕНТ */
+        .timer-wrap {
+            position: relative; width: 220px; height: 220px;
+            margin: 20px auto;
+        }
+        .timer-svg { transform: rotate(-90deg); width: 220px; height: 220px; }
+        .timer-circle-bg { fill: none; stroke: #1a1a1a; stroke-width: 10; }
+        .timer-circle-prod { fill: none; stroke: var(--primary); stroke-width: 10; stroke-dasharray: 628; stroke-dashoffset: 628; transition: 1s linear; }
+        .timer-text {
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 48px; font-family: 'Orbitron'; font-weight: 900;
+            color: var(--primary); text-shadow: 0 0 15px var(--primary-glow);
+        }
+
+        /* УПРАВЛЕНИЕ */
+        .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         .btn {
-            background: var(--accent); color: #000; border: none; padding: 15px;
-            font-weight: 900; font-size: 16px; cursor: pointer; width: 100%;
-            text-transform: uppercase; margin-bottom: 10px;
+            background: #1a1a1a; border: 1px solid var(--primary);
+            color: var(--primary); padding: 15px; font-weight: bold;
+            text-transform: uppercase; cursor: pointer; transition: 0.2s;
+            font-family: 'Orbitron'; font-size: 14px;
         }
-        .btn-outline { background: transparent; border: 2px solid var(--accent); color: var(--accent); }
+        .btn:active { background: var(--primary); color: #000; }
+        .btn.active { background: var(--primary); color: #000; box-shadow: 0 0 20px var(--primary-glow); }
 
-        .workout-item { background: rgba(0,0,0,0.4); padding: 15px; border: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-        .play-btn { background: var(--accent); border: none; width: 45px; height: 45px; cursor: pointer; font-size: 20px; }
-        
-        #set-counter { font-size: 20px; color: var(--accent); margin-bottom: 10px; display: block; text-align: center; }
+        /* ИНСТРУКЦИИ И МОТИВАЦИЯ */
+        .instr-content { background: #000; padding: 15px; border: 1px dashed var(--border); margin-top: 15px; }
+        .motivator { font-style: italic; color: var(--success); text-align: center; margin-top: 10px; }
+
+        /* ВВОД ДАННЫХ */
+        input {
+            background: #000; border: 1px solid var(--border);
+            color: #fff; padding: 10px; width: 100%; margin-bottom: 10px;
+            font-family: 'Oswald';
+        }
+
+        /* ТАБЛИЦА ИСТОРИИ */
+        table { width: 100%; border-collapse: collapse; font-size: 12px; }
+        th { text-align: left; color: var(--primary); padding-bottom: 5px; }
+        td { border-bottom: 1px solid #222; padding: 8px 0; }
+
+        /* АНИМАЦИИ */
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+        .working { animation: pulse 1s infinite; color: var(--success) !important; }
+
     </style>
-    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700;900&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <h1>BARBARIAN HUB</h1>
+    <div class="top-info">
+        <div id="weather">ЗАГРУЗКА ПОГОДЫ...</div>
+        <div id="date">01.01.2024</div>
+    </div>
 
-    <div class="brutal-card" id="profile-card">
-        <div id="setup-form">
-            <input type="number" id="weight" placeholder="ВЕС (КГ)">
-            <input type="number" id="max-pullups" placeholder="МАКС ПОДТЯГИВАНИЯ">
-            <button class="btn" onclick="saveProfile()">СОХРАНИТЬ БАЗУ</button>
+    <div class="header">
+        <h1>BARBARIAN HUB <span id="lvl-display" style="font-size: 14px; color: var(--primary);">LVL 1</span></h1>
+        <div class="rpg-bar"><div id="exp-fill"></div></div>
+    </div>
+
+    <div class="card" id="profile-card">
+        <div id="profile-setup">
+            <h2>РЕГИСТРАЦИЯ ВОИНА</h2>
+            <input type="number" id="weight" placeholder="ТВОЙ ВЕС (КГ)">
+            <input type="number" id="pullups-max" placeholder="MAX ПОДТЯГИВАНИЙ">
+            <input type="number" id="pushups-max" placeholder="MAX ОТЖИМАНИЙ">
+            <button class="btn" style="width: 100%;" onclick="saveProfile()">АКТИВИРОВАТЬ</button>
         </div>
-        <div id="display-stats" style="display:none;">
-            <div class="stats-grid">
-                <div class="stat-box">ВЕС: <span class="stat-value" id="view-weight">0</span></div>
-                <div class="stat-box">MAX: <span class="stat-value" id="view-pullups">0</span></div>
+        <div id="profile-stats" style="display: none;">
+            <div style="display: flex; justify-content: space-around;">
+                <div style="text-align: center;">ВЕС<br><span id="s-weight" class="timer-text" style="position:static; font-size: 24px;">0</span></div>
+                <div style="text-align: center;">MAX<br><span id="s-max" class="timer-text" style="position:static; font-size: 24px;">0</span></div>
             </div>
-            <button class="btn btn-outline" onclick="showForm()">ОБНОВИТЬ</button>
+            <button class="btn" style="width: 100%; margin-top: 15px; font-size: 10px;" onclick="editProfile()">РЕДАКТИРОВАТЬ</button>
         </div>
     </div>
 
-    <div class="brutal-card" id="instruction-box">
-        <h2 id="instr-title" style="color: var(--accent);">ВЫБЕРИ ТРЕНИРОВКУ</h2>
-        <div id="instr-steps"></div>
-        <span id="set-counter">ПОДХОД: 1</span>
-        <button class="btn" onclick="nextSet()">ПОДХОД ВЫПОЛНЕН</button>
+    <div class="card">
+        <h2>ВЫБОР ОРУЖИЯ</h2>
+        <div class="btn-grid">
+            <button class="btn" id="btn-5max" onclick="setProgram('5max')">5 X MAX</button>
+            <button class="btn" id="btn-ladder" onclick="setProgram('ladder')">ЛЕСЕНКА</button>
+            <button class="btn" id="btn-tabata" onclick="setProgram('tabata')">ТАБАТА</button>
+            <button class="btn" id="btn-custom" onclick="setProgram('custom')">СВОЯ</button>
+        </div>
+
+        <div id="prog-details" class="instr-content" style="display: none;">
+            <h3 id="prog-title" style="color: var(--primary); margin: 0;"></h3>
+            <p id="prog-desc" style="font-size: 13px; text-transform: none; color: #aaa;"></p>
+            <div id="workout-steps"></div>
+        </div>
     </div>
 
-    <div class="brutal-card">
-        <div class="timer-container">
-            <svg class="svg-timer"><circle class="circle-bg" cx="90" cy="90" r="80"></circle><circle class="circle-progress" id="progress-circle" cx="90" cy="90" r="80"></circle></svg>
-            <div class="time-display" id="time-display">01:00</div>
+    <div class="card" style="text-align: center;">
+        <h2 id="timer-status">ОТДЫХ</h2>
+        <div class="timer-wrap">
+            <svg class="timer-svg">
+                <circle class="timer-circle-bg" cx="110" cy="110" r="100"></circle>
+                <circle class="timer-circle-prod" id="progress" cx="110" cy="110" r="100"></circle>
+            </svg>
+            <div class="timer-text" id="display">01:30</div>
         </div>
-        <input type="range" min="10" max="300" step="5" value="60" class="slider" id="time-slider" oninput="updateTimeFromSlider()">
-        <div style="display: flex; gap: 10px;">
-            <button class="btn" id="start-btn" onclick="toggleTimer()">СТАРТ</button>
+        <div class="btn-grid">
+            <button class="btn" onclick="startTimer()">СТАРТ</button>
             <button class="btn btn-outline" onclick="resetTimer()">СБРОС</button>
         </div>
+        <div class="motivator" id="quote">«ЛИБО ТЫ, ЛИБО СНАРЯД»</div>
     </div>
 
-    <div class="brutal-card">
-        <h2>ПРОГРАММЫ</h2>
-        <div class="workout-item">
-            <div><h3>5 x MAX</h3><p>Классика на силу</p></div>
-            <button class="play-btn" onclick="initWorkout('5max')">▶</button>
-        </div>
-        <div class="workout-item">
-            <div><h3>ЛЕСЕНКА</h3><p>На выносливость</p></div>
-            <button class="play-btn" onclick="initWorkout('ladder')">▶</button>
-        </div>
-        <div class="workout-item">
-            <div><h3>ТАБАТА</h3><p>20/10 взрыв</p></div>
-            <button class="play-btn" onclick="initWorkout('tabata')">▶</button>
-        </div>
+    <div class="card">
+        <h2>ЖУРНАЛ СЛАВЫ</h2>
+        <table id="history-table">
+            <thead>
+                <tr>
+                    <th>ДАТА</th>
+                    <th>ПРОГРАММА</th>
+                    <th>SET</th>
+                    <th>EXP</th>
+                </tr>
+            </thead>
+            <tbody id="history-body">
+                </tbody>
+        </table>
     </div>
 
     <script>
-        let currentSet = 1;
-        let timerInterval;
-        let timeRemaining = 60;
-        let totalTime = 60;
-        let isRunning = false;
-
-        const programs = {
-            '5max': {
-                title: "5 x МАКСИМУМ",
-                steps: ["Сделай 5 подходов подтягиваний/брусьев.", "В каждом подходе — до отказа.", "Отдых между сетами: 90-120 сек."],
-                time: 90
-            },
-            'ladder': {
-                title: "ЛЕСЕНКА (1-10)",
-                steps: ["1 подтягивание — отдых 15с.", "2 подтягивания — отдых 30с.", "Прибавляй по одному, пока не упадешь."],
-                time: 15
-            },
-            'tabata': {
-                title: "ТАБАТА (ВЗРЫВ)",
-                steps: ["20 сек — РАБОТА (макс темп).", "10 сек — ОТДЫХ.", "Всего 8 раундов. Не жалей себя."],
-                time: 10
-            }
+        // --- ДАННЫЕ И СОСТОЯНИЕ ---
+        let state = {
+            lvl: 1,
+            exp: 0,
+            currentProg: null,
+            time: 90,
+            timerActive: false,
+            interval: null,
+            setsDone: 0
         };
 
-        function initWorkout(type) {
-            const p = programs[type];
-            document.getElementById('instruction-box').style.display = 'block';
-            document.getElementById('instr-title').innerText = p.title;
-            const stepsDiv = document.getElementById('instr-steps');
-            stepsDiv.innerHTML = p.steps.map(s => `<div class="instr-step">${s}</div>`).join('');
+        const programs = {
+            '5max': { t: "5 X MAX", d: "5 подходов на максимум. Отдых 120с.", s: 120, exp: 50 },
+            'ladder': { t: "ЛЕСЕНКА", d: "1, 2, 3... до упора. Отдых = кол-во повторов x 5с.", s: 30, exp: 30 },
+            'tabata': { t: "ТАБАТА", d: "20с работа / 10с отдых. 8 раундов.", s: 10, exp: 100 },
+            'custom': { t: "СВОЯ ТРЕНИРОВКА", d: "Настрой таймер под себя.", s: 60, exp: 20 }
+        };
+
+        const quotes = [
+            "БОЛЬ — ЭТО СЛАБОСТЬ, ПОКИДАЮЩАЯ ТЕЛО.",
+            "ТВОИ МЫШЦЫ НЕ ЗНАЮТ СЧЕТА, ОНИ ЗНАЮТ ТОЛЬКО БОЛЬ.",
+            "ЕЩЕ ОДИН ПОВТОР, ВОИН!",
+            "СЕГОДНЯ ЛУЧШЕ, ЧЕМ ВЧЕРА.",
+            "ЖЕЛЕЗО НЕ ВРЕТ."
+        ];
+
+        // --- ИНИЦИАЛИЗАЦИЯ ---
+        window.onload = () => {
+            loadData();
+            updateWeather();
+            setInterval(updateClock, 1000);
+            updateQuotes();
+        };
+
+        function updateClock() {
+            document.getElementById('date').innerText = new Date().toLocaleTimeString();
+        }
+
+        async function updateWeather() {
+            try {
+                const res = await fetch('https://wttr.in/?format=3');
+                const text = await res.text();
+                document.getElementById('weather').innerText = text.toUpperCase();
+            } catch (e) {
+                document.getElementById('weather').innerText = "ВЫХОДИ НА УЛИЦУ И ПРОВЕРЬ";
+            }
+        }
+
+        // --- ПРОФИЛЬ ---
+        function saveProfile() {
+            const w = document.getElementById('weight').value;
+            const m = document.getElementById('pullups-max').value;
+            if(!w || !m) return alert("ВВЕДИ ДАННЫЕ!");
             
-            currentSet = 1;
-            updateSetDisplay();
-            setQuickTimer(p.time);
-            window.scrollTo(0, 0);
+            localStorage.setItem('bb_profile', JSON.stringify({weight: w, max: m}));
+            showProfileStats(w, m);
         }
 
-        function nextSet() {
-            currentSet++;
-            updateSetDisplay();
-            toggleTimer(); // Автозапуск таймера отдыха после нажатия
+        function showProfileStats(w, m) {
+            document.getElementById('profile-setup').style.display = 'none';
+            document.getElementById('profile-stats').style.display = 'block';
+            document.getElementById('s-weight').innerText = w;
+            document.getElementById('s-max').innerText = m;
         }
 
-        function updateSetDisplay() {
-            document.getElementById('set-counter').innerText = `ПОДХОД: ${currentSet}`;
+        function editProfile() {
+            document.getElementById('profile-setup').style.display = 'block';
+            document.getElementById('profile-stats').style.display = 'none';
         }
 
-        function setQuickTimer(s) {
+        // --- ТРЕНИРОВКА ---
+        function setProgram(key) {
+            state.currentProg = key;
+            const p = programs[key];
+            
+            // UI
+            document.querySelectorAll('.btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('btn-' + key).classList.add('active');
+            
+            document.getElementById('prog-details').style.display = 'block';
+            document.getElementById('prog-title').innerText = p.t;
+            document.getElementById('prog-desc').innerText = p.d;
+            
+            state.time = p.s;
             resetTimer();
-            totalTime = s;
-            timeRemaining = s;
-            document.getElementById('time-display').innerText = formatTime(s);
-            document.getElementById('time-slider').value = s;
         }
 
-        function formatTime(s) {
-            return `${Math.floor(s/60).toString().padStart(2,'0')}:${(s%60).toString().padStart(2,'0')}`;
-        }
-
-        function updateTimeFromSlider() {
-            if(!isRunning) {
-                totalTime = parseInt(document.getElementById('time-slider').value);
-                timeRemaining = totalTime;
-                document.getElementById('time-display').innerText = formatTime(timeRemaining);
+        // --- ТАЙМЕР ---
+        function startTimer() {
+            if(state.timerActive) {
+                clearInterval(state.interval);
+                state.timerActive = false;
+                document.getElementById('timer-status').innerText = "ПАУЗА";
+                return;
             }
+
+            state.timerActive = true;
+            document.getElementById('timer-status').innerText = "ОТДЫХАЙ";
+            document.getElementById('timer-status').classList.add('working');
+
+            const circle = document.getElementById('progress');
+            const circumference = 628;
+            let startT = state.time;
+
+            state.interval = setInterval(() => {
+                state.time--;
+                updateDisplay();
+                
+                let offset = circumference - (state.time / startT) * circumference;
+                circle.style.strokeDashoffset = offset;
+
+                if(state.time <= 0) {
+                    finishTimer();
+                }
+            }, 1000);
         }
 
-        function toggleTimer() {
-            const btn = document.getElementById('start-btn');
-            const circle = document.getElementById('progress-circle');
-            const circ = 2 * Math.PI * 80;
-
-            if(isRunning) {
-                clearInterval(timerInterval);
-                btn.innerText = "СТАРТ";
-            } else {
-                btn.innerText = "ПАУЗА";
-                timerInterval = setInterval(() => {
-                    timeRemaining--;
-                    document.getElementById('time-display').innerText = formatTime(timeRemaining);
-                    circle.style.strokeDashoffset = circ - (timeRemaining/totalTime) * circ;
-
-                    if(timeRemaining <= 0) {
-                        clearInterval(timerInterval);
-                        alert("ВРЕМЯ ВЫШЛО! РАБОТАЙ!");
-                        resetTimer();
-                    }
-                }, 1000);
-            }
-            isRunning = !isRunning;
+        function finishTimer() {
+            clearInterval(state.interval);
+            state.timerActive = false;
+            document.getElementById('timer-status').innerText = "В БОЙ!";
+            document.getElementById('timer-status').classList.remove('working');
+            
+            // Вибрация и звук
+            if (navigator.vibrate) navigator.vibrate([500, 200, 500]);
+            speak("ВРЕМЯ ВЫШЛО. НА СНАРЯД!");
+            
+            addExp();
+            saveHistory();
+            resetTimer();
         }
 
         function resetTimer() {
-            clearInterval(timerInterval);
-            isRunning = false;
-            document.getElementById('start-btn').innerText = "СТАРТ";
-            document.getElementById('progress-circle').style.strokeDashoffset = 0;
-            updateTimeFromSlider();
+            clearInterval(state.interval);
+            state.timerActive = false;
+            state.time = state.currentProg ? programs[state.currentProg].s : 90;
+            updateDisplay();
+            document.getElementById('progress').style.strokeDashoffset = 628;
+            document.getElementById('timer-status').innerText = "ГОТОВ";
         }
 
-        function saveProfile() {
-            const data = { weight: document.getElementById('weight').value, max: document.getElementById('max-pullups').value };
-            localStorage.setItem('workoutData', JSON.stringify(data));
-            renderProfile();
+        function updateDisplay() {
+            const m = Math.floor(state.time / 60);
+            const s = state.time % 60;
+            document.getElementById('display').innerText = `${m}:${s < 10 ? '0'+s : s}`;
         }
 
-        function renderProfile() {
-            const saved = localStorage.getItem('workoutData');
-            if(saved) {
-                const data = JSON.parse(saved);
-                document.getElementById('view-weight').innerText = data.weight;
-                document.getElementById('view-pullups').innerText = data.max;
-                document.getElementById('setup-form').style.display = 'none';
-                document.getElementById('display-stats').style.display = 'block';
+        // --- RPG СИСТЕМА ---
+        function addExp() {
+            let gain = state.currentProg ? programs[state.currentProg].exp : 10;
+            state.exp += gain;
+            
+            if(state.exp >= 100) {
+                state.lvl++;
+                state.exp = 0;
+                speak("НОВЫЙ УРОВЕНЬ ДОСТИГНУТ!");
             }
+            
+            updateRPG();
+            localStorage.setItem('bb_rpg', JSON.stringify({lvl: state.lvl, exp: state.exp}));
         }
 
-        function showForm() {
-            document.getElementById('setup-form').style.display = 'block';
-            document.getElementById('display-stats').style.display = 'none';
+        function updateRPG() {
+            document.getElementById('lvl-display').innerText = `LVL ${state.lvl}`;
+            document.getElementById('exp-fill').style.width = state.exp + '%';
         }
 
-        window.onload = () => {
-            renderProfile();
-            document.getElementById('progress-circle').style.strokeDasharray = 2 * Math.PI * 80;
-        };
+        // --- ИСТОРИЯ ---
+        function saveHistory() {
+            const row = {
+                date: new Date().toLocaleDateString(),
+                prog: state.currentProg || 'BATTLE',
+                exp: state.currentProg ? programs[state.currentProg].exp : 10
+            };
+            
+            let history = JSON.parse(localStorage.getItem('bb_history') || '[]');
+            history.unshift(row);
+            if(history.length > 5) history.pop();
+            localStorage.setItem('bb_history', JSON.stringify(history));
+            renderHistory();
+        }
+
+        function renderHistory() {
+            const history = JSON.parse(localStorage.getItem('bb_history') || '[]');
+            const body = document.getElementById('history-body');
+            body.innerHTML = history.map(h => `
+                <tr>
+                    <td>${h.date}</td>
+                    <td>${h.prog.toUpperCase()}</td>
+                    <td>1</td>
+                    <td style="color:var(--primary)">+${h.exp}</td>
+                </tr>
+            `).join('');
+        }
+
+        // --- ДОП ФУНКЦИИ ---
+        function speak(text) {
+            const msg = new SpeechSynthesisUtterance();
+            msg.text = text;
+            msg.lang = 'ru-RU';
+            window.speechSynthesis.speak(msg);
+        }
+
+        function updateQuotes() {
+            setInterval(() => {
+                document.getElementById('quote').innerText = quotes[Math.floor(Math.random() * quotes.length)];
+            }, 10000);
+        }
+
+        function loadData() {
+            const prof = JSON.parse(localStorage.getItem('bb_profile'));
+            if(prof) showProfileStats(prof.weight, prof.max);
+            
+            const rpg = JSON.parse(localStorage.getItem('bb_rpg'));
+            if(rpg) { state.lvl = rpg.lvl; state.exp = rpg.exp; updateRPG(); }
+            
+            renderHistory();
+        }
+
+        function updateTimeFromSlider() {
+            // Реализация кастомного времени через слайдер
+        }
     </script>
 </body>
 </html>
